@@ -1,16 +1,25 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
+import 'package:line_icons/line_icons.dart';
+import 'package:pay_qr/config/constants.dart';
 
 // Project imports:
-import 'package:pay_qr/config/constants.dart';
 import 'text_field_container.dart';
 
 class RoundedPasswordField extends StatefulWidget {
-  final ValueChanged<String> onChanged;
-  const RoundedPasswordField({
-    Key? key,
-    required this.onChanged,
-  }) : super(key: key);
+  final ValueChanged<String>? onChanged;
+  final TextEditingController? textController;
+  final Iterable<String>? autofillHints;
+  final bool? isReadOnly;
+  final String? text;
+  const RoundedPasswordField(
+      {Key? key,
+      this.onChanged,
+      this.textController,
+      this.autofillHints,
+      this.isReadOnly,
+      this.text})
+      : super(key: key);
 
   @override
   State<RoundedPasswordField> createState() => _RoundedPasswordFieldState();
@@ -18,18 +27,32 @@ class RoundedPasswordField extends StatefulWidget {
 
 class _RoundedPasswordFieldState extends State<RoundedPasswordField> {
   bool _isObscure = true;
+
   @override
   Widget build(BuildContext context) {
     return TextFieldContainer(
       child: TextField(
         obscureText: _isObscure,
+        enableInteractiveSelection: true,
+        enableIMEPersonalizedLearning: true,
+        enableSuggestions: true,
+
+        // enabled: widget.isEnabled,
         onChanged: widget.onChanged,
-        cursorColor: kPrimaryColor,
+        readOnly: widget.isReadOnly ?? false,
+        // cursorColor: kActiveBtnColor,
+        controller: widget.textController,
+        autofillHints: widget.autofillHints,
+        // onEditingComplete: () => TextInput.finishAutofillContext(),
         decoration: InputDecoration(
+          alignLabelWithHint: true,
           hintText: "Password",
+          // filled: true,
+          labelText: widget.text,
           icon: const Icon(
-            Icons.lock,
+            LineIcons.key,
             color: kPrimaryColor,
+            // color: kActiveBtnColor,
           ),
           suffix: IconButton(
             onPressed: () {
@@ -40,6 +63,7 @@ class _RoundedPasswordFieldState extends State<RoundedPasswordField> {
             icon: Icon(
               _isObscure ? Icons.visibility : Icons.visibility_off,
               color: kPrimaryColor,
+              // color: kActiveBtnColor,
             ),
           ),
           border: InputBorder.none,

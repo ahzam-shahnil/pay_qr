@@ -1,4 +1,4 @@
-package com.payqr.pay_qr.pay_qr
+package com.payqr.pay_qr
 
 import io.flutter.embedding.android.FlutterActivity
 

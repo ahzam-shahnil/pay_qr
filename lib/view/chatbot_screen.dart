@@ -9,8 +9,6 @@ import 'package:pay_qr/components/chat_message.dart';
 import 'package:pay_qr/controller/api_controller.dart';
 import 'package:pay_qr/model/chat_api_response.dart';
 
-// Project imports:
-
 class ChatBotScreen extends StatefulWidget {
   const ChatBotScreen({Key? key}) : super(key: key);
 

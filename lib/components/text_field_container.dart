@@ -2,13 +2,12 @@
 import 'package:flutter/material.dart';
 
 // Project imports:
-import 'package:pay_qr/config/constants.dart';
 
 class TextFieldContainer extends StatelessWidget {
-  final Widget child;
+  final Widget? child;
   const TextFieldContainer({
     Key? key,
-    required this.child,
+    this.child,
   }) : super(key: key);
 
   @override
@@ -19,8 +18,8 @@ class TextFieldContainer extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
       width: size.width * 0.8,
       decoration: BoxDecoration(
-        color: kPrimaryLightColor,
-        borderRadius: BorderRadius.circular(29),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(30),
       ),
       child: child,
     );

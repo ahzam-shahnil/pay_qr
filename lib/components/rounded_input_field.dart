@@ -10,28 +10,51 @@ class RoundedInputField extends StatelessWidget {
   final IconData icon;
   final ValueChanged<String>? onChanged;
   final TextEditingController? textController;
-  const RoundedInputField({
+  final int? maxLines;
+  final TextInputType? textInputType;
+  final Iterable<String>? autofillHints;
+  final bool? isEnabled;
+  final ScrollController scrollController = ScrollController();
+  RoundedInputField({
     Key? key,
     required this.hintText,
     this.icon = Icons.person,
     this.onChanged,
     this.textController,
+    this.maxLines,
+    this.textInputType,
+    this.autofillHints,
+    this.isEnabled,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFieldContainer(
-      child: TextField(
-        onChanged: onChanged,
-        controller: textController,
-        cursorColor: kPrimaryColor,
-        decoration: InputDecoration(
-          icon: Icon(
-            icon,
-            color: kPrimaryColor,
+      child: Scrollbar(
+        controller: scrollController,
+        trackVisibility: true,
+        child: TextField(
+          enabled: isEnabled,
+          enableIMEPersonalizedLearning: true,
+          enableInteractiveSelection: true,
+          textInputAction: TextInputAction.next,
+          enableSuggestions: true,
+          autocorrect: false,
+          scrollController: scrollController,
+          maxLines: maxLines,
+          onChanged: onChanged,
+          controller: textController,
+          cursorColor: kPrimaryColor,
+          keyboardType: textInputType,
+          autofillHints: autofillHints,
+          decoration: InputDecoration(
+            icon: Icon(
+              icon,
+              color: kPrimaryColor,
+            ),
+            hintText: hintText,
+            border: InputBorder.none,
           ),
-          hintText: hintText,
-          border: InputBorder.none,
         ),
       ),
     );

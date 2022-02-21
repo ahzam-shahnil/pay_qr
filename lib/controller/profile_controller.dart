@@ -1,0 +1,149 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:get/get.dart';
+import 'package:logger/logger.dart';
+import 'package:pay_qr/controller/login_controller.dart';
+import 'package:pay_qr/model/user_model.dart';
+
+import '../config/constants.dart';
+import '../services/auth_helper_firebase.dart';
+import '../services/show_toast.dart';
+
+class ProfileController extends GetxController {
+  var currentUser = UserModel(
+          uid: '', fullName: '', email: '', password: '', isMerchant: false)
+      .obs;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final loginController = Get.find<LoginController>();
+  final isLoading = true.obs;
+  // Create storage
+  final storage = const FlutterSecureStorage();
+  Logger log = Logger();
+  // @override
+  // void onInit() {
+  //   super.onInit();
+  //   getProfile();
+  // }
+
+  showLoading() {
+    isLoading.value = true;
+  }
+
+  hideLoading() {
+    isLoading.value = false;
+  }
+
+  Future<void> updateProfile(UserModel userUpdate, BuildContext context) async {
+    try {
+      CollectionReference _mainCollection;
+
+      //* Checking User to store Data
+      if (currentUser.value.isMerchant) {
+        _mainCollection = _firestore.collection(kMerchantDb);
+      } else {
+        _mainCollection = _firestore.collection(kUserDb);
+      }
+
+//? setting account password
+      await AuthHelperFirebase.getCurrentUserDetails()!
+          .updatePassword(userUpdate.password);
+      DocumentReference documentReferencer = _mainCollection
+          .doc(userUpdate.uid)
+          .collection(userUpdate.uid)
+          .doc(userUpdate.uid);
+
+      await documentReferencer
+          .set(userUpdate.toMap())
+          .whenComplete(
+              () => showToast(msg: "Profile Updated", backColor: Colors.green))
+          .catchError((e) => throw (e));
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'email-already-in-use') {
+        showToast(msg: 'Email is already in Use');
+      } else if (e.code == 'weak-password') {
+        showToast(msg: 'Password is weak');
+      }
+    } catch (e) {
+      log.i('catch sign up : $e');
+      showToast(msg: 'Something went wrong');
+    }
+  }
+
+  Future<QuerySnapshot<Object?>?> getProfile() async {
+    showLoading();
+    try {
+      final CollectionReference? _mainCollection = getProfileCollection();
+      if (_mainCollection != null) {
+        var data = await _mainCollection.get();
+
+        // await collection.then((QuerySnapshot querySnapshot) => {
+        //       for (final document in querySnapshot.docs) {document.data()}
+        //     });
+
+        var users = data.docs.map((e) => UserModel.fromSnapshot(e));
+        // log.i(users);
+        // users.isEmpty;
+        for (var item in users) {
+          currentUser.value = item;
+          log.i("Current user is $currentUser");
+        }
+        hideLoading();
+        return data;
+      }
+    } on FirebaseAuthException catch (e) {
+      // progressDialog.dismiss();
+      hideLoading();
+      log.d(e.code);
+      if (e.code == 'user-not-found') {
+        showToast(
+          msg: 'User not found',
+        );
+      } else if (e.code == 'wrong-password') {
+        showToast(
+          msg: 'Wrong password',
+        );
+      } else if (e.code == 'verify_email') {
+        showToast(msg: "Verify your Email to Login");
+      } else if (e.code == 'too-many-requests') {
+        showToast(msg: "Too many requests from you. Slow down");
+      }
+    } catch (e) {
+      // progressDialog.dismiss();
+      hideLoading();
+      showToast(
+        msg: 'Something went wrong',
+      );
+      debugPrint('e : $e');
+    }
+    return null;
+  }
+
+  CollectionReference? getProfileCollection() {
+    try {
+      User? user = AuthHelperFirebase.getCurrentUserDetails();
+      final CollectionReference _mainCollection;
+      if (user != null) {
+        //* Checking User to store Data
+        if (loginController.isMerchant()) {
+          _mainCollection = _firestore
+              .collection(kMerchantDb)
+              .doc(user.uid)
+              .collection(kProfileCollection);
+        } else {
+          _mainCollection = _firestore
+              .collection(kUserDb)
+              .doc(user.uid)
+              .collection(kProfileCollection);
+        }
+        return _mainCollection;
+      }
+    } on FirebaseAuthException {
+      rethrow;
+    } catch (e) {
+      rethrow;
+    }
+    return null;
+  }
+}
