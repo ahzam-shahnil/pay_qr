@@ -1,7 +1,10 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:get/get.dart';
-import 'package:pay_qr/config/constants.dart';
+
+// Project imports:
 
 // Project imports:
 
@@ -23,14 +26,15 @@ class AlreadyHaveAnAccountCheck extends StatelessWidget {
       children: <Widget>[
         Text(
           login ? "Don’t have an Account ? " : "Already have an Account ? ",
-          style: Get.textTheme.headline6?.copyWith(color: kPrimaryColor),
+          style: Get.textTheme.headline6,
         ),
         GestureDetector(
           onTap: press,
           child: Text(
             login ? "Sign Up" : "Sign In",
-            style: Get.textTheme.headline6
-                ?.copyWith(fontWeight: FontWeight.bold, color: kPrimaryColor),
+            style: Get.textTheme.headline6?.copyWith(
+              fontWeight: FontWeight.bold,
+            ),
           ),
         )
       ],

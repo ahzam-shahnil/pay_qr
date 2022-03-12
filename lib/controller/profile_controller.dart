@@ -1,21 +1,32 @@
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
+
+// Project imports:
+import 'package:pay_qr/config/firebase.dart';
 import 'package:pay_qr/controller/login_controller.dart';
 import 'package:pay_qr/model/user_model.dart';
-
-import '../config/constants.dart';
-import '../services/auth_helper_firebase.dart';
-import '../services/show_toast.dart';
+import 'package:pay_qr/utils/auth_helper_firebase.dart';
+import 'package:pay_qr/utils/toast_dialogs.dart';
+import '../config/app_constants.dart';
 
 class ProfileController extends GetxController {
+  static ProfileController instance = Get.find();
+
   var currentUser = UserModel(
-          uid: '', fullName: '', email: '', password: '', isMerchant: false)
-      .obs;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+      uid: '',
+      fullName: '',
+      email: '',
+      password: '',
+      isMerchant: false,
+      cart: []).obs;
+  // final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
   final loginController = Get.find<LoginController>();
   final isLoading = true.obs;
   // Create storage
@@ -40,18 +51,20 @@ class ProfileController extends GetxController {
       CollectionReference _mainCollection;
 
       //* Checking User to store Data
-      if (currentUser.value.isMerchant) {
-        _mainCollection = _firestore.collection(kMerchantDb);
+      if (currentUser.value.isMerchant!) {
+        _mainCollection = firebaseFirestore.collection(kMerchantDb);
       } else {
-        _mainCollection = _firestore.collection(kUserDb);
+        _mainCollection = firebaseFirestore.collection(kUserDb);
       }
 
 //? setting account password
       await AuthHelperFirebase.getCurrentUserDetails()!
-          .updatePassword(userUpdate.password);
+          .updatePhotoURL(userUpdate.imageUrl);
+      await AuthHelperFirebase.getCurrentUserDetails()!
+          .updatePassword(userUpdate.password!);
       DocumentReference documentReferencer = _mainCollection
           .doc(userUpdate.uid)
-          .collection(userUpdate.uid)
+          .collection(kProfileCollection)
           .doc(userUpdate.uid);
 
       await documentReferencer
@@ -127,12 +140,12 @@ class ProfileController extends GetxController {
       if (user != null) {
         //* Checking User to store Data
         if (loginController.isMerchant()) {
-          _mainCollection = _firestore
+          _mainCollection = firebaseFirestore
               .collection(kMerchantDb)
               .doc(user.uid)
               .collection(kProfileCollection);
         } else {
-          _mainCollection = _firestore
+          _mainCollection = firebaseFirestore
               .collection(kUserDb)
               .doc(user.uid)
               .collection(kProfileCollection);

@@ -1,46 +1,41 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 // Package imports:
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:pay_qr/config/constants.dart';
-import 'package:pay_qr/controller/login_controller.dart';
 
 // Project imports:
+import 'package:pay_qr/config/app_constants.dart';
+import 'package:pay_qr/config/firebase.dart';
+import 'package:pay_qr/controller/auth_controller.dart';
+import 'package:pay_qr/controller/cart_controller.dart';
 import 'package:pay_qr/controller/product_controller.dart';
 import 'package:pay_qr/controller/profile_controller.dart';
 import 'package:pay_qr/controller/sign_up_controller.dart';
-import 'package:pay_qr/view/login_screen.dart';
-import 'package:pay_qr/view/nav_home.dart';
+import 'controller/login_controller.dart';
+import 'controller/product_add_controller.dart';
+import 'view/intro_views/splash.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  //? use api controler here
-  Get.lazyPut(
-    () => LoginController(),
-  );
+
+  await initialization.then((value) {
+    Get.put(UserController());
+    Get.put(LoginController());
+    Get.put(ProductController());
+    Get.put(CartController());
+    Get.put(SignUpController());
+    Get.put(ProfileController());
+    Get.put(ProductAddController());
+    // Get.put(PaymentsController());
+  });
+
   runApp(const App());
 }
 
-class App extends StatefulWidget {
+class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
-
-  @override
-  State<App> createState() => _AppState();
-}
-
-class _AppState extends State<App> {
-  //? use api controler here
-  final controller = Get.lazyPut(() => ProductController(), fenix: true);
-
-  // final accountTypeController =
-  final signUpController = Get.lazyPut(() => SignUpController(), fenix: true);
-  final profileController = Get.lazyPut(() => ProfileController(), fenix: true);
-
-  final loginController = Get.find<LoginController>();
 
   @override
   Widget build(BuildContext context) {
@@ -48,10 +43,20 @@ class _AppState extends State<App> {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         scaffoldBackgroundColor: kPrimaryColor,
+
         scrollbarTheme: ScrollbarThemeData(
           interactive: true,
           thumbColor: MaterialStateProperty.all(Colors.deepPurple),
           radius: const Radius.circular(60),
+        ),
+        iconTheme: const IconThemeData(color: kScanBackColor),
+        textTheme: const TextTheme(
+          headline6: TextStyle(color: Colors.white),
+          headline5: TextStyle(color: Colors.white),
+          headline4: TextStyle(color: Colors.white),
+          headline3: TextStyle(color: Colors.white),
+          headline2: TextStyle(color: Colors.white),
+          headline1: TextStyle(color: Colors.white),
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
@@ -72,19 +77,18 @@ class _AppState extends State<App> {
           // color: kPrimaryColor,
           systemOverlayStyle: SystemUiOverlayStyle.light,
           elevation: 0,
+          iconTheme: const IconThemeData(color: kScanBackColor),
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(15),
                 bottomRight: Radius.circular(15)),
           ),
         ),
-        fontFamily: 'Nunito',
+        fontFamily: 'Lato',
         colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.deepPurple)
             .copyWith(secondary: Colors.deepPurpleAccent),
       ),
-      home: Obx(() => loginController.isLoggedIn.value == true
-          ? const TabPage()
-          : const LoginScreen()),
+      home: const SplashScreen(),
     );
   }
 }

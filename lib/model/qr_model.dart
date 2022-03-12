@@ -1,3 +1,4 @@
+// Dart imports:
 import 'dart:convert';
 
 class QrModel {
@@ -43,6 +44,11 @@ class QrModel {
       productName: map['productName'],
     );
   }
+  QrModel.fromSnapshot(snapshot)
+      : uid = snapshot.data()['uid'],
+        shopName = snapshot.data()['shopName'],
+        productId = snapshot.data()['productId'],
+        productName = snapshot.data()['productName'];
 
   String toJson() => json.encode(toMap());
 

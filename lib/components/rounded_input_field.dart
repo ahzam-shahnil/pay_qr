@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 
 // Project imports:
-import 'package:pay_qr/config/constants.dart';
+import 'package:pay_qr/config/app_constants.dart';
 import 'text_field_container.dart';
 
 class RoundedInputField extends StatelessWidget {
@@ -11,8 +11,10 @@ class RoundedInputField extends StatelessWidget {
   final ValueChanged<String>? onChanged;
   final TextEditingController? textController;
   final int? maxLines;
+  final TextCapitalization textCapitalization;
   final TextInputType? textInputType;
   final Iterable<String>? autofillHints;
+
   final bool? isEnabled;
   final ScrollController scrollController = ScrollController();
   RoundedInputField({
@@ -25,6 +27,7 @@ class RoundedInputField extends StatelessWidget {
     this.textInputType,
     this.autofillHints,
     this.isEnabled,
+    this.textCapitalization = TextCapitalization.none,
   }) : super(key: key);
 
   @override
@@ -34,6 +37,7 @@ class RoundedInputField extends StatelessWidget {
         controller: scrollController,
         trackVisibility: true,
         child: TextField(
+          textCapitalization: textCapitalization,
           enabled: isEnabled,
           enableIMEPersonalizedLearning: true,
           enableInteractiveSelection: true,
@@ -55,6 +59,7 @@ class RoundedInputField extends StatelessWidget {
             hintText: hintText,
             border: InputBorder.none,
           ),
+          minLines: 1,
         ),
       ),
     );

@@ -1,22 +1,30 @@
+// Dart imports:
 import 'dart:convert';
 
-class UserModel {
-  final String uid;
-  final String fullName;
-  final String email;
-  final String password;
-  final String? shopName;
-  final bool isMerchant;
-  final String? imageUrl;
+// Flutter imports:
+import 'package:flutter/foundation.dart';
 
+// Project imports:
+import 'cart_item.dart';
+
+class UserModel {
+  final String? uid;
+  final String? fullName;
+  final String? email;
+  final String? password;
+  final String? shopName;
+  final bool? isMerchant;
+  final String? imageUrl;
+  final List<CartItemModel>? cart;
   UserModel({
-    required this.uid,
-    required this.fullName,
-    required this.email,
-    required this.password,
+    this.uid,
+    this.fullName,
+    this.email,
+    this.password,
     this.shopName,
-    required this.isMerchant,
+    this.isMerchant,
     this.imageUrl,
+    this.cart,
   });
 
   UserModel copyWith({
@@ -27,6 +35,7 @@ class UserModel {
     String? shopName,
     bool? isMerchant,
     String? imageUrl,
+    List<CartItemModel>? cart,
   }) {
     return UserModel(
       uid: uid ?? this.uid,
@@ -36,6 +45,7 @@ class UserModel {
       shopName: shopName ?? this.shopName,
       isMerchant: isMerchant ?? this.isMerchant,
       imageUrl: imageUrl ?? this.imageUrl,
+      cart: cart ?? this.cart,
     );
   }
 
@@ -48,6 +58,7 @@ class UserModel {
       'shopName': shopName,
       'isMerchant': isMerchant,
       'imageUrl': imageUrl,
+      'cart': cart?.map((x) => x.toMap()).toList(),
     };
   }
 
@@ -60,8 +71,21 @@ class UserModel {
       shopName: map['shopName'],
       isMerchant: map['isMerchant'] ?? false,
       imageUrl: map['imageUrl'],
+      cart: List<CartItemModel>.from(
+          map['cart']?.map((x) => CartItemModel.fromMap(x))),
     );
   }
+
+  static List<CartItemModel> _convertCartItems(List cartFomDb) {
+    List<CartItemModel> _result = [];
+    if (cartFomDb.isNotEmpty) {
+      for (var element in cartFomDb) {
+        _result.add(CartItemModel.fromMap(element));
+      }
+    }
+    return _result;
+  }
+
   UserModel.fromSnapshot(snapshot)
       : uid = snapshot.data()['uid'],
         fullName = snapshot.data()['fullName'],
@@ -69,8 +93,10 @@ class UserModel {
         password = snapshot.data()['password'],
         shopName = snapshot.data()['shopName'],
         isMerchant = snapshot.data()['isMerchant'],
-        imageUrl = snapshot.data()['imageUrl'];
+        imageUrl = snapshot.data()['imageUrl'],
+        cart = _convertCartItems(snapshot.data()['cart'] ?? []);
 
+  List cartItemsToJson() => cart!.map((item) => item.toMap()).toList();
   String toJson() => json.encode(toMap());
 
   factory UserModel.fromJson(String source) =>
@@ -78,7 +104,7 @@ class UserModel {
 
   @override
   String toString() {
-    return 'UserModel(uid: $uid, fullName: $fullName, email: $email, password: $password, shopName: $shopName, isMerchant: $isMerchant, imageUrl: $imageUrl)';
+    return 'UserModel(uid: $uid, fullName: $fullName, email: $email, password: $password, shopName: $shopName, isMerchant: $isMerchant, imageUrl: $imageUrl, cart: $cart)';
   }
 
   @override
@@ -92,7 +118,8 @@ class UserModel {
         other.password == password &&
         other.shopName == shopName &&
         other.isMerchant == isMerchant &&
-        other.imageUrl == imageUrl;
+        other.imageUrl == imageUrl &&
+        listEquals(other.cart, cart);
   }
 
   @override
@@ -103,6 +130,7 @@ class UserModel {
         password.hashCode ^
         shopName.hashCode ^
         isMerchant.hashCode ^
-        imageUrl.hashCode;
+        imageUrl.hashCode ^
+        cart.hashCode;
   }
 }

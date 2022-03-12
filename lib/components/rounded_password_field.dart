@@ -1,9 +1,11 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:line_icons/line_icons.dart';
-import 'package:pay_qr/config/constants.dart';
 
 // Project imports:
+import 'package:pay_qr/config/app_constants.dart';
 import 'text_field_container.dart';
 
 class RoundedPasswordField extends StatefulWidget {

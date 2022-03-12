@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 
 // Project imports:
-import 'package:pay_qr/config/constants.dart';
+import 'package:pay_qr/config/app_constants.dart';
 
 class RoundedButton extends StatelessWidget {
   final String text;

@@ -1,32 +1,28 @@
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
-import 'package:logger/logger.dart';
-import 'package:pay_qr/services/auth_helper_firebase.dart';
-import 'package:pay_qr/view/nav_home.dart';
 
-import '../config/constants.dart';
-import '../services/show_toast.dart';
+// Project imports:
+import 'package:pay_qr/utils/auth_helper_firebase.dart';
+import 'package:pay_qr/view/main_views/home/nav_home.dart';
+import '../config/app_constants.dart';
+import '../config/firebase.dart';
+import '../utils/toast_dialogs.dart';
 
 class LoginController extends GetxController {
-  // String? userUid;
+  static LoginController instance = Get.find();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
   var isLoggedIn = false.obs;
+
   var userType = kUsers.merchant.toString().obs;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  // Create storage
-  final storage = const FlutterSecureStorage();
-  Logger log = Logger();
-  // final accountType = Get.find<AccountTypeController>();
-  @override
-  void onInit() {
-    super.onInit();
-    checkLogin();
-  }
-
-  void checkLogin() async {
+  Future<void> checkLogin() async {
     String? userCredential = await getLoggedInUser();
     userType.value = await getLoggedInUserType() ?? kUsers.merchant.toString();
     if (userCredential != null && userType.value.isNotEmpty) {
@@ -34,6 +30,8 @@ class LoginController extends GetxController {
     } else {
       isLoggedIn.value = false;
     }
+
+    // hideLoading();
     // showToast(msg: token!);
     // showToast(msg: isLoggedIn.toString());
   }
@@ -50,7 +48,26 @@ class LoginController extends GetxController {
     userType.value = user;
   }
 
-  Future<void> logIn({
+  loginUser(BuildContext context) {
+    var email = emailController.text.trim();
+    var password = passwordController.text.trim();
+    if (email.isEmpty || password.isEmpty) {
+      // show error toast
+      showToast(
+        msg: 'Please fill all fields',
+      );
+      return;
+    } else {
+      //? Calling Login
+      _logIn(
+        context: context,
+        email: email,
+        password: password,
+      );
+    }
+  }
+
+  Future<void> _logIn({
     required BuildContext context,
     required String email,
     required String password,
@@ -78,12 +95,12 @@ class LoginController extends GetxController {
 
         //* Checking User to store Data
         if (isMerchant()) {
-          _mainCollection = _firestore
+          _mainCollection = firebaseFirestore
               .collection(kMerchantDb)
               .doc(userCredential.user?.uid)
               .collection(kProfileCollection);
         } else {
-          _mainCollection = _firestore
+          _mainCollection = firebaseFirestore
               .collection(kUserDb)
               .doc(userCredential.user?.uid)
               .collection(kProfileCollection);
@@ -99,7 +116,7 @@ class LoginController extends GetxController {
 
         //       })
         //     });
-        log.i("In Login Collection $collection");
+        logger.i("In Login Collection $collection");
         // collection.docs.map((e) {
         //   if (e["uid"] == (userCredential.user?.uid)) {
         //     isUser = true;
@@ -109,9 +126,9 @@ class LoginController extends GetxController {
         if (collection.docs.isNotEmpty) {
           progressDialog.dismiss();
           if (isMerchant()) {
-            Get.offAll(() => const TabPage());
+            Get.offAll(() => const NavHomeScreen());
           } else {
-            Get.offAll(() => const TabPage());
+            Get.offAll(() => const NavHomeScreen());
           }
         } else {
           progressDialog.dismiss();
@@ -122,7 +139,7 @@ class LoginController extends GetxController {
       }
     } on FirebaseAuthException catch (e) {
       progressDialog.dismiss();
-      log.d(e.code);
+      logger.d(e.code);
       if (e.code == 'user-not-found') {
         showToast(
           msg: 'User not found',
@@ -147,19 +164,19 @@ class LoginController extends GetxController {
 
   Future<void> storeTokenAndData(
       UserCredential userCredential, String selected) async {
-    log.d(userCredential.credential?.token.toString());
-    log.i(userCredential);
-    await storage.write(key: kUserTypeSharedPrefKey, value: selected);
-    await storage.write(
+    logger.d(userCredential.credential?.token.toString());
+    logger.i(userCredential);
+    await storagePrefs.write(key: kUserTypeSharedPrefKey, value: selected);
+    await storagePrefs.write(
         key: kUserCredSharedPrefKey, value: userCredential.toString());
   }
 
   Future<String?> getLoggedInUser() async {
-    return await storage.read(key: kUserCredSharedPrefKey);
+    return await storagePrefs.read(key: kUserCredSharedPrefKey);
     // AuthHelperFirebase.getCurrentUserUid();
   }
 
   Future<String?> getLoggedInUserType() async {
-    return await storage.read(key: kUserTypeSharedPrefKey);
+    return await storagePrefs.read(key: kUserTypeSharedPrefKey);
   }
 }
