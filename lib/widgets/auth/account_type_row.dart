@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 // Project imports:
-import 'package:pay_qr/config/app_constants.dart';
+import 'package:pay_qr/utils/enum/user_type.dart';
 import '../../controller/login_controller.dart';
 import 'check_button.dart';
 
@@ -25,7 +25,7 @@ class AccountTypeRow extends StatelessWidget {
             CheckButton(
               text: 'Merchant',
               onPressed: () =>
-                  loginController.changeUser(kUsers.merchant.toString()),
+                  loginController.changeUser(UserType.merchant.toString()),
               icon: Icon(loginController.isMerchant()
                   ? Icons.check_box_outlined
                   : Icons.check_box_outline_blank_rounded),
@@ -40,7 +40,7 @@ class AccountTypeRow extends StatelessWidget {
             CheckButton(
               text: 'User',
               onPressed: () =>
-                  loginController.changeUser(kUsers.user.toString()),
+                  loginController.changeUser(UserType.user.toString()),
               icon: Icon(loginController.isUser()
                   ? Icons.check_box_outlined
                   : Icons.check_box_outline_blank_rounded),

@@ -9,6 +9,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 // Project imports:
 import 'package:pay_qr/config/app_constants.dart';
+import 'package:pay_qr/config/controllers.dart';
 import 'package:pay_qr/config/firebase.dart';
 import 'package:pay_qr/utils/toast_dialogs.dart';
 import '../model/product_model.dart';
@@ -36,7 +37,7 @@ class AuthHelperFirebase {
   Stream<DocumentSnapshot<Map<String, dynamic>>> readItems(
       {required String collectionName}) {
     DocumentReference<Map<String, dynamic>> notesItemCollection =
-        firebaseFirestore.collection(collectionName).doc(userUid);
+        firestore.collection(collectionName).doc(userUid);
 
     return notesItemCollection.snapshots();
   }
@@ -47,7 +48,7 @@ class AuthHelperFirebase {
       required String docId,
       required String collectionName}) async {
     DocumentReference documentReferencer =
-        firebaseFirestore.collection(collectionName).doc(docId);
+        firestore.collection(collectionName).doc(docId);
 
     Map<String, dynamic> data = <String, dynamic>{
       "title": title,
@@ -63,7 +64,7 @@ class AuthHelperFirebase {
   Future<void> deleteItem(
       {required String docId, required String collectionName}) async {
     DocumentReference documentReferencer =
-        firebaseFirestore.collection(collectionName).doc(docId);
+        firestore.collection(collectionName).doc(docId);
     await documentReferencer
         .delete()
         .whenComplete(() => debugPrint('Item deleted from the database'))
@@ -89,11 +90,12 @@ class AuthHelperFirebase {
     // FirebaseAuth auth = FirebaseAuth.instance;
     try {
       if (auth.currentUser != null) {
+        loginController.isLoggedIn.value = false;
         debugPrint(auth.currentUser?.uid);
-        auth.signOut();
+        await auth.signOut();
         // Delete value
-        await storagePrefs.delete(key: kUserCredSharedPrefKey);
-        await storagePrefs.delete(key: kUserTypeSharedPrefKey);
+        await storagePrefs.deleteAll();
+        // await storagePrefs.delete(key: kUserTypeSharedPrefKey);
         _clearCache();
 
 // Delete all
@@ -106,7 +108,7 @@ class AuthHelperFirebase {
         showToast(msg: 'Password is weak');
       }
     } catch (e) {
-     logger.i('catch sign up : $e');
+      logger.i('catch sign up : $e');
       showToast(msg: 'Something went wrong');
     }
   }
@@ -115,7 +117,7 @@ class AuthHelperFirebase {
     // FirebaseAuth auth = FirebaseAuth.instance;
     try {
       if (auth.currentUser != null) {
-       logger.i(auth.currentUser);
+        logger.i(auth.currentUser);
         return auth.currentUser;
       }
       return null;
@@ -125,7 +127,7 @@ class AuthHelperFirebase {
   }
 
   static Future<List<ProductModel>?> fetchProducts(String uid) async {
-    var data = await firebaseFirestore
+    var data = await firestore
         .collection(kMerchantDb)
         .doc(uid)
         .collection(kProductCollection)
@@ -134,7 +136,7 @@ class AuthHelperFirebase {
     try {
       return List.from(data.docs.map((e) => ProductModel.fromSnapshot(e)));
     } catch (e) {
-     logger.e(e);
+      logger.e(e);
       return null;
     }
   }
@@ -179,8 +181,8 @@ class AuthHelperFirebase {
 
   static Future<UserCredential?> signUp(String email, String password) async {
     try {
-      UserCredential userCredential = await auth
-          .createUserWithEmailAndPassword(email: email, password: password);
+      UserCredential userCredential = await auth.createUserWithEmailAndPassword(
+          email: email, password: password);
       return userCredential;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {

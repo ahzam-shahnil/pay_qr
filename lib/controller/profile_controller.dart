@@ -19,6 +19,9 @@ import '../config/app_constants.dart';
 class ProfileController extends GetxController {
   static ProfileController instance = Get.find();
 
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController priceController = TextEditingController();
+  final TextEditingController descController = TextEditingController();
   var currentUser = UserModel(
       uid: '',
       fullName: '',
@@ -52,9 +55,9 @@ class ProfileController extends GetxController {
 
       //* Checking User to store Data
       if (currentUser.value.isMerchant!) {
-        _mainCollection = firebaseFirestore.collection(kMerchantDb);
+        _mainCollection = firestore.collection(kMerchantDb);
       } else {
-        _mainCollection = firebaseFirestore.collection(kUserDb);
+        _mainCollection = firestore.collection(kUserDb);
       }
 
 //? setting account password
@@ -140,12 +143,12 @@ class ProfileController extends GetxController {
       if (user != null) {
         //* Checking User to store Data
         if (loginController.isMerchant()) {
-          _mainCollection = firebaseFirestore
+          _mainCollection = firestore
               .collection(kMerchantDb)
               .doc(user.uid)
               .collection(kProfileCollection);
         } else {
-          _mainCollection = firebaseFirestore
+          _mainCollection = firestore
               .collection(kUserDb)
               .doc(user.uid)
               .collection(kProfileCollection);

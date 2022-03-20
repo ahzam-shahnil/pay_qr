@@ -8,7 +8,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 // import 'package:firebase_messaging/firebase_messaging.dart';
 
 final Future<FirebaseApp> initialization = Firebase.initializeApp();
-FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+FirebaseFirestore firestore = FirebaseFirestore.instance;
 FirebaseAuth auth = FirebaseAuth.instance;
 // FirebaseMessaging fcm = FirebaseMessaging.instance;
 FirebaseStorage storage = FirebaseStorage.instance;

@@ -91,7 +91,7 @@ class SignUpController extends GetxController {
 
         //* Checking User to store Data
         if (loginController.isMerchant()) {
-          _mainCollection = firebaseFirestore.collection(kMerchantDb);
+          _mainCollection = firestore.collection(kMerchantDb);
           _user = UserModel(
             fullName: fullName,
             email: email,
@@ -102,7 +102,7 @@ class SignUpController extends GetxController {
             cart: [],
           );
         } else {
-          _mainCollection = firebaseFirestore.collection(kUserDb);
+          _mainCollection = firestore.collection(kUserDb);
           //?Make models for Shop keeper and user sign up
           _user = UserModel(
             fullName: fullName,

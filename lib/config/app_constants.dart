@@ -5,6 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
 Logger logger = Logger();
+
+//Text
+const kDigiCollection = 'digiKhata';
+const kCashRecordsField = 'cashRecords';
+const stripePublishableKey =
+    'pk_test_51KekjqK1mBX6Dyox1xmsx7XFBcrzLRXlv1O0yzSN0h5MiadXPQm3J2iSSLrVhX87fNgoOgLmq2aLUN4ZXR0iDIwV00BkxsHNx3';
+const stripeSecretKey =
+    'sk_test_51KekjqK1mBX6Dyox9NaL9naNAen9PA9Q1v7aHEp5w1TCEWBUWWDK1QPmxE62FfMJZ6AbYq4AIQIKSWraeELy56JC00V4Jbp6wP';
 const kChatBotUrl = 'http://10.0.2.2:8080/';
 const kError = "Something went wrong";
 const kScanDescText =
@@ -23,7 +31,7 @@ const kScanBackColor = Color(0xfffff7f6);
 const kAppBarPrefSize = Size(double.infinity, 56.0);
 // const kScaffoldBgColor = Color(0xff121212);
 
-enum kUsers { merchant, user }
+// enum kUsers { merchant, user }
 
 //? User Data Names
 // const kAdminData = 'adminData';

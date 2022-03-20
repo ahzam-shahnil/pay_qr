@@ -39,17 +39,12 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
     profileController.getProfile();
   }
 
-  // FirebaseStorage storage = FirebaseStorage.instance;
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _priceController = TextEditingController();
-  final TextEditingController _descController = TextEditingController();
   String? imgUrl;
 
   final GlobalKey _globalKey = GlobalKey();
 
   Future pickImage() async {
     logger.i('add Image');
-    // final picker = ImagePicker();
     XFile? pickedImage;
     try {
       pickedImage = await picker.pickImage(
@@ -58,7 +53,6 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
         imageQuality: 50,
       );
 
-      // final String fileName = path.basename(pickedImage!.path);
       setState(() {
         imageFile = File(pickedImage!.path);
       });
@@ -148,7 +142,7 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                 RoundedInputField(
                   hintText: "Enter Item Name",
                   textCapitalization: TextCapitalization.words,
-                  textController: _nameController,
+                  textController: profileController.nameController,
                   textInputType: TextInputType.name,
                   maxLines: null,
                 ),
@@ -156,7 +150,7 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                   hintText: "Enter Item Description",
                   textCapitalization: TextCapitalization.sentences,
                   icon: Icons.description_rounded,
-                  textController: _descController,
+                  textController: profileController.descController,
                   maxLines: 5,
                   textInputType: TextInputType.multiline,
                 ),
@@ -164,7 +158,7 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                   hintText: "Enter Item Price",
                   textInputType: TextInputType.number,
                   icon: Icons.monetization_on_rounded,
-                  textController: _priceController,
+                  textController: profileController.priceController,
                 ),
                 Container(
                   margin:
@@ -180,13 +174,20 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                                 borderRadius: BorderRadius.circular(20))),
                         onPressed: () async {
                           ProductModel product;
-                          final String name = _nameController.text;
-                          final String price = _priceController.text;
-                          final String description = _descController.text;
+                          final String name =
+                              profileController.nameController.text;
+                          final String price =
+                              profileController.priceController.text;
+                          final String description =
+                              profileController.descController.text;
 
-                          if (_nameController.text.trim().isNotEmpty &&
-                              _nameController.text.trim().isNotEmpty &&
-                              _nameController.text.trim().isNotEmpty &&
+                          if (profileController.nameController.text.trim().isNotEmpty &&
+                              profileController.nameController.text
+                                  .trim()
+                                  .isNotEmpty &&
+                              profileController.nameController.text
+                                  .trim()
+                                  .isNotEmpty &&
                               imageFile != null) {
                             //? saving the product to database and savinf Db ref to Qr
                             var progressDialog = getProgressDialog(
@@ -198,8 +199,9 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                             imgUrl = await uploadImage(
                                 imageFile: imageFile!,
                                 metaData: {
-                                  'name': _nameController.text,
-                                  'description': _descController.text
+                                  'name': profileController.nameController.text,
+                                  'description':
+                                      profileController.descController.text
                                 });
                             progressDialog
                                 .setMessage(const Text('Saving Product...'));
@@ -243,7 +245,9 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20))),
                         onPressed: () async {
-                          if (productsAddController.data.value.trim().isNotEmpty) {
+                          if (productsAddController.data.value
+                              .trim()
+                              .isNotEmpty) {
                             var progress = getProgressDialog(
                                 title: 'QR Code Image',
                                 msg: 'Saving....',
@@ -251,9 +255,12 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                             progress.show();
                             await captureAndSavePng(
                                 globalKey: _globalKey,
-                                name: _nameController.text.trim().isEmpty
+                                name: profileController.nameController.text
+                                        .trim()
+                                        .isEmpty
                                     ? "image"
-                                    : _nameController.text.trim());
+                                    : profileController.nameController.text
+                                        .trim());
                             logger.i("Qr Saved");
                             progress.dismiss();
                             showToast(
@@ -261,9 +268,9 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                                 backColor: Colors.green,
                                 textColor: Colors.white);
                             // Clear the text fields
-                            _nameController.text = '';
-                            _priceController.text = '';
-                            _descController.clear();
+                            profileController.nameController.text = '';
+                            profileController.priceController.text = '';
+                            profileController.descController.clear();
                             setState(() {
                               imageFile = null;
                             });

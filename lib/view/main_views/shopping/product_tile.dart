@@ -8,7 +8,6 @@ import 'package:get/get.dart';
 // Project imports:
 import 'package:pay_qr/config/app_constants.dart';
 import 'package:pay_qr/view/main_views/shopping/product_detail_screen.dart';
-import 'package:pay_qr/widgets/shared/custom_text.dart';
 import '../../../config/controllers.dart';
 import '../../../model/product_model.dart';
 import '../../../widgets/shared/blur_image.dart';
@@ -38,19 +37,22 @@ class ProductTile extends StatelessWidget {
               children: [
                 Stack(
                   children: [
-                    Container(
-                      height: 180,
-                      width: double.infinity,
-                      clipBehavior: Clip.antiAlias,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                      child: FancyShimmerImage(
+                    Hero(
+                      tag: product.id,
+                      child: Container(
+                        height: 180,
                         width: double.infinity,
-                        height: Get.size.height * 0.2,
-                        boxFit: BoxFit.scaleDown,
-                        imageUrl: product.imageUrl!,
-                        errorWidget: const BlurImage(),
+                        clipBehavior: Clip.antiAlias,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        child: FancyShimmerImage(
+                          width: double.infinity,
+                          height: Get.size.height * 0.2,
+                          boxFit: BoxFit.scaleDown,
+                          imageUrl: product.imageUrl!,
+                          errorWidget: const BlurImage(),
+                        ),
                       ),
                     ),
                     // Positioned(
@@ -73,7 +75,8 @@ class ProductTile extends StatelessWidget {
                 Text(
                   product.title,
                   maxLines: 2,
-                  style: Get.textTheme.headline5?.copyWith(color: Colors.black),
+                  style: Get.textTheme.headline5?.copyWith(
+                      color: Colors.black, fontWeight: FontWeight.w600),
                   overflow: TextOverflow.ellipsis,
                 ),
                 const SizedBox(height: 8),
@@ -99,19 +102,17 @@ class ProductTile extends StatelessWidget {
                 //       ],
                 //     ),
                 //   ),
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(left: 8.0),
-                      child: CustomText(
-                        text: "\$${product.price}",
-                        size: 22,
-                        weight: FontWeight.bold,
+                      child: Text(
+                        "Rs. " + product.price.toString(),
+                        style: Get.textTheme.headline6?.copyWith(
+                            color: Colors.black, fontWeight: FontWeight.w400),
                       ),
-                    ),
-                    const SizedBox(
-                      width: 30,
                     ),
                     IconButton(
                         color: kPrimaryColor,

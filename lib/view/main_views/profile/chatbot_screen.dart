@@ -10,7 +10,6 @@ import 'package:pay_qr/model/chat_api_response.dart';
 
 // Package imports:
 
-
 class ChatBotScreen extends StatefulWidget {
   const ChatBotScreen({Key? key}) : super(key: key);
 
@@ -22,8 +21,7 @@ class _HomePageDialogflow extends State<ChatBotScreen> {
   final List<ChatMessage> _messages = <ChatMessage>[];
   final TextEditingController _textController = TextEditingController();
   final apiController = ApiController();
-  // final profileController = Get.find<ProfileController>();
-  // final Logger log = Logger();
+
   @override
   void initState() {
     welcome();
@@ -50,7 +48,6 @@ class _HomePageDialogflow extends State<ChatBotScreen> {
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 8),
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-        // width: Get.size.width * 0.8,
         decoration: BoxDecoration(
           color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(30),

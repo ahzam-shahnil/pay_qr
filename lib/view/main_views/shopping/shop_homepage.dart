@@ -91,7 +91,7 @@ class _ShopHomePageState extends State<ShopHomePage> {
                   return AlignedGridView.count(
                     physics: const BouncingScrollPhysics(),
                     scrollDirection: Axis.vertical,
-                    
+
                     shrinkWrap: true,
                     crossAxisCount: countColumn,
                     padding: const EdgeInsets.all(4.0),

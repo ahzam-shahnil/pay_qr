@@ -7,28 +7,40 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 
 // Project imports:
+import 'package:pay_qr/config/controllers.dart';
 import 'package:pay_qr/utils/auth_helper_firebase.dart';
 import 'package:pay_qr/view/main_views/home/nav_home.dart';
 import '../config/app_constants.dart';
 import '../config/firebase.dart';
+import '../utils/enum/user_type.dart';
 import '../utils/toast_dialogs.dart';
+import '../view/main_views/auth/login_screen.dart';
 
 class LoginController extends GetxController {
   static LoginController instance = Get.find();
+
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-
+  var userType = UserType.merchant.toString().obs;
   var isLoggedIn = false.obs;
 
-  var userType = kUsers.merchant.toString().obs;
+  @override
+  void onReady() {
+    super.onReady();
+    _setInitialScreen();
+  }
 
-  Future<void> checkLogin() async {
+  Future<void> _setInitialScreen() async {
     String? userCredential = await getLoggedInUser();
-    userType.value = await getLoggedInUserType() ?? kUsers.merchant.toString();
+    userType.value =
+        await getLoggedInUserType() ?? UserType.merchant.toString();
     if (userCredential != null && userType.value.isNotEmpty) {
       isLoggedIn.value = true;
+      userController.bindUserStream();
+      Get.offAll(() => const NavHomeScreen());
     } else {
       isLoggedIn.value = false;
+      Get.offAll(() => const LoginScreen());
     }
 
     // hideLoading();
@@ -37,11 +49,11 @@ class LoginController extends GetxController {
   }
 
   bool isMerchant() {
-    return userType.value == kUsers.merchant.toString();
+    return userType.value == UserType.merchant.toString();
   }
 
   bool isUser() {
-    return userType.value == kUsers.user.toString();
+    return userType.value == UserType.user.toString();
   }
 
   void changeUser(String user) {
@@ -95,12 +107,12 @@ class LoginController extends GetxController {
 
         //* Checking User to store Data
         if (isMerchant()) {
-          _mainCollection = firebaseFirestore
+          _mainCollection = firestore
               .collection(kMerchantDb)
               .doc(userCredential.user?.uid)
               .collection(kProfileCollection);
         } else {
-          _mainCollection = firebaseFirestore
+          _mainCollection = firestore
               .collection(kUserDb)
               .doc(userCredential.user?.uid)
               .collection(kProfileCollection);
@@ -125,17 +137,16 @@ class LoginController extends GetxController {
         // });
         if (collection.docs.isNotEmpty) {
           progressDialog.dismiss();
-          if (isMerchant()) {
-            Get.offAll(() => const NavHomeScreen());
-          } else {
-            Get.offAll(() => const NavHomeScreen());
-          }
+
+          Get.offAll(() => const NavHomeScreen());
         } else {
           progressDialog.dismiss();
           showToast(
             msg: 'User not found',
           );
         }
+      } else {
+        AuthHelperFirebase.signOutAndCacheClear();
       }
     } on FirebaseAuthException catch (e) {
       progressDialog.dismiss();

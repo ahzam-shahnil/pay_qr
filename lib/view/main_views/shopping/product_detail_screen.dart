@@ -41,18 +41,21 @@ class ProductDetailScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Align(
-                alignment: Alignment.topCenter,
-                child: product.imageUrl == null
-                    ? TopImageBlur(
-                        height: Get.size.shortestSide * 0.5,
-                        width: Get.size.shortestSide,
-                      )
-                    : TopImageCover(
-                        height: Get.size.shortestSide * 0.5,
-                        width: Get.size.shortestSide,
-                        urlToImg: product.imageUrl!,
-                      ),
+              Hero(
+                tag: product.id,
+                child: Align(
+                  alignment: Alignment.topCenter,
+                  child: product.imageUrl == null
+                      ? TopImageBlur(
+                          height: Get.size.shortestSide * 0.5,
+                          width: Get.size.shortestSide,
+                        )
+                      : TopImageCover(
+                          height: Get.size.shortestSide * 0.5,
+                          width: Get.size.shortestSide,
+                          urlToImg: product.imageUrl!,
+                        ),
+                ),
               ),
               const SizedBox(
                 height: 15,

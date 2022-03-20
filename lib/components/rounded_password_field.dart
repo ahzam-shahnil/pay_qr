@@ -47,14 +47,12 @@ class _RoundedPasswordFieldState extends State<RoundedPasswordField> {
         autofillHints: widget.autofillHints,
         // onEditingComplete: () => TextInput.finishAutofillContext(),
         decoration: InputDecoration(
-          alignLabelWithHint: true,
+          isCollapsed: true,
           hintText: "Password",
-          // filled: true,
           labelText: widget.text,
           icon: const Icon(
             LineIcons.key,
             color: kPrimaryColor,
-            // color: kActiveBtnColor,
           ),
           suffix: IconButton(
             onPressed: () {
@@ -65,7 +63,6 @@ class _RoundedPasswordFieldState extends State<RoundedPasswordField> {
             icon: Icon(
               _isObscure ? Icons.visibility : Icons.visibility_off,
               color: kPrimaryColor,
-              // color: kActiveBtnColor,
             ),
           ),
           border: InputBorder.none,

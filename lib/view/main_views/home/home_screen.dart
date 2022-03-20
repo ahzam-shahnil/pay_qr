@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 
 // Project imports:
 import 'package:pay_qr/config/controllers.dart';
+import 'package:pay_qr/view/main_views/digi_khata/digi_nav.dart';
 import 'package:pay_qr/view/main_views/product_add/product_add_screen.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -21,7 +22,11 @@ class HomeScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           // Text("User type is ${userType == '0' ? "merchant" : "1"}"),
-
+          ElevatedButton(
+              onPressed: () {
+                Get.to(() => const DigiNavHome());
+              },
+              child: const Text('DIGI Khata')),
           Obx(
             () => loginController.isMerchant()
                 ? ElevatedButton(

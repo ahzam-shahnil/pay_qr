@@ -28,7 +28,7 @@ class _NavHomeScreenState extends State<NavHomeScreen> {
 
   PageController controller = PageController();
 
-  List<Widget> colors = [
+  List<Widget> pages = [
     const HomeScreen(),
     Container(color: Colors.amber[600]),
     const ScanIntroScreen(),
@@ -78,7 +78,7 @@ class _NavHomeScreenState extends State<NavHomeScreen> {
         },
         controller: controller,
         itemBuilder: (context, position) {
-          return colors[position];
+          return pages[position];
         },
         itemCount: 4,
       ),

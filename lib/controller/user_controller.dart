@@ -9,13 +9,12 @@ import 'package:pay_qr/config/controllers.dart';
 import 'package:pay_qr/config/firebase.dart';
 import 'package:pay_qr/model/user_model.dart';
 import 'package:pay_qr/utils/auth_helper_firebase.dart';
-import '../../view/main_views/auth/login_screen.dart';
-import '../../view/main_views/home/nav_home.dart';
 
 class UserController extends GetxController {
   static UserController instance = Get.find();
   late CollectionReference _mainCollection;
   Rx<UserModel> userModel = UserModel().obs;
+
   late Rx<User?> firebaseUser;
 
   @override
@@ -23,16 +22,19 @@ class UserController extends GetxController {
     super.onReady();
     firebaseUser = Rx<User?>(auth.currentUser);
     firebaseUser.bindStream(auth.userChanges());
-    ever(firebaseUser, _setInitialScreen);
+    userModel.bindStream(listenToUser());
   }
 
-  _setInitialScreen(User? user) {
-    if (user == null) {
-      Get.offAll(() => const LoginScreen());
-    } else {
-      userModel.bindStream(listenToUser());
-      Get.offAll(() => const NavHomeScreen());
-    }
+  // _setInitialScreen(User? user) {
+  //   if (user == null) {
+  //     Get.offAll(() => const LoginScreen());
+  //   } else {
+  //     userModel.bindStream(listenToUser());
+  //     Get.offAll(() => const NavHomeScreen());
+  //   }
+  // }
+  bindUserStream() {
+    userModel.bindStream(listenToUser());
   }
 
   // void signIn() async {
@@ -89,9 +91,9 @@ class UserController extends GetxController {
   updateUserData(Map<String, dynamic> data) {
     //* Checking User to store Data
     if (loginController.isMerchant()) {
-      _mainCollection = firebaseFirestore.collection(kMerchantDb);
+      _mainCollection = firestore.collection(kMerchantDb);
     } else {
-      _mainCollection = firebaseFirestore.collection(kUserDb);
+      _mainCollection = firestore.collection(kUserDb);
     }
     logger.i("UPDATED");
     _mainCollection
@@ -104,12 +106,12 @@ class UserController extends GetxController {
   Stream<UserModel> listenToUser() {
     //* Checking User to store Data
     if (loginController.isMerchant()) {
-      _mainCollection = firebaseFirestore.collection(kMerchantDb);
+      _mainCollection = firestore.collection(kMerchantDb);
     } else {
-      _mainCollection = firebaseFirestore.collection(kUserDb);
+      _mainCollection = firestore.collection(kUserDb);
     }
     logger.i("UPDATED");
-
+    logger.d(AuthHelperFirebase.getCurrentUserUid());
     return _mainCollection
         .doc(AuthHelperFirebase.getCurrentUserUid())
         .collection(kProfileCollection)

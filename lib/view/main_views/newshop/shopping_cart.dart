@@ -1,8 +1,8 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 // Package imports:
-import 'package:get/get_state_manager/get_state_manager.dart';
 
 // Project imports:
 import 'package:pay_qr/config/controllers.dart';
@@ -47,15 +47,12 @@ class ShoppingCartWidget extends StatelessWidget {
             child: Container(
                 width: MediaQuery.of(context).size.width,
                 padding: const EdgeInsets.all(8),
-                child: Obx(
-                  () => CustomButton(
-                      text:
-                          "Pay (Rs ${cartController.totalCartPrice.value.toStringAsFixed(2)})",
-                      onTap: () {
-                        //TODO: Add Payment here
-                        // paymentsController.createPaymentMethod();
-                      }),
-                )))
+                child: CustomButton(
+                    text: "Checkout",
+                    onTap: () {
+                      //TODO: Add Payment Screen here pf stripe after verification
+                      // Get.to(() => const PaymentScreen());
+                    })))
       ],
     );
   }
