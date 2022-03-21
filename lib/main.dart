@@ -10,19 +10,19 @@ import 'package:pay_qr/config/app_constants.dart';
 import 'package:pay_qr/config/firebase.dart';
 import 'package:pay_qr/controller/cart_controller.dart';
 import 'package:pay_qr/controller/digi_khata/digi_controller.dart';
-import 'package:pay_qr/controller/new_shop/payments_controller.dart';
 import 'package:pay_qr/controller/product_controller.dart';
 import 'package:pay_qr/controller/profile_controller.dart';
 import 'package:pay_qr/controller/sign_up_controller.dart';
 import 'package:pay_qr/controller/user_controller.dart';
 import 'controller/login_controller.dart';
+import 'controller/new_shop/payments_controller.dart';
 import 'controller/product_add_controller.dart';
 import 'view/intro_views/splash.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  Stripe.publishableKey = stripePublishableKey;
   await initialization.then((value) {
     Get.put(UserController());
     Get.put(LoginController());
@@ -34,7 +34,7 @@ void main() async {
     Get.put(PaymentsController());
     Get.put(DigiController());
   });
-  Stripe.publishableKey = stripePublishableKey;
+
   runApp(const App());
 }
 

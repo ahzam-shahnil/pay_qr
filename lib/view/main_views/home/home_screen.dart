@@ -16,30 +16,50 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          // Text("User type is ${userType == '0' ? "merchant" : "1"}"),
-          ElevatedButton(
-              onPressed: () {
-                Get.to(() => const DigiNavHome());
-              },
-              child: const Text('DIGI Khata')),
-          Obx(
-            () => loginController.isMerchant()
-                ? ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20))),
-                    onPressed: () => Get.to(() => const ProductAddScreen()),
-                    child: const Text("Add Product"),
-                  )
-                : const SizedBox(),
-          )
-        ],
+    return Padding(
+      padding: const EdgeInsets.all(15),
+      child: Center(
+        child: GridView.count(
+            childAspectRatio: 3 / 2,
+            crossAxisSpacing: 20,
+            mainAxisSpacing: 20,
+            crossAxisCount: 2,
+            shrinkWrap: true,
+            children: [
+              ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      // primary: kScanBackColor,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20))),
+                  onPressed: () {
+                    Get.to(() => const DigiNavHome());
+                  },
+                  child: const Text('DIGI Khata')),
+              Obx(
+                () => loginController.isMerchant()
+                    ? ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            // primary: kScanBackColor,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20))),
+                        onPressed: () => Get.to(() => const ProductAddScreen()),
+                        child: const Text("Add Product"),
+                      )
+                    : const SizedBox(),
+              )
+            ]),
       ),
     );
+
+    // return Center(
+    //   child: Row(
+    //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    //     crossAxisAlignment: CrossAxisAlignment.center,
+    //     children: const [
+    //       // Text("Us
+    //       //er type is ${userType == '0' ? "merchant" : "1"}"),
+    //     ],
+    //   ),
+    // );
   }
 }

@@ -6,7 +6,7 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 // Project imports:
 import 'package:pay_qr/config/app_constants.dart';
-import 'package:pay_qr/view/main_views/newshop/shopping_cart.dart';
+import 'package:pay_qr/view/main_views/shopping/shopping_cart.dart';
 
 class ShopHomeAppBar extends StatelessWidget {
   const ShopHomeAppBar({

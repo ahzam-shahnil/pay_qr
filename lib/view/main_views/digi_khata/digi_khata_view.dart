@@ -156,12 +156,13 @@ class _DigiKhataViewState extends State<DigiKhataView> {
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-          onPressed: () async {
-            _getPermission();
-          },
-          label: const Text('Add customer'),
-          icon: const Icon(Icons.add),
-          backgroundColor: kPrimaryColor.withOpacity(0.5)),
+        onPressed: () async {
+          _getPermission();
+        },
+        label: const Text('Add customer'),
+        icon: const Icon(Icons.add),
+        backgroundColor: kPrimaryColor.withOpacity(0.5),
+      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }

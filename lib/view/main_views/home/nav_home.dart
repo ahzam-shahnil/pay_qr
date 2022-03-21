@@ -3,10 +3,16 @@ import 'dart:ui';
 
 // Flutter imports:
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 // Package imports:
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:pay_qr/config/app_constants.dart';
+import 'package:pay_qr/config/controllers.dart';
+import 'package:pay_qr/utils/auth_helper_firebase.dart';
+import 'package:pay_qr/view/main_views/auth/login_screen.dart';
+import 'package:pay_qr/widgets/shared/custom_text.dart';
 
 // Project imports:
 import '../../intro_views/scan_intro_screen.dart';
@@ -30,12 +36,10 @@ class _NavHomeScreenState extends State<NavHomeScreen> {
 
   List<Widget> pages = [
     const HomeScreen(),
-    Container(color: Colors.amber[600]),
+    // const PaymentHistoryScreen(),
     const ScanIntroScreen(),
     const ProfileScreen()
   ];
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -70,6 +74,35 @@ class _NavHomeScreenState extends State<NavHomeScreen> {
           56.0,
         ),
       ),
+      drawer: Drawer(
+        child: ListView(
+          children: [
+            Obx(() => UserAccountsDrawerHeader(
+                decoration: const BoxDecoration(color: kPrimaryDarkColor),
+                accountName:
+                    Text(userController.userModel.value.fullName ?? ""),
+                accountEmail:
+                    Text(userController.userModel.value.email ?? ""))),
+            ListTile(
+              leading: const Icon(Icons.book),
+              title: const CustomText(
+                text: "Payments History",
+              ),
+              onTap: () async {
+                paymentsController.getPaymentHistory();
+              },
+            ),
+            ListTile(
+              onTap: () async {
+                await AuthHelperFirebase.signOutAndCacheClear();
+                Get.offAll(() => const LoginScreen());
+              },
+              leading: const Icon(Icons.exit_to_app),
+              title: const Text("Log out"),
+            )
+          ],
+        ),
+      ),
       body: PageView.builder(
         onPageChanged: (page) {
           setState(() {
@@ -80,7 +113,7 @@ class _NavHomeScreenState extends State<NavHomeScreen> {
         itemBuilder: (context, position) {
           return pages[position];
         },
-        itemCount: 4,
+        itemCount: 3,
       ),
       bottomNavigationBar: SafeArea(
         child: Container(
@@ -112,17 +145,19 @@ class _NavHomeScreenState extends State<NavHomeScreen> {
                   icon: LineIcons.home,
                   text: 'Home',
                 ),
-                GButton(
-                  gap: gap,
-                  iconActiveColor: Colors.pink,
-                  iconColor: Colors.black,
-                  textColor: Colors.pink,
-                  backgroundColor: Colors.pink.withOpacity(.2),
-                  iconSize: 24,
-                  padding: padding,
-                  icon: LineIcons.cashRegister,
-                  text: 'Payments',
-                ),
+
+                //TODO: fix issue here for the payment screen
+                // GButton(
+                //   gap: gap,
+                //   iconActiveColor: Colors.pink,
+                //   iconColor: Colors.black,
+                //   textColor: Colors.pink,
+                //   backgroundColor: Colors.pink.withOpacity(.2),
+                //   iconSize: 24,
+                //   padding: padding,
+                //   icon: LineIcons.cashRegister,
+                //   text: 'Payments',
+                // ),
                 GButton(
                   gap: gap,
                   iconActiveColor: Colors.amber[600],

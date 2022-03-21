@@ -6,9 +6,12 @@ import 'package:get/get.dart';
 
 // Project imports:
 import 'package:pay_qr/config/controllers.dart';
+import 'package:pay_qr/utils/toast_dialogs.dart';
 import 'package:pay_qr/view/main_views/shopping/widgets/cart_item_widget.dart';
 import 'package:pay_qr/widgets/shared/custom_btn.dart';
 import 'package:pay_qr/widgets/shared/custom_text.dart';
+
+import '../payments/payment_screen.dart';
 
 class ShoppingCartWidget extends StatelessWidget {
   const ShoppingCartWidget({Key? key}) : super(key: key);
@@ -48,10 +51,19 @@ class ShoppingCartWidget extends StatelessWidget {
                 width: MediaQuery.of(context).size.width,
                 padding: const EdgeInsets.all(8),
                 child: CustomButton(
-                    text: "Checkout",
+                    text:
+                        "Pay Rs ${cartController.totalCartPrice.value.toString()}",
                     onTap: () {
-                      //TODO: Add Payment Screen here pf stripe after verification
-                      // Get.to(() => const PaymentScreen());
+                      // paymentController.makePayment(
+                      //     amount: cartController.totalCartPrice.value
+                      //         .toStringAsFixed(0),
+                      //     currency: 'USD');
+                      if (cartController.totalCartPrice.value > 0) {
+                        Get.to(() => const PaymentScreen());
+                      } else {
+                        showToast(msg: 'Cart is Empty');
+                        return;
+                      }
                     })))
       ],
     );

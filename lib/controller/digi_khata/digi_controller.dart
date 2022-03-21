@@ -13,7 +13,8 @@ class DigiController extends GetxController {
   static DigiController instance = Get.find();
   late CollectionReference _mainCollection;
   var customer = <CustomerModel>[].obs;
-
+  // var totalLiye = 0.0.obs;
+  // var totalDiye = 0.0.obs;
   // var customerName = ''.obs;
   // var phone = ''.obs;
   getRecordStream() {
@@ -22,14 +23,49 @@ class DigiController extends GetxController {
     return _mainCollection.snapshots();
   }
 
+  getCashBookStream() {
+    _mainCollection = _getCashInOutCollectionRef();
+    try {
+      return _mainCollection
+          .doc(AuthHelperFirebase.getCurrentUserUid())
+          .collection(kCashInOutCollection)
+          .snapshots();
+    } on FirebaseException {
+      showToast(
+        msg: 'Error',
+      );
+    }
+  }
+
+  saveCashInOutKhata(CashModel cash) async {
+    _mainCollection = _getCashInOutCollectionRef();
+    try {
+      await _mainCollection
+          .doc(AuthHelperFirebase.getCurrentUserUid())
+          .collection(kCashInOutCollection)
+          .add(cash.toMap());
+      showToast(msg: 'Success', backColor: Colors.green);
+    } on FirebaseException {
+      showToast(
+        msg: 'Error',
+      );
+    }
+  }
+
   saveCustomer(CustomerModel customer) async {
     //? to update customer with id
     // customer = customer.copyWith(id: id);
 
     _mainCollection = _getCollectionRef();
 
-    await _mainCollection.doc(customer.id).set(customer.toMap());
-    showToast(msg: "Added Record", backColor: Colors.green);
+    try {
+      await _mainCollection.doc(customer.id).set(customer.toMap());
+      showToast(msg: "Added Record", backColor: Colors.green);
+    } on FirebaseException {
+      showToast(
+        msg: 'Error',
+      );
+    }
   }
 
   getCustomerSpecificRecord(String id) async {
@@ -47,9 +83,26 @@ class DigiController extends GetxController {
   updateCustomerRecord({required String id, required CashModel record}) async {
     logger.d(id);
     _mainCollection = await _getCollectionRef();
-    _mainCollection.doc(id).update({
-      kCashRecordsField: FieldValue.arrayUnion([record.toMap()])
-    }); //  await _mainCollection.doc()
+    try {
+      _mainCollection.doc(id).update({
+        kCashRecordsField: FieldValue.arrayUnion([record.toMap()])
+      });
+      showToast(msg: "Added Record", backColor: Colors.green);
+    } on FirebaseException {
+      showToast(
+        msg: "Error",
+      );
+    }
+  }
+
+  _getCashInOutCollectionRef() {
+    final CollectionReference tempRef;
+    if (loginController.isMerchant()) {
+      tempRef = firestore.collection(kMerchantDb);
+    } else {
+      tempRef = firestore.collection(kUserDb);
+    }
+    return tempRef;
   }
 
   _getCollectionRef() {

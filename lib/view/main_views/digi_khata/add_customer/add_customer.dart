@@ -37,6 +37,8 @@ class _AddCustomerState extends State<AddCustomer> {
                 onChanged: (value) {
                   customerName = value;
                 },
+                textInputAction: TextInputAction.next,
+                keyboardType: TextInputType.name,
                 decoration: const InputDecoration(
                     labelText: "Add Customer's name",
                     floatingLabelBehavior: FloatingLabelBehavior.always),

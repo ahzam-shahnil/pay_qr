@@ -25,7 +25,8 @@ class ReuseableCard extends StatelessWidget {
         child: Icon(
           text.contains('hand') ||
                   text.contains('received') ||
-                  text.contains('Lainy')
+                  text.contains('Lainy') ||
+                  description.contains('Kamae')
               ? Icons.download_for_offline_rounded
               : LineIcons.arrowUp,
           color: Colors.white,

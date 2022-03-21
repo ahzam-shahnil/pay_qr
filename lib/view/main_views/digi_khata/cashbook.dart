@@ -4,7 +4,8 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pay_qr/config/app_constants.dart';
-import 'package:pay_qr/config/firebase.dart';
+import 'package:pay_qr/config/controllers.dart';
+import 'package:pay_qr/model/digi_khata/cash_in_model.dart';
 import 'package:pay_qr/widgets/digi_khata/reusable_card.dart';
 import 'package:pay_qr/widgets/digi_khata/reuseable_button.dart';
 
@@ -18,13 +19,32 @@ class CashBook extends StatefulWidget {
 }
 
 class _CashBookState extends State<CashBook> {
-  addMoney(snapshot, String name) {
-    int cash = 0;
-    for (var item in snapshot.data!.docs) {
-      cash += int.parse(item[name]);
-    }
+  // String addMoney(snapshot, String name) {
+  //   double cash = 0;
+  //   for (var item in snapshot.data!.docs) {
+  //     cash += double.parse(item[name]);
+  //   }
 
-    return cash.toString();
+  //   return cash.toString();
+  // }
+  String calculateCashOut(List<CashModel> records) {
+    double total = 0;
+    double diye = 0;
+
+    for (var item in records) {
+      diye += item.diye;
+    }
+    return (total = total + diye).toString();
+  }
+
+  String calculateCashIn(List<CashModel> records) {
+    double total = 0;
+    double liye = 0;
+
+    for (var item in records) {
+      liye += item.liye;
+    }
+    return (total = total + liye).toString();
   }
 
   DateTime date = DateTime.now();
@@ -33,14 +53,9 @@ class _CashBookState extends State<CashBook> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kScanBackColor,
-      // extendBodyBehindAppBar: true,
-      // extendBody: true,
       resizeToAvoidBottomInset: true,
       body: StreamBuilder(
-        stream: firestore
-            .collection('CASHINCASHOUT')
-            .orderBy('DATE', descending: true)
-            .snapshots(),
+        stream: digiController.getCashBookStream(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
             return const Text('Something went wrong');
@@ -51,38 +66,14 @@ class _CashBookState extends State<CashBook> {
           }
 
           if (snapshot.hasData) {
-            List<DataCell> displayedDataCell = [];
-            for (var item in snapshot.data!.docs) {
-              displayedDataCell.add(
-                DataCell(
-                  Text(
-                    item['DATE'].toString(),
-                  ),
-                ),
-              );
-              displayedDataCell.add(
-                DataCell(
-                  Text(
-                    item['CASHIN'].toString(),
-                    style: const TextStyle(color: Colors.green),
-                  ),
-                ),
-              );
-              displayedDataCell.add(
-                DataCell(
-                  Text(
-                    item['CASHOUT'].toString(),
-                    style: const TextStyle(color: Colors.red),
-                  ),
-                ),
-              );
-            }
+            var data = snapshot.data!.docs
+                .map((e) => CashModel.fromSnapshot(e))
+                .toList();
 
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
-                // mainAxisSize: MainAxisSize.min,
                 children: [
                   const SizedBox(
                     height: 16.0,
@@ -95,10 +86,10 @@ class _CashBookState extends State<CashBook> {
                           child: ReuseableCard(
                             textcolour: Colors.white,
                             buttonColour: Colors.green,
-                            text: "Cash in hand",
-                            description: addMoney(snapshot, 'CASHIN') == '0'
+                            description: "Aaj ki Kamae",
+                            text: calculateCashIn(data) == '0.0'
                                 ? ''
-                                : addMoney(snapshot, 'CASHIN'),
+                                : calculateCashIn(data),
                           ),
                         ),
                         const SizedBox(
@@ -108,10 +99,10 @@ class _CashBookState extends State<CashBook> {
                           child: ReuseableCard(
                             buttonColour: Colors.red,
                             textcolour: Colors.white,
-                            text: "Today's Balance",
-                            description: addMoney(snapshot, 'CASHOUT') == '0'
+                            description: "Moujouda Cash",
+                            text: calculateCashOut(data) == '0.0'
                                 ? ''
-                                : addMoney(snapshot, 'CASHOUT'),
+                                : calculateCashOut(data),
                           ),
                         ),
                       ],
@@ -148,13 +139,25 @@ class _CashBookState extends State<CashBook> {
                                 ),
                               ],
                               rows: <DataRow>[
-                                for (int i = 0;
-                                    i < displayedDataCell.length;
-                                    i += 3)
+                                for (int i = 0; i < data.length; i++)
                                   DataRow(cells: [
-                                    displayedDataCell[i],
-                                    displayedDataCell[i + 1],
-                                    displayedDataCell[i + 2]
+                                    DataCell(Text(data[i].date.toString())),
+                                    DataCell(
+                                      Text(
+                                        data[i].liye.toString(),
+                                        style: const TextStyle(
+                                          color: Colors.green,
+                                        ),
+                                      ),
+                                    ),
+                                    DataCell(
+                                      Text(
+                                        data[i].diye.toString(),
+                                        style: const TextStyle(
+                                          color: Colors.red,
+                                        ),
+                                      ),
+                                    ),
                                   ]),
                               ],
                             ),
@@ -175,7 +178,7 @@ class _CashBookState extends State<CashBook> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => const CashInOut(),
+                                  builder: (context) => const CashInOutView(),
                                 ),
                               );
                             },

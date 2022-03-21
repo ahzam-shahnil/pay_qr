@@ -88,7 +88,7 @@ class UserController extends GetxController {
   //   password.clear();
   // }
 
-  updateUserData(Map<String, dynamic> data) {
+  updateUserData(Map<String, dynamic> data) async {
     //* Checking User to store Data
     if (loginController.isMerchant()) {
       _mainCollection = firestore.collection(kMerchantDb);
@@ -96,7 +96,7 @@ class UserController extends GetxController {
       _mainCollection = firestore.collection(kUserDb);
     }
     logger.i("UPDATED");
-    _mainCollection
+    await _mainCollection
         .doc(AuthHelperFirebase.getCurrentUserUid())
         .collection(kProfileCollection)
         .doc(AuthHelperFirebase.getCurrentUserUid())

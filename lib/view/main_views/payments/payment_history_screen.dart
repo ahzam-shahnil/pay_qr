@@ -16,12 +16,11 @@ class PaymentHistoryScreen extends StatelessWidget {
               Navigator.pop(context);
             }),
         backgroundColor: Colors.grey.withOpacity(.1),
-        iconTheme: const IconThemeData(color: Colors.black),
+        iconTheme: const IconThemeData(color: Colors.white),
         centerTitle: true,
         elevation: 0,
         title: const Text(
           "Payment History",
-          style: TextStyle(color: Colors.black),
         ),
       ),
       body: ListView(

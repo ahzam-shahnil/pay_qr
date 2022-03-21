@@ -6,7 +6,7 @@
 
 // class ProducsController extends GetxController {
 //   static ProducsController instance = Get.find();
-  // RxList<ProductModel> products = RxList<ProductModel>([]);
+//   RxList<ProductModel> products = RxList<ProductModel>([]);
 //   String collection = "products";
 
 //   @override

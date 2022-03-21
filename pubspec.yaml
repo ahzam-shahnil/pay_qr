@@ -9,6 +9,7 @@ dependencies:
   dio: ^4.0.4
   fancy_shimmer_image: ^2.0.1+1
   firebase_auth: ^3.3.7
+  awesome_card: ^1.1.7
   firebase_core: ^1.12.0
   firebase_storage: ^10.2.7
   flutter:
@@ -49,7 +50,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 environment:
-  sdk: '>=2.16.0 <3.0.0'
+  sdk: ">=2.16.0 <3.0.0"
 flutter:
   assets:
     - assets/images/

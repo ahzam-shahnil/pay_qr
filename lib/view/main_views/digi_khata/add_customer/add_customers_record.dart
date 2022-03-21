@@ -9,7 +9,6 @@ import 'package:pay_qr/widgets/digi_khata/reuseable_button.dart';
 
 import '../customer_record_view.dart';
 
-
 class AddCustomerRecord extends StatefulWidget {
   final CustomerModel? customer;
   const AddCustomerRecord({Key? key, this.customer}) : super(key: key);
@@ -40,6 +39,7 @@ class _AddCustomerRecordState extends State<AddCustomerRecord> {
             TextField(
               controller: paisayDiye,
               keyboardType: TextInputType.number,
+              textInputAction: TextInputAction.next,
               decoration: const InputDecoration(labelText: "Maine Diye"),
             ),
             TextField(

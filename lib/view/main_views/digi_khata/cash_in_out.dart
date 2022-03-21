@@ -2,22 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:pay_qr/config/app_constants.dart';
-import 'package:pay_qr/config/firebase.dart';
+import 'package:pay_qr/config/controllers.dart';
+import 'package:pay_qr/model/digi_khata/cash_in_model.dart';
+import 'package:pay_qr/utils/toast_dialogs.dart';
 import 'package:pay_qr/widgets/digi_khata/reuseable_button.dart';
 
-class CashInOut extends StatefulWidget {
-  const CashInOut({Key? key}) : super(key: key);
+class CashInOutView extends StatefulWidget {
+  const CashInOutView({Key? key}) : super(key: key);
 
   @override
-  _CashInOutState createState() => _CashInOutState();
+  _CashInOutViewState createState() => _CashInOutViewState();
 }
 
-class _CashInOutState extends State<CashInOut> {
+class _CashInOutViewState extends State<CashInOutView> {
   DateTime date = DateTime.now();
   late var formattedDate = DateFormat('d-MMM-yy').format(date);
-  late String amountCashout;
-  late String detailCashOut;
-  late String dateCashOut;
+
+  final TextEditingController amountCashIn = TextEditingController();
+  final TextEditingController amountCashOut = TextEditingController();
+
+  // final String amountCashout;
+  // late String detailCashOut;
+  // late String dateCashOut;
 
   @override
   Widget build(BuildContext context) {
@@ -32,16 +38,15 @@ class _CashInOutState extends State<CashInOut> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             TextField(
-              onChanged: (value) {
-                amountCashout = value;
-              },
-              keyboardType: TextInputType.phone,
+              controller: amountCashIn,
+              keyboardType: TextInputType.number,
+              textInputAction: TextInputAction.next,
               decoration: const InputDecoration(labelText: "Cash in"),
             ),
             TextField(
-              onChanged: (value) {
-                detailCashOut = value;
-              },
+              controller: amountCashOut,
+              textInputAction: TextInputAction.done,
+              keyboardType: TextInputType.number,
               decoration: const InputDecoration(labelText: "Cash out"),
             ),
             const SizedBox(
@@ -59,13 +64,14 @@ class _CashInOutState extends State<CashInOut> {
                       firstDate: DateTime(2022),
                       lastDate: DateTime(2030),
                     );
-                    setState(() {
-                      if (_newDate == null) {
-                        return;
-                      } else {
+
+                    if (_newDate == null) {
+                      return;
+                    } else {
+                      setState(() {
                         formattedDate = DateFormat('d-MMM-yy').format(_newDate);
-                      }
-                    });
+                      });
+                    }
                   },
                 ),
                 const Spacer(),
@@ -77,13 +83,15 @@ class _CashInOutState extends State<CashInOut> {
               color: Colors.green,
               text: 'Save',
               onpress: () async {
-                await firestore.collection('CASHINCASHOUT').add(
-                  {
-                    'CASHIN': amountCashout,
-                    'CASHOUT': detailCashOut,
-                    'DATE': formattedDate
-                  },
-                );
+                if (amountCashIn.text.trim().isEmpty ||
+                    amountCashOut.text.trim().isEmpty) {
+                  showToast(msg: 'Please fill all fields');
+                  return;
+                }
+                double diye = double.parse(amountCashOut.text.trim());
+                double liye = double.parse(amountCashIn.text.trim());
+                digiController.saveCashInOutKhata(
+                    CashModel(date: formattedDate, liye: liye, diye: diye));
                 Get.back();
               },
             )

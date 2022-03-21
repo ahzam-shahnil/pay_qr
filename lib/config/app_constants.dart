@@ -8,6 +8,7 @@ Logger logger = Logger();
 
 //Text
 const kDigiCollection = 'digiKhata';
+const kCashInOutCollection = 'cashInCashOut';
 const kCashRecordsField = 'cashRecords';
 const stripePublishableKey =
     'pk_test_51KekjqK1mBX6Dyox1xmsx7XFBcrzLRXlv1O0yzSN0h5MiadXPQm3J2iSSLrVhX87fNgoOgLmq2aLUN4ZXR0iDIwV00BkxsHNx3';

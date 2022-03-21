@@ -42,7 +42,7 @@ class PaymentWidget extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: CustomText(
-                  text: "\$ ${paymentsModel.amount}",
+                  text: "Rs ${paymentsModel.amount}",
                   color: Colors.black,
                   weight: FontWeight.bold,
                   size: 18,
@@ -61,7 +61,7 @@ class PaymentWidget extends StatelessWidget {
                           text: item['name'],
                         ),
                         trailing: CustomText(
-                          text: "\$ ${item['cost']}",
+                          text: "Rs ${item['cost']}",
                         ),
                       ))
                   .toList()),

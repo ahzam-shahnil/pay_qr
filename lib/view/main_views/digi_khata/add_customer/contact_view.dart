@@ -16,15 +16,12 @@ class _ContactViewState extends State<ContactView> {
   List<Contact> _contacts = [];
   List<Contact> _contactsFiltered = [];
   TextEditingController searchController = TextEditingController();
-
+  bool isSearching = false;
   @override
   void initState() {
-    getContacts();
     super.initState();
-
-    searchController.addListener(() {
-      filterContacts();
-    });
+    getContacts();
+    searchController.addListener(_filterContacts);
   }
 
   Future<void> getContacts() async {
@@ -37,10 +34,11 @@ class _ContactViewState extends State<ContactView> {
     });
   }
 
-  filterContacts() {
+  void _filterContacts() {
     List<Contact> _results = [];
     _results.addAll(_contacts);
-    if (searchController.text.isNotEmpty) {
+    if (searchController.text.trim().isNotEmpty) {
+      isSearching = true;
       _contacts.retainWhere((contact) {
         String searchTerm = searchController.text.toLowerCase();
 
@@ -51,19 +49,19 @@ class _ContactViewState extends State<ContactView> {
       setState(() {
         _contactsFiltered = _contacts;
       });
-    }
-    if (searchController.text.isEmpty) {
+    } else {
       setState(() {
-        _contactsFiltered = _contacts;
+        isSearching = false;
       });
+      getContacts();
     }
+    // logger.d(isSearching);
   }
 
   @override
   Widget build(BuildContext context) {
-    bool isSearching = searchController.text.isNotEmpty;
-
     return Scaffold(
+        resizeToAvoidBottomInset: true,
         backgroundColor: kScanBackColor,
         appBar: AppBar(
           title: (const Text('Contacts')),
@@ -76,7 +74,6 @@ class _ContactViewState extends State<ContactView> {
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: TextField(
                   controller: searchController,
-                  onChanged: filterContacts(),
                   decoration: const InputDecoration(
                     prefixIcon: Icon(Icons.search),
                     suffixIcon: Icon(
@@ -105,18 +102,17 @@ class _ContactViewState extends State<ContactView> {
               Expanded(
                 child: ListView.builder(
                   shrinkWrap: true,
-                  itemCount: isSearching == true
-                      ? _contactsFiltered.length
-                      : _contacts.length,
+                  itemCount:
+                      isSearching ? _contactsFiltered.length : _contacts.length,
                   itemBuilder: (BuildContext context, int index) {
-                    Contact? contact = isSearching == true
+                    Contact? contact = isSearching
                         ? _contactsFiltered[index]
                         : _contacts[index];
                     return ListTile(
                       leading: CircleAvatar(
                         backgroundColor: kPrimaryColor,
                         child: Text(
-                          _contacts[index].initials(),
+                          contact.initials(),
                           style: Get.textTheme.headline6,
                         ),
                       ),
