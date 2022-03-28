@@ -8,7 +8,7 @@ import 'package:pay_qr/controller/profile_controller.dart';
 import 'package:pay_qr/controller/sign_up_controller.dart';
 import 'package:pay_qr/controller/user_controller.dart';
 
-import '../controller/new_shop/payments_controller.dart';
+import '../controller/payment/payments_controller.dart';
 
 // AppController appController = AppController.instance;
 UserController userController = UserController.instance;

@@ -13,10 +13,7 @@ class DigiController extends GetxController {
   static DigiController instance = Get.find();
   late CollectionReference _mainCollection;
   var customer = <CustomerModel>[].obs;
-  // var totalLiye = 0.0.obs;
-  // var totalDiye = 0.0.obs;
-  // var customerName = ''.obs;
-  // var phone = ''.obs;
+
   getRecordStream() {
     _mainCollection = _getCollectionRef();
 
