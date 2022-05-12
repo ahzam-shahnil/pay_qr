@@ -32,12 +32,10 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> with BaseController {
-  // final loginController = Get.find<LoginController>();
-  // final profileController = Get.find<ProfileController>();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _passController = TextEditingController();
   final TextEditingController _shopNameController = TextEditingController();
-  // Logger log = Logger();
+  //TODO: Add money to profile model
   bool isEdit = false;
   @override
   void initState() {

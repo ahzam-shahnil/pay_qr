@@ -51,15 +51,5 @@ class HomeScreen extends StatelessWidget {
       ),
     );
 
-    // return Center(
-    //   child: Row(
-    //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-    //     crossAxisAlignment: CrossAxisAlignment.center,
-    //     children: const [
-    //       // Text("Us
-    //       //er type is ${userType == '0' ? "merchant" : "1"}"),
-    //     ],
-    //   ),
-    // );
   }
 }
