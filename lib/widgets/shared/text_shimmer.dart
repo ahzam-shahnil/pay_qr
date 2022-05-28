@@ -16,6 +16,8 @@ class TextShimmer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Shimmer.fromColors(
+      baseColor: Colors.grey.shade300,
+      highlightColor: Colors.grey.shade100,
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 10),
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
@@ -26,8 +28,6 @@ class TextShimmer extends StatelessWidget {
           borderRadius: BorderRadius.circular(30),
         ),
       ),
-      baseColor: Colors.grey.shade300,
-      highlightColor: Colors.grey.shade100,
     );
   }
 }

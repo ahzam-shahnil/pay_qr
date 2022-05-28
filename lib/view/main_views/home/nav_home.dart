@@ -48,13 +48,17 @@ class _NavHomeScreenState extends State<NavHomeScreen> {
       extendBodyBehindAppBar: true,
       // backgroundColor: selectedIndex == 2 ? kScanBackColor : null,
       appBar: PreferredSize(
+        preferredSize: const Size(
+          double.infinity,
+          56.0,
+        ),
         child: ClipRRect(
           child: BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
             child: AppBar(
-              title: const Text(
+              title: Text(
                 'PayQr',
-                style: TextStyle(
+                style: Get.textTheme.headline6?.copyWith(
                   fontWeight: FontWeight.w700,
                 ),
               ),
@@ -68,10 +72,6 @@ class _NavHomeScreenState extends State<NavHomeScreen> {
               // systemOverlayStyle: SystemUiOverlayStyle.dark,
             ),
           ),
-        ),
-        preferredSize: const Size(
-          double.infinity,
-          56.0,
         ),
       ),
       drawer: Drawer(
@@ -89,7 +89,8 @@ class _NavHomeScreenState extends State<NavHomeScreen> {
                 text: "Payments History",
               ),
               onTap: () async {
-                paymentsController.getPaymentHistory();
+                //TODO: add payment controller here
+                // paymentsController.getPaymentHistory();
               },
             ),
             ListTile(

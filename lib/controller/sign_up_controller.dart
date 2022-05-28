@@ -84,15 +84,15 @@ class SignUpController extends GetxController {
       logger.i('before database');
 
       if (userCredential?.user != null) {
-        final CollectionReference _mainCollection;
-        UserModel? _user;
+        final CollectionReference mainCollection;
+        UserModel? user;
         // Merchant? _merchant;
         String? uid = userCredential?.user!.uid;
 
         //* Checking User to store Data
         if (loginController.isMerchant()) {
-          _mainCollection = firestore.collection(kMerchantDb);
-          _user = UserModel(
+          mainCollection = firestore.collection(kMerchantDb);
+          user = UserModel(
             fullName: fullName,
             email: email,
             password: password,
@@ -102,9 +102,9 @@ class SignUpController extends GetxController {
             cart: [],
           );
         } else {
-          _mainCollection = firestore.collection(kUserDb);
+          mainCollection = firestore.collection(kUserDb);
           //?Make models for Shop keeper and user sign up
-          _user = UserModel(
+          user = UserModel(
             fullName: fullName,
             email: email,
             password: password,
@@ -117,10 +117,10 @@ class SignUpController extends GetxController {
         logger.i('after database');
 //? Here we get the ref to collection of profile
         DocumentReference documentReferencer =
-            _mainCollection.doc(uid).collection(kProfileCollection).doc(uid);
+            mainCollection.doc(uid).collection(kProfileCollection).doc(uid);
 
         //? Converting data to map for Shop keeper and user sign up
-        Map<String, dynamic>? data = _user.toMap();
+        Map<String, dynamic>? data = user.toMap();
         // loginController.isMerchant() ? _merchant?.toMap() : _user.toMap();
 
         await documentReferencer
@@ -136,7 +136,7 @@ class SignUpController extends GetxController {
 
 //TOdo:
         AuthHelperFirebase.signOutAndCacheClear();
-        Navigator.of(context).pop();
+        Get.back();
       } else {
         showToast(msg: 'Failed');
       }

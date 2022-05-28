@@ -8,8 +8,6 @@ import 'package:pay_qr/controller/profile_controller.dart';
 import 'package:pay_qr/controller/sign_up_controller.dart';
 import 'package:pay_qr/controller/user_controller.dart';
 
-import '../controller/payment/payments_controller.dart';
-
 // AppController appController = AppController.instance;
 UserController userController = UserController.instance;
 ProductController productsController = ProductController.instance;
@@ -19,5 +17,5 @@ ProfileController profileController = ProfileController.instance;
 CartController cartController = CartController.instance;
 ProductAddController productsAddController = ProductAddController.instance;
 // PaymentController paymentController = PaymentController.instance;
-PaymentsController paymentsController = PaymentsController.instance;
+// PaymentsController paymentsController = PaymentsController.instance;
 DigiController digiController = DigiController.instance;

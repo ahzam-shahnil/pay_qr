@@ -14,13 +14,13 @@ class ReusableButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: onpress,
-      child: Text(text),
       style: ElevatedButton.styleFrom(
         primary: color,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(18.0),
         ),
       ),
+      child: Text(text),
     );
   }
 }

@@ -4,12 +4,6 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:get/get.dart';
 
-// Project imports:
-
-// Project imports:
-
-// Project imports:
-
 class AlreadyHaveAnAccountCheck extends StatelessWidget {
   final bool login;
   final VoidCallback press;
@@ -24,17 +18,15 @@ class AlreadyHaveAnAccountCheck extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        Text(
-          login ? "Don’t have an Account ? " : "Already have an Account ? ",
-          style: Get.textTheme.headline6,
-        ),
+        // Text(
+        //   login ? "Ich habe noch kein Konto? " : "Ich habe ein Bankkonto ",
+        //   style: Get.textTheme.headline6,
+        // ),
         GestureDetector(
           onTap: press,
           child: Text(
-            login ? "Sign Up" : "Sign In",
-            style: Get.textTheme.headline6?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
+            login ? "Don’t have an Account ? " : "Already have an Account ? ",
+            style: Get.textTheme.headline6?.copyWith(color: Colors.white),
           ),
         )
       ],

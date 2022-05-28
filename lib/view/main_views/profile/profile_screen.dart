@@ -9,15 +9,17 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:pay_qr/components/rectangular_password_field.dart';
+import 'package:pay_qr/components/rounded_rectangular_input_field.dart';
 
 // Project imports:
-import 'package:pay_qr/components/rounded_password_field.dart';
+
 import 'package:pay_qr/config/app_constants.dart';
 import 'package:pay_qr/config/controllers.dart';
 import 'package:pay_qr/utils/auth_helper_firebase.dart';
 import 'package:pay_qr/utils/toast_dialogs.dart';
 import 'package:pay_qr/utils/upload_image.dart';
-import '../../../Components/rounded_input_field.dart';
+
 import '../../../controller/base_controller.dart';
 import '../../../widgets/profile/profile_shimmer.dart';
 import '../../../widgets/profile/profile_widget.dart';
@@ -125,8 +127,8 @@ class _ProfileScreenState extends State<ProfileScreen> with BaseController {
     String? imgUrl;
     if (imageFile != null) {
       progressDialog.setMessage(const Text('Uploading Image'));
-
-      imgUrl = await uploadImage(imageFile: imageFile!);
+//TODO: add username here
+      imgUrl = await uploadImage(imageFile: imageFile!, userName: '');
 
       logger.i('Profile Image $imgUrl');
     }
@@ -187,7 +189,7 @@ class _ProfileScreenState extends State<ProfileScreen> with BaseController {
                           isEdit: isEdit,
                         )),
                     const SizedBox(height: 12),
-                    Obx(() => RoundedInputField(
+                    Obx(() => RoundedRectangleInputField(
                           textCapitalization: TextCapitalization.words,
                           hintText:
                               profileController.currentUser.value.fullName!,
@@ -195,9 +197,9 @@ class _ProfileScreenState extends State<ProfileScreen> with BaseController {
                           isEnabled: isEdit,
                         )),
                     const SizedBox(height: 12),
-                    Obx(() => RoundedInputField(
+                    Obx(() => RoundedRectangleInputField(
                           hintText: profileController.currentUser.value.email!,
-                          icon: Icons.email,
+
                           // textController: _emailController,
                           autofillHints: const [AutofillHints.email],
                           textInputType: TextInputType.emailAddress,
@@ -205,7 +207,7 @@ class _ProfileScreenState extends State<ProfileScreen> with BaseController {
                           isEnabled: false,
                         )),
                     const SizedBox(height: 12),
-                    RoundedPasswordField(
+                    RectangularPasswordField(
                         isReadOnly: !isEdit, textController: _passController),
                     const SizedBox(height: 12),
                     Obx(
@@ -213,7 +215,7 @@ class _ProfileScreenState extends State<ProfileScreen> with BaseController {
                           ? Column(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
-                                RoundedInputField(
+                                RoundedRectangleInputField(
                                   textCapitalization: TextCapitalization.words,
                                   isEnabled: isEdit,
                                   hintText: profileController
@@ -233,13 +235,13 @@ class _ProfileScreenState extends State<ProfileScreen> with BaseController {
                       const SizedBox(height: 20),
                       ElevatedButton(
                         onPressed: () => saveProfile(),
-                        child: const Text('Save'),
                         style: ElevatedButton.styleFrom(
                           textStyle: Get.textTheme.headline6,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
+                        child: const Text('Save'),
                       )
                     ],
 
@@ -247,10 +249,10 @@ class _ProfileScreenState extends State<ProfileScreen> with BaseController {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        ElevatedButton.icon(
-                          style: ElevatedButton.styleFrom(
-                            primary: kActiveBtnColor,
-                          ),
+                        OutlinedButton.icon(
+                          // style: ElevatedButton.styleFrom(
+                          //   primary: kTealColor,
+                          // ),
                           onPressed: () async {
                             await AuthHelperFirebase.signOutAndCacheClear();
                             Get.offAll(() => const LoginScreen());
@@ -258,10 +260,7 @@ class _ProfileScreenState extends State<ProfileScreen> with BaseController {
                           icon: const Icon(Icons.logout_rounded),
                           label: const Text('Logout'),
                         ),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.blue,
-                          ),
+                        OutlinedButton(
                           onPressed: () => Get.to(() => const ChatBotScreen()),
                           child: const Text("Chat with Us"),
                         ),

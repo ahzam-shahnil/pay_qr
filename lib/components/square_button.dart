@@ -1,8 +1,8 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
 
-// Project imports:
-import 'package:pay_qr/config/app_constants.dart';
+import '../config/app_constants.dart';
+
 
 class SquareButton extends StatelessWidget {
   final String text;

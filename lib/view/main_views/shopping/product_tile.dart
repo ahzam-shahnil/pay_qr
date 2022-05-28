@@ -109,7 +109,7 @@ class ProductTile extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(left: 8.0),
                       child: Text(
-                        "Rs. " + product.price.toString(),
+                        "Rs. ${product.price}",
                         style: Get.textTheme.headline6?.copyWith(
                             color: Colors.black, fontWeight: FontWeight.w400),
                       ),

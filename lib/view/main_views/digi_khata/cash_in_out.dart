@@ -1,29 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
+
 import 'package:pay_qr/config/app_constants.dart';
 import 'package:pay_qr/config/controllers.dart';
 import 'package:pay_qr/model/digi_khata/cash_in_model.dart';
 import 'package:pay_qr/utils/toast_dialogs.dart';
+import 'package:pay_qr/utils/utility_helper.dart';
 import 'package:pay_qr/widgets/digi_khata/reuseable_button.dart';
 
 class CashInOutView extends StatefulWidget {
   const CashInOutView({Key? key}) : super(key: key);
 
   @override
-  _CashInOutViewState createState() => _CashInOutViewState();
+  State<CashInOutView> createState() => _CashInOutViewState();
 }
 
 class _CashInOutViewState extends State<CashInOutView> {
   DateTime date = DateTime.now();
-  late var formattedDate = DateFormat('d-MMM-yy').format(date);
+  late var formattedDate = getFormatedDate(date);
 
   final TextEditingController amountCashIn = TextEditingController();
   final TextEditingController amountCashOut = TextEditingController();
-
-  // final String amountCashout;
-  // late String detailCashOut;
-  // late String dateCashOut;
 
   @override
   Widget build(BuildContext context) {
@@ -58,18 +55,18 @@ class _CashInOutViewState extends State<CashInOutView> {
                   label: Text(formattedDate),
                   icon: const Icon(Icons.date_range_outlined),
                   onPressed: () async {
-                    DateTime? _newDate = await showDatePicker(
+                    DateTime? newDate = await showDatePicker(
                       context: context,
                       initialDate: date,
                       firstDate: DateTime(2022),
                       lastDate: DateTime(2030),
                     );
 
-                    if (_newDate == null) {
+                    if (newDate == null) {
                       return;
                     } else {
                       setState(() {
-                        formattedDate = DateFormat('d-MMM-yy').format(_newDate);
+                        formattedDate =getFormatedDate(newDate);
                       });
                     }
                   },

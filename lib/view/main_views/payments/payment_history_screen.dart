@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pay_qr/config/controllers.dart';
-
-import 'widgets/payment_widget.dart';
 
 class PaymentHistoryScreen extends StatelessWidget {
   const PaymentHistoryScreen({Key? key}) : super(key: key);
@@ -24,14 +21,16 @@ class PaymentHistoryScreen extends StatelessWidget {
         ),
       ),
       body: ListView(
-        children: [
-          Column(
-            children: paymentsController.payments
-                .map((payment) => PaymentWidget(
-                      paymentsModel: payment,
-                    ))
-                .toList(),
-          )
+        children: const [
+          Text("Add Payment Method")
+          //TODO: Add payment controller list
+          // Column(
+          //   children: paymentsController.payments
+          //       .map((payment) => PaymentWidget(
+          //             paymentsModel: payment,
+          //           ))
+          //       .toList(),
+          // )
         ],
       ),
     );

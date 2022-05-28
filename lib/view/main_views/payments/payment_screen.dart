@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
 import 'package:pay_qr/config/app_constants.dart';
 import 'package:pay_qr/widgets/loading_button.dart';
@@ -46,15 +45,15 @@ class _PaymentScreenState extends State<PaymentScreen> {
             const SizedBox(
               height: 25,
             ),
-            CardField(
-              dangerouslyUpdateFullCardDetails: true,
-              onCardChanged: (card) {
-                logger.i(card);
-                // setState(() {
-                //   cardNumber = card?.number ?? '5450 7879 4864 7854';
-                // });
-              },
-            ),
+            // CardField(
+            //   dangerouslyUpdateFullCardDetails: true,
+            //   onCardChanged: (card) {
+            //     logger.i(card);
+            //     // setState(() {
+            //     //   cardNumber = card?.number ?? '5450 7879 4864 7854';
+            //     // });
+            //   },
+            // ),
             const SizedBox(
               height: 25,
             ),
@@ -63,7 +62,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                       EdgeInsets.symmetric(horizontal: Get.size.width * 0.3),
                   child: LoadingButton(
                       onPressed: () async {
-                        await paymentsController.createPaymentMethod();
+                        //TODO: Add payment controller
+                        // await paymentsController.createPaymentMethod();
                         // Get.back();
                       },
                       text:

@@ -19,15 +19,6 @@ class CustomerRecordsView extends StatefulWidget {
 }
 
 class _CustomerRecordsViewState extends State<CustomerRecordsView> {
-  // addMoney(snapshot, String name) {
-  //   int cash = 0;
-  //   for (var item in snapshot.data!.docs) {
-  //     cash += int.parse(item[name]);
-  //   }
-
-  //   return cash.toString();
-  // }
-
   Widget getRecordText(List<CashModel> records) {
     double total = 0;
     double diye = 0;

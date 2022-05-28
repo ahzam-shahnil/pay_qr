@@ -56,11 +56,6 @@ class ProfileWidget extends StatelessWidget {
   Widget buildProfileImage() {
     return CircleAvatar(
         radius: 50,
-        child: imageUrl == null
-            ? const Icon(
-                Icons.person_outline_rounded,
-              )
-            : null,
         foregroundImage: imageFile == null && imageUrl != null
             ? OctoImage(
                 image: CachedNetworkImageProvider(imageUrl!),
@@ -80,7 +75,12 @@ class ProfileWidget extends StatelessWidget {
                     fit: BoxFit.fill,
                   ).image
                 : null,
-        backgroundColor: kPrimaryDarkColor);
+        backgroundColor: kPrimaryDarkColor,
+        child: imageUrl == null
+            ? const Icon(
+                Icons.person_outline_rounded,
+              )
+            : null);
 
     // return ClipOval(
     //   child: Material(

@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:get/get.dart';
+import 'package:pay_qr/components/rectangular_password_field.dart';
+import 'package:pay_qr/components/rounded_rectangular_input_field.dart';
+import 'package:pay_qr/config/app_constants.dart';
 
-// Project imports:
-import 'package:pay_qr/Components/rounded_input_field.dart';
-import 'package:pay_qr/Components/rounded_password_field.dart';
 import 'package:pay_qr/config/controllers.dart';
 import '../../../components/already_have_an_account_acheck.dart';
 import '../../../widgets/auth/account_type_row.dart';
@@ -22,7 +22,7 @@ class LoginScreen extends StatelessWidget {
         child: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
           child: ListView(
-            shrinkWrap: true,
+          primary: true,
             children: [
               const SizedBox(
                 height: 100,
@@ -47,14 +47,13 @@ class LoginScreen extends StatelessWidget {
               ),
               AutofillGroup(
                 child: Column(children: [
-                  RoundedInputField(
+                  RoundedRectangleInputField(
                     hintText: 'Enter your email',
-                    icon: Icons.email,
                     textController: loginController.emailController,
                     textInputType: TextInputType.emailAddress,
                     autofillHints: const [AutofillHints.email],
                   ),
-                  RoundedPasswordField(
+                  RectangularPasswordField(
                     autofillHints: const [AutofillHints.password],
                     textController: loginController.passwordController,
                   ),
@@ -68,23 +67,29 @@ class LoginScreen extends StatelessWidget {
                   const SizedBox(
                     height: 15,
                   ),
-                  AccountTypeRow(loginController: loginController),
+                  const AccountTypeRow(),
                   const SizedBox(
                     height: 30,
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      //trim for white spaces khtm krne k lea :D
                       loginController.loginUser(context);
                     },
+                    // style: ElevatedButton.styleFrom(
+                    //   primary: kLightBackColor,
+                    // ),
                     child: Text(
                       'Sign In',
                       style: Get.textTheme.headline6
-                          ?.copyWith(color: Colors.white),
+                          ?.copyWith(color: kPrimaryColor),
                     ),
                   ),
+                  const SizedBox(
+                    height: 20,
+                  ),
                   AlreadyHaveAnAccountCheck(
-                      press: () => Get.to(() => const SignupScreen()),
+                      press: () => Get.to(() => const SignupScreen(),
+                          transition: Transition.leftToRightWithFade),
                       login: true),
                 ]),
               ),

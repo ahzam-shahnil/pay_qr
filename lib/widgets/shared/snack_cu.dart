@@ -132,8 +132,8 @@ class InfoBannerActionsFb1 extends StatelessWidget {
           style: TextStyle(color: primaryColor),
         ),
         leading: CircleAvatar(
-          child: icon,
           backgroundColor: primaryColor,
+          child: icon,
         ),
         actions: actions,
       ),

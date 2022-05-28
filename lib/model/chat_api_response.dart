@@ -9,8 +9,8 @@ class ChatApiResponse {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['response'] = response;
-    return _data;
+    final data = <String, dynamic>{};
+    data['response'] = response;
+    return data;
   }
 }

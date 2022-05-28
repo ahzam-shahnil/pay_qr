@@ -13,7 +13,7 @@ class AddCustomer extends StatefulWidget {
   const AddCustomer({Key? key, this.contact}) : super(key: key);
 
   @override
-  _AddCustomerState createState() => _AddCustomerState();
+  State<AddCustomer> createState() => _AddCustomerState();
 }
 
 class _AddCustomerState extends State<AddCustomer> {
@@ -70,14 +70,19 @@ class _AddCustomerState extends State<AddCustomer> {
                           '',
                       cashRecords: [],
                       id: id);
-                  await digiController.saveCustomer(customer);
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => AddCustomerRecord(
-                              customer: customer,
-                            )),
-                  );
+                  bool result = await digiController.saveCustomer(customer);
+                  if (!result) {
+                    return;
+                  } else {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => AddCustomerRecord(
+                                customer: customer,
+                              )),
+                    );
+                  }
+
                   // Get.to(() => AddCustomerRecord(
                   //       customer: customer,
                   //     ));

@@ -34,10 +34,6 @@ class ShopHomeAppBar extends StatelessWidget {
           child: AspectRatio(
             aspectRatio: 1,
             child: ElevatedButton(
-              child: const Icon(
-                Icons.shopping_cart,
-                color: kPrimaryColor,
-              ),
               onPressed: () {
                 showBarModalBottomSheet(
                   context: context,
@@ -52,6 +48,10 @@ class ShopHomeAppBar extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
+              ),
+              child: const Icon(
+                Icons.shopping_cart,
+                color: kPrimaryColor,
               ),
             ),
           ),

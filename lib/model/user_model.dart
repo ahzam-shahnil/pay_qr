@@ -77,13 +77,13 @@ class UserModel {
   }
 
   static List<CartItemModel> _convertCartItems(List cartFomDb) {
-    List<CartItemModel> _result = [];
+    List<CartItemModel> result = [];
     if (cartFomDb.isNotEmpty) {
       for (var element in cartFomDb) {
-        _result.add(CartItemModel.fromMap(element));
+        result.add(CartItemModel.fromMap(element));
       }
     }
-    return _result;
+    return result;
   }
 
   UserModel.fromSnapshot(snapshot)

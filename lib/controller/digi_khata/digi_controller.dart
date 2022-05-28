@@ -49,19 +49,24 @@ class DigiController extends GetxController {
     }
   }
 
-  saveCustomer(CustomerModel customer) async {
+  Future<bool> saveCustomer(CustomerModel customer) async {
     //? to update customer with id
-    // customer = customer.copyWith(id: id);
-
     _mainCollection = _getCollectionRef();
 
     try {
       await _mainCollection.doc(customer.id).set(customer.toMap());
       showToast(msg: "Added Record", backColor: Colors.green);
+      return true;
     } on FirebaseException {
       showToast(
-        msg: 'Error',
+        msg: 'Something Went Wrong',
       );
+      return false;
+    } catch (e) {
+      showToast(
+        msg: 'Something Went Wrong',
+      );
+      return false;
     }
   }
 

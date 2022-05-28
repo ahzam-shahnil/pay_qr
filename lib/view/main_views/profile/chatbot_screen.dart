@@ -2,22 +2,21 @@
 import 'package:flutter/material.dart';
 
 // Project imports:
-import 'package:pay_qr/components/chat_message.dart';
+
 import 'package:pay_qr/config/app_constants.dart';
 import 'package:pay_qr/config/controllers.dart';
 import 'package:pay_qr/controller/api_controller.dart';
 import 'package:pay_qr/model/chat_api_response.dart';
-
-// Package imports:
+import 'package:pay_qr/model/chat_message.dart';
 
 class ChatBotScreen extends StatefulWidget {
   const ChatBotScreen({Key? key}) : super(key: key);
 
   @override
-  _HomePageDialogflow createState() => _HomePageDialogflow();
+  State<ChatBotScreen> createState() => _ChatBotScreenState();
 }
 
-class _HomePageDialogflow extends State<ChatBotScreen> {
+class _ChatBotScreenState extends State<ChatBotScreen> {
   final List<ChatMessage> _messages = <ChatMessage>[];
   final TextEditingController _textController = TextEditingController();
   final apiController = ApiController();

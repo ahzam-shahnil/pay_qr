@@ -12,11 +12,11 @@ class ButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ElevatedButton(
+        style: ElevatedButton.styleFrom(primary: Colors.red[400]),
+        onPressed: onClicked,
         child: Text(
           text,
           style: const TextStyle(fontSize: 24),
         ),
-        style: ElevatedButton.styleFrom(primary: Colors.red[400]),
-        onPressed: onClicked,
       );
 }

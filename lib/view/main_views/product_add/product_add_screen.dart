@@ -9,10 +9,11 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:pay_qr/components/rounded_rectangular_input_field.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 // Project imports:
-import 'package:pay_qr/components/rounded_input_field.dart';
+
 import 'package:pay_qr/config/app_constants.dart';
 import 'package:pay_qr/config/controllers.dart';
 import 'package:pay_qr/model/product_model.dart';
@@ -119,13 +120,6 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                             ),
                             CircleAvatar(
                               radius: 60,
-                              child: imageFile == null
-                                  ? Text(
-                                      "Product\nPicture\nHere",
-                                      style: Get.textTheme.headline6
-                                          ?.copyWith(color: Colors.white),
-                                    )
-                                  : null,
                               foregroundImage: imageFile == null
                                   ? null
                                   : Image.file(
@@ -134,19 +128,26 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                                       fit: BoxFit.fill,
                                     ).image,
                               backgroundColor: Colors.deepPurple.shade200,
+                              child: imageFile == null
+                                  ? Text(
+                                      "Product\nPicture\nHere",
+                                      style: Get.textTheme.headline6
+                                          ?.copyWith(color: Colors.white),
+                                    )
+                                  : null,
                             ),
                           ],
                         ),
                       ),
                     )),
-                RoundedInputField(
+                RoundedRectangleInputField(
                   hintText: "Enter Item Name",
                   textCapitalization: TextCapitalization.words,
                   textController: profileController.nameController,
                   textInputType: TextInputType.name,
                   maxLines: null,
                 ),
-                RoundedInputField(
+                RoundedRectangleInputField(
                   hintText: "Enter Item Description",
                   textCapitalization: TextCapitalization.sentences,
                   icon: Icons.description_rounded,
@@ -154,7 +155,7 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                   maxLines: 5,
                   textInputType: TextInputType.multiline,
                 ),
-                RoundedInputField(
+                RoundedRectangleInputField(
                   hintText: "Enter Item Price",
                   textInputType: TextInputType.number,
                   icon: Icons.monetization_on_rounded,
@@ -196,13 +197,15 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                                 context: context);
                             progressDialog.show();
                             //showLoading('Adding ...');
+                            //TODO: add username here
                             imgUrl = await uploadImage(
                                 imageFile: imageFile!,
                                 metaData: {
                                   'name': profileController.nameController.text,
                                   'description':
                                       profileController.descController.text
-                                });
+                                },
+                                userName: '');
                             progressDialog
                                 .setMessage(const Text('Saving Product...'));
                             //? Add Product Details Here

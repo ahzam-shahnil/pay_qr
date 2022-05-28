@@ -22,16 +22,16 @@ class BackButton extends StatelessWidget {
           onPressed: () {
             Get.back();
           },
-          child: const Icon(
-            Icons.arrow_back_ios,
-            color: kPrimaryColor,
-          ),
           style: ElevatedButton.styleFrom(
               alignment: Alignment.center,
               primary: kScanBackColor,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10.0),
               )),
+          child: const Icon(
+            Icons.arrow_back_ios,
+            color: kPrimaryColor,
+          ),
         ),
       ),
     );

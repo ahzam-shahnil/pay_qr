@@ -18,18 +18,6 @@ class ProductItem extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
       child: GridTile(
-        child: OctoImage(
-          image: CachedNetworkImageProvider(product.imageUrl!),
-          // placeholderBuilder:
-          //     OctoPlaceholder.blurHash('LEHV6nWB2yk8pyo0adR*.7kCMdnj'),
-          progressIndicatorBuilder:
-              OctoProgressIndicator.circularProgressIndicator(),
-          errorBuilder: OctoError.icon(color: Colors.red),
-          fit: BoxFit.cover,
-          width: double.infinity,
-          height: double.infinity,
-        ),
-        // header: Text(product.title),
         footer: GridTileBar(
           backgroundColor: const Color.fromARGB(221, 46, 46, 46),
           // leading: IconButton(
@@ -38,7 +26,7 @@ class ProductItem extends StatelessWidget {
           //   color: Theme.of(context).colorScheme.secondary,
           // ),
           title: Text(
-            product.price.toString() + ' Rs',
+            '${product.price} Rs',
             style: Get.textTheme.headline6?.copyWith(
               // color: kPrimaryColor,
               fontWeight: FontWeight.w500,
@@ -58,6 +46,17 @@ class ProductItem extends StatelessWidget {
             onPressed: () {},
             color: Theme.of(context).colorScheme.secondary,
           ),
+        ),
+        child: OctoImage(
+          image: CachedNetworkImageProvider(product.imageUrl!),
+          // placeholderBuilder:
+          //     OctoPlaceholder.blurHash('LEHV6nWB2yk8pyo0adR*.7kCMdnj'),
+          progressIndicatorBuilder:
+              OctoProgressIndicator.circularProgressIndicator(),
+          errorBuilder: OctoError.icon(color: Colors.red),
+          fit: BoxFit.cover,
+          width: double.infinity,
+          height: double.infinity,
         ),
       ),
     );

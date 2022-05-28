@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 
 // Project imports:
-import 'package:pay_qr/config/app_constants.dart';
+import '../config/app_constants.dart';
 
 class RoundedButton extends StatelessWidget {
   final String text;
@@ -33,15 +33,15 @@ class RoundedButton extends StatelessWidget {
 
   Widget newElevatedButton() {
     return ElevatedButton(
-      child: Text(
-        text,
-        style: TextStyle(color: textColor),
-      ),
       onPressed: press,
       style: ElevatedButton.styleFrom(
         primary: color,
         padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
         textStyle: TextStyle(color: textColor, fontWeight: FontWeight.w500),
+      ),
+      child: Text(
+        text,
+        style: TextStyle(color: textColor),
       ),
     );
   }

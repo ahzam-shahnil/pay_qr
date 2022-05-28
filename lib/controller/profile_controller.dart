@@ -51,13 +51,13 @@ class ProfileController extends GetxController {
 
   Future<void> updateProfile(UserModel userUpdate, BuildContext context) async {
     try {
-      CollectionReference _mainCollection;
+      CollectionReference mainCollection;
 
       //* Checking User to store Data
       if (currentUser.value.isMerchant!) {
-        _mainCollection = firestore.collection(kMerchantDb);
+        mainCollection = firestore.collection(kMerchantDb);
       } else {
-        _mainCollection = firestore.collection(kUserDb);
+        mainCollection = firestore.collection(kUserDb);
       }
 
 //? setting account password
@@ -65,7 +65,7 @@ class ProfileController extends GetxController {
           .updatePhotoURL(userUpdate.imageUrl);
       await AuthHelperFirebase.getCurrentUserDetails()!
           .updatePassword(userUpdate.password!);
-      DocumentReference documentReferencer = _mainCollection
+      DocumentReference documentReferencer = mainCollection
           .doc(userUpdate.uid)
           .collection(kProfileCollection)
           .doc(userUpdate.uid);
@@ -90,9 +90,9 @@ class ProfileController extends GetxController {
   Future<QuerySnapshot<Object?>?> getProfile() async {
     showLoading();
     try {
-      final CollectionReference? _mainCollection = getProfileCollection();
-      if (_mainCollection != null) {
-        var data = await _mainCollection.get();
+      final CollectionReference? mainCollection = getProfileCollection();
+      if (mainCollection != null) {
+        var data = await mainCollection.get();
 
         // await collection.then((QuerySnapshot querySnapshot) => {
         //       for (final document in querySnapshot.docs) {document.data()}
@@ -139,21 +139,21 @@ class ProfileController extends GetxController {
   CollectionReference? getProfileCollection() {
     try {
       User? user = AuthHelperFirebase.getCurrentUserDetails();
-      final CollectionReference _mainCollection;
+      final CollectionReference mainCollection;
       if (user != null) {
         //* Checking User to store Data
         if (loginController.isMerchant()) {
-          _mainCollection = firestore
+          mainCollection = firestore
               .collection(kMerchantDb)
               .doc(user.uid)
               .collection(kProfileCollection);
         } else {
-          _mainCollection = firestore
+          mainCollection = firestore
               .collection(kUserDb)
               .doc(user.uid)
               .collection(kProfileCollection);
         }
-        return _mainCollection;
+        return mainCollection;
       }
     } on FirebaseAuthException {
       rethrow;

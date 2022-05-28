@@ -31,21 +31,19 @@ class LoginController extends GetxController {
   }
 
   Future<void> _setInitialScreen() async {
+    await Future.delayed(const Duration(seconds: 5));
     String? userCredential = await getLoggedInUser();
     userType.value =
         await getLoggedInUserType() ?? UserType.merchant.toString();
     if (userCredential != null && userType.value.isNotEmpty) {
       isLoggedIn.value = true;
       userController.bindUserStream();
-      Get.offAll(() => const NavHomeScreen());
+      Get.offAll(() => const NavHomeScreen(),
+          transition: Transition.rightToLeft);
     } else {
       isLoggedIn.value = false;
-      Get.offAll(() => const LoginScreen());
+      Get.offAll(() => const LoginScreen(), transition: Transition.rightToLeft);
     }
-
-    // hideLoading();
-    // showToast(msg: token!);
-    // showToast(msg: isLoggedIn.toString());
   }
 
   bool isMerchant() {
@@ -103,38 +101,27 @@ class LoginController extends GetxController {
         //*saving User to secure storageR
         storeTokenAndData(userCredential!, userType.value.toString());
         // final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-        final CollectionReference _mainCollection;
+        final CollectionReference mainCollection;
 
         //* Checking User to store Data
         if (isMerchant()) {
-          _mainCollection = firestore
+          mainCollection = firestore
               .collection(kMerchantDb)
               .doc(userCredential.user?.uid)
               .collection(kProfileCollection);
         } else {
-          _mainCollection = firestore
+          mainCollection = firestore
               .collection(kUserDb)
               .doc(userCredential.user?.uid)
               .collection(kProfileCollection);
         }
         // bool? isUser;
-        var collection = await _mainCollection
+        var collection = await mainCollection
             .where(kUserIdDoc, isEqualTo: userCredential.user?.uid)
             .get();
 
-        // await collection.then((QuerySnapshot querySnapshot) => {
-
-        //       querySnapshot.docs.forEach((doc) {
-
-        //       })
-        //     });
         logger.i("In Login Collection $collection");
-        // collection.docs.map((e) {
-        //   if (e["uid"] == (userCredential.user?.uid)) {
-        //     isUser = true;
-        //     // return;
-        //   }
-        // });
+
         if (collection.docs.isNotEmpty) {
           progressDialog.dismiss();
 

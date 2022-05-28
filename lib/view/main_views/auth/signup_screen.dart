@@ -3,15 +3,14 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:get/get.dart';
+import 'package:pay_qr/components/rectangular_password_field.dart';
+import 'package:pay_qr/components/rounded_rectangular_input_field.dart';
+import 'package:pay_qr/config/app_constants.dart';
 
 // Project imports:
-import 'package:pay_qr/Components/rounded_input_field.dart';
-import 'package:pay_qr/Components/rounded_password_field.dart';
 import 'package:pay_qr/config/controllers.dart';
-import 'package:pay_qr/controller/login_controller.dart';
 import '../../../components/already_have_an_account_acheck.dart';
 import '../../../widgets/auth/account_type_row.dart';
-import 'login_screen.dart';
 
 // Package imports:
 
@@ -23,9 +22,12 @@ class SignupScreen extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text('Sign Up'),
+        title: Text('Sign Up', style: Get.textTheme.headline5),
         centerTitle: true,
+        backgroundColor: Colors.transparent,
       ),
+      extendBody: true,
+      extendBodyBehindAppBar: true,
       body: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
         child: ListView(
@@ -39,10 +41,9 @@ class SignupScreen extends StatelessWidget {
             AutofillGroup(
               child: Column(
                 children: [
-                  RoundedInputField(
+                  RoundedRectangleInputField(
                     hintText: 'Full Name',
                     textCapitalization: TextCapitalization.words,
-                    icon: Icons.person,
                     textController: signUpController.nameController,
                     textInputType: TextInputType.name,
                     autofillHints: const [AutofillHints.name],
@@ -54,10 +55,9 @@ class SignupScreen extends StatelessWidget {
                               const SizedBox(
                                 height: 12.0,
                               ),
-                              RoundedInputField(
+                              RoundedRectangleInputField(
                                 textCapitalization: TextCapitalization.words,
                                 hintText: 'Shop Name',
-                                icon: Icons.shopping_basket_outlined,
                                 textController:
                                     signUpController.shopNameController,
                                 textInputType: TextInputType.name,
@@ -72,9 +72,8 @@ class SignupScreen extends StatelessWidget {
                   const SizedBox(
                     height: 12.0,
                   ),
-                  RoundedInputField(
+                  RoundedRectangleInputField(
                     hintText: 'Email',
-                    icon: Icons.email,
                     textController: signUpController.emailController,
                     autofillHints: const [AutofillHints.email],
                     textInputType: TextInputType.emailAddress,
@@ -82,7 +81,7 @@ class SignupScreen extends StatelessWidget {
                   const SizedBox(
                     height: 12.0,
                   ),
-                  RoundedPasswordField(
+                  RectangularPasswordField(
                     autofillHints: const [AutofillHints.newPassword],
                     textController: signUpController.passwordController,
                   ),
@@ -96,7 +95,7 @@ class SignupScreen extends StatelessWidget {
                   const SizedBox(
                     height: 12,
                   ),
-                  AccountTypeRow(loginController: Get.find<LoginController>()),
+                  const AccountTypeRow(),
                   const SizedBox(
                     height: 25.0,
                   ),
@@ -107,13 +106,16 @@ class SignupScreen extends StatelessWidget {
                     },
                     child: Text(
                       'Sign Up',
-                      style: Get.textTheme.headline6
-                          ?.copyWith(color: Colors.white),
+                      style: Get.textTheme.headline6?.copyWith(
+                        color: kPrimaryColor,
+                      ),
                     ),
                   ),
+                  const SizedBox(
+                    height: 20,
+                  ),
                   AlreadyHaveAnAccountCheck(
-                      press: () => Get.to(() => const LoginScreen()),
-                      login: false),
+                      press: () => Get.back(), login: false),
                 ],
               ),
             ),

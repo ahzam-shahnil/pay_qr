@@ -21,8 +21,7 @@ class DialogHelper {
             children: [
               Text(
                 title,
-                style:
-                    Get.textTheme.headline4?.copyWith(color: kActiveBtnColor),
+                style: Get.textTheme.headline4?.copyWith(color: kTealColor),
               ),
               Text(
                 description ?? '',

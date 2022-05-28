@@ -9,12 +9,12 @@ class ContactView extends StatefulWidget {
   const ContactView({Key? key}) : super(key: key);
 
   @override
-  _ContactViewState createState() => _ContactViewState();
+  State<ContactView> createState() => _ContactViewState();
 }
 
 class _ContactViewState extends State<ContactView> {
-  List<Contact> _contacts = [];
-  List<Contact> _contactsFiltered = [];
+  List<Contact?> _contacts = [];
+  List<Contact?> _contactsFiltered = [];
   TextEditingController searchController = TextEditingController();
   bool isSearching = false;
   @override
@@ -29,20 +29,30 @@ class _ContactViewState extends State<ContactView> {
       withThumbnails: false,
       photoHighResolution: false,
     );
+    contacts.retainWhere((contact) {
+      return contact.displayName == null
+          ? false
+          : contact.displayName!.isNotEmpty;
+    });
     setState(() {
       _contacts = contacts;
     });
   }
 
   void _filterContacts() {
-    List<Contact> _results = [];
-    _results.addAll(_contacts);
+    List<Contact?> results = [];
+    results.addAll(_contacts);
     if (searchController.text.trim().isNotEmpty) {
       isSearching = true;
+
       _contacts.retainWhere((contact) {
         String searchTerm = searchController.text.toLowerCase();
 
-        String contactName = contact.displayName!.toLowerCase();
+        String contactName = contact == null
+            ? ''
+            : contact.displayName == null
+                ? ''
+                : contact.displayName!.toLowerCase();
 
         return contactName.contains(searchTerm);
       });
@@ -55,7 +65,6 @@ class _ContactViewState extends State<ContactView> {
       });
       getContacts();
     }
-    // logger.d(isSearching);
   }
 
   @override
@@ -108,21 +117,25 @@ class _ContactViewState extends State<ContactView> {
                     Contact? contact = isSearching
                         ? _contactsFiltered[index]
                         : _contacts[index];
-                    return ListTile(
-                      leading: CircleAvatar(
-                        backgroundColor: kPrimaryColor,
-                        child: Text(
-                          contact.initials(),
-                          style: Get.textTheme.headline6,
-                        ),
-                      ),
-                      title: Text(contact.displayName ?? ''),
-                      onTap: () {
-                        Get.to(() => AddCustomer(
-                              contact: contact,
-                            ));
-                      },
-                    );
+                    return contact == null
+                        ? const SizedBox()
+                        : ListTile(
+                            leading: CircleAvatar(
+                              backgroundColor: kPrimaryColor,
+                              child: Text(
+                                contact.initials(),
+                                style: Get.textTheme.headline6,
+                              ),
+                            ),
+                            title: Text(contact.displayName ?? ''),
+                            onTap: () {
+                              Get.to(() => AddCustomer(
+                                    contact: contact,
+                                  ));
+                              // logger.d(contact.displayName);
+                              // logger.d(contact.phones);
+                            },
+                          );
                   },
                 ),
               ),

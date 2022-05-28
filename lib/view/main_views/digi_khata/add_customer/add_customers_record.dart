@@ -56,17 +56,17 @@ class _AddCustomerRecordState extends State<AddCustomerRecord> {
                   label: Text(formattedDate),
                   icon: const Icon(Icons.date_range_outlined),
                   onPressed: () async {
-                    DateTime? _newDate = await showDatePicker(
+                    DateTime? newDate = await showDatePicker(
                       context: context,
                       initialDate: date,
                       firstDate: DateTime(2022),
                       lastDate: DateTime(2030),
                     );
                     setState(() {
-                      if (_newDate == null) {
+                      if (newDate == null) {
                         return;
                       } else {
-                        formattedDate = DateFormat('d-MMM-yy').format(_newDate);
+                        formattedDate = DateFormat('d-MMM-yy').format(newDate);
                       }
                     });
                   },
