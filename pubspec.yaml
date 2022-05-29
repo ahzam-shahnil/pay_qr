@@ -1,15 +1,17 @@
 ---
 dependencies:
   cached_network_image: ^3.2.1
-  camera: ^0.9.5
-  cloud_firestore: ^3.1.15
+  camera: ^0.9.7+1
+  cloud_firestore: ^3.1.17
   contacts_service: ^0.6.3
+  csv: ^5.0.1
   cupertino_icons: ^1.0.4
-  dio: ^4.0.6
   fancy_shimmer_image: ^2.0.2
-  firebase_auth: ^3.3.18
-  firebase_core: ^1.17.0
-  firebase_storage: ^10.2.16
+  file_saver:
+    git: https://github.com/incrediblezayed/file_saver.git
+  firebase_auth: ^3.3.19
+  firebase_core: ^1.17.1
+  firebase_storage: ^10.2.17
   flutter:
     sdk: flutter
   flutter_advanced_switch: ^3.0.1
@@ -19,10 +21,10 @@ dependencies:
   flutter_secure_storage: ^5.0.2
   flutter_spinkit: ^5.1.0
   flutter_staggered_grid_view: ^0.6.1
-  flutter_svg: ^1.0.3
+  flutter_svg: ^1.1.0
   fluttertoast: ^8.0.9
-  get: ^4.6.3
-  google_fonts: ^2.3.2
+  get: ^4.6.5
+  google_fonts: ^3.0.1
   google_mlkit_image_labeling: ^0.3.0
   google_nav_bar: ^5.0.6
   http: ^0.13.4
@@ -38,14 +40,18 @@ dependencies:
   modal_bottom_sheet: ^2.0.0
   modal_progress_hud_nsn: ^0.1.0-nullsafety-1
   ndialog: ^4.1.1
-  octo_image: ^1.0.1
-  path: ^1.8.0
+  octo_image: ^1.0.2
+  path: ^1.8.1
   path_provider: ^2.0.9
+  pdf: ^3.8.1
   permission_handler: ^9.2.0
-  qr_flutter: ^4.0.0
+  pluto_grid: ^3.1.1
+  pluto_grid_export: ^1.0.1
+  printing: ^5.9.1
   scan: ^1.6.0
   shimmer: ^2.0.0
   simple_animations: ^4.0.2
+  syncfusion_flutter_barcodes: ^20.1.57
   text_scroll: ^0.0.4
   timeago: ^3.2.2
   url_launcher: ^6.1.2
@@ -58,7 +64,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 environment:
-  sdk: ">=2.16.0 <3.0.0"
+  sdk: '>=2.16.0 <3.0.0'
 flutter:
   assets:
     - assets/images/

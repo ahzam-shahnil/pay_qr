@@ -9,7 +9,7 @@ class DigiNavHome extends StatefulWidget {
   const DigiNavHome({Key? key}) : super(key: key);
 
   @override
-  _DigiNavHomeState createState() => _DigiNavHomeState();
+  State<DigiNavHome> createState() => _DigiNavHomeState();
 }
 
 class _DigiNavHomeState extends State<DigiNavHome> {

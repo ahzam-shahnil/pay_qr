@@ -1,30 +1,46 @@
-import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:pay_qr/config/app_constants.dart';
 import 'package:pay_qr/config/controllers.dart';
 import 'package:pay_qr/model/digi_khata/customer.dart';
+
 import 'package:pay_qr/widgets/digi_khata/reuseable_button.dart';
 import 'package:uuid/uuid.dart';
 
-import 'add_customers_record.dart';
+import 'customer_record_view.dart';
 
-class AddCustomer extends StatefulWidget {
-  final Contact? contact;
-  const AddCustomer({Key? key, this.contact}) : super(key: key);
+class AddCustomerContact extends StatefulWidget {
+  // final Contact? contact;
+  final String displayName;
+  final String phoneNo;
+
+  const AddCustomerContact({Key? key, this.displayName = '', this.phoneNo = ''})
+      : super(key: key);
 
   @override
-  State<AddCustomer> createState() => _AddCustomerState();
+  State<AddCustomerContact> createState() => _AddCustomerContactState();
 }
 
-class _AddCustomerState extends State<AddCustomer> {
-  String? customerName;
-  String? customerContact;
+class _AddCustomerContactState extends State<AddCustomerContact> {
+  late final TextEditingController displayNameController;
+  @override
+  void initState() {
+    displayNameController = TextEditingController(text: widget.displayName);
+    phoneNoController = TextEditingController(text: widget.phoneNo);
+    super.initState();
+  }
+
+  late final TextEditingController phoneNoController;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kScanBackColor,
       appBar: AppBar(
-        title: const Text('Add Customer'),
+        title: Text(
+          'Add Customer',
+          style: Get.textTheme.headline6,
+        ),
       ),
       body: SafeArea(
         child: Padding(
@@ -33,24 +49,18 @@ class _AddCustomerState extends State<AddCustomer> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               TextFormField(
-                initialValue: widget.contact?.displayName ?? '',
-                onChanged: (value) {
-                  customerName = value;
-                },
+                controller: displayNameController,
                 textInputAction: TextInputAction.next,
                 keyboardType: TextInputType.name,
                 decoration: const InputDecoration(
                     labelText: "Add Customer's name",
-                    floatingLabelBehavior: FloatingLabelBehavior.always),
+                    floatingLabelBehavior: FloatingLabelBehavior.auto),
               ),
               const SizedBox(
                 height: 26.0,
               ),
               TextFormField(
-                initialValue: widget.contact?.phones?.first.value ?? '',
-                onChanged: (value) {
-                  customerContact = value;
-                },
+                controller: phoneNoController,
                 keyboardType: TextInputType.phone,
                 decoration: const InputDecoration(
                     labelText: "Add Customer's contact No (optional)",
@@ -60,32 +70,33 @@ class _AddCustomerState extends State<AddCustomer> {
               ReusableButton(
                 text: 'Next',
                 onpress: () async {
+                  if (displayNameController.text.trim().isEmpty) {
+                    return;
+                  }
+                  if (phoneNoController.text.trim().isEmpty) {
+                    return;
+                  }
                   //TODO: add constraint to not add duplicate contacts
                   var uid = const Uuid();
                   String id = uid.v4();
                   var customer = CustomerModel(
-                      name: customerName ?? widget.contact?.displayName ?? '',
-                      phoneNo: customerContact ??
-                          widget.contact?.phones?.first.value ??
-                          '',
+                      name: displayNameController.text.trim(),
+                      phoneNo: phoneNoController.text.trim(),
                       cashRecords: [],
                       id: id);
-                  bool result = await digiController.saveCustomer(customer);
+                  bool result =
+                      await digiController.saveCustomer(customer, context);
                   if (!result) {
                     return;
                   } else {
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => AddCustomerRecord(
+                          builder: (context) => CustomerRecordsView(
                                 customer: customer,
                               )),
                     );
                   }
-
-                  // Get.to(() => AddCustomerRecord(
-                  //       customer: customer,
-                  //     ));
                 },
               ),
             ],

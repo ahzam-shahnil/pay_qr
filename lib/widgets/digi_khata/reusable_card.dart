@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 
 class ReuseableCard extends StatelessWidget {
@@ -19,7 +20,7 @@ class ReuseableCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-      tileColor: buttonColour.withOpacity(0.2),
+      tileColor: buttonColour.withOpacity(0.7),
       leading: CircleAvatar(
         backgroundColor: buttonColour,
         child: Icon(
@@ -32,8 +33,14 @@ class ReuseableCard extends StatelessWidget {
           color: Colors.white,
         ),
       ),
-      title: Text(text),
-      subtitle: Text(description),
+      title: Text(
+        text,
+        style: Get.textTheme.headline6,
+      ),
+      subtitle: Text(
+        description,
+        style: Get.textTheme.headline6,
+      ),
     );
   }
 }

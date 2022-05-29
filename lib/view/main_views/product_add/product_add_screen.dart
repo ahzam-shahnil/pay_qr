@@ -10,16 +10,18 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pay_qr/components/rounded_rectangular_input_field.dart';
-import 'package:qr_flutter/qr_flutter.dart';
 
 // Project imports:
 
 import 'package:pay_qr/config/app_constants.dart';
 import 'package:pay_qr/config/controllers.dart';
+
 import 'package:pay_qr/model/product_model.dart';
+
 import 'package:pay_qr/utils/image_saver.dart';
 import 'package:pay_qr/utils/toast_dialogs.dart';
 import 'package:pay_qr/utils/upload_image.dart';
+import 'package:syncfusion_flutter_barcodes/barcodes.dart';
 
 class ProductAddScreen extends StatefulWidget {
   const ProductAddScreen({Key? key}) : super(key: key);
@@ -104,20 +106,33 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            QrImage(
-                              backgroundColor: Colors.white,
-                              data: productsAddController.data.value,
-                              version: QrVersions.auto,
-                              size: 200.0,
-                              errorStateBuilder: (cxt, err) {
-                                return const Center(
-                                  child: Text(
-                                    "Uh oh! Something went wrong...",
-                                    textAlign: TextAlign.center,
-                                  ),
-                                );
-                              },
+                            // PrettyQr(
+                            //   image: Assets.images.scanIntro,
+                            //   typeNumber: null,
+                            //   size: 200,
+                            //   data: productsAddController.data.value,
+                            //   errorCorrectLevel: QrErrorCorrectLevel.M,
+                            //   roundEdges: true,
+                            // ),
+                            SfBarcodeGenerator(
+                              value: productsAddController.data.value,
+                              symbology: QRCode(),
+                              showValue: false,
                             ),
+                            // QrImage(
+                            //   backgroundColor: Colors.white,
+                            //   data: productsAddController.data.value,
+                            //   version: QrVersions.auto,
+                            //   size: 200.0,
+                            //   errorStateBuilder: (cxt, err) {
+                            //     return const Center(
+                            //       child: Text(
+                            //         "Uh oh! Something went wrong...",
+                            //         textAlign: TextAlign.center,
+                            //       ),
+                            //     );
+                            //   },
+                            // ),
                             CircleAvatar(
                               radius: 60,
                               foregroundImage: imageFile == null

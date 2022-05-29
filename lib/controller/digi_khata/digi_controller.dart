@@ -49,20 +49,33 @@ class DigiController extends GetxController {
     }
   }
 
-  Future<bool> saveCustomer(CustomerModel customer) async {
+  Future<bool> saveCustomer(
+      CustomerModel customer, BuildContext context) async {
+    var progressDialog = getProgressDialog(
+        context: context, msg: 'Please wait', title: 'Saving Customer');
+
+    progressDialog.show();
     //? to update customer with id
     _mainCollection = _getCollectionRef();
 
     try {
       await _mainCollection.doc(customer.id).set(customer.toMap());
-      showToast(msg: "Added Record", backColor: Colors.green);
+      progressDialog.dismiss();
+
+      showToast(
+          msg: "Success", backColor: Colors.white, textColor: kPrimaryColor);
+
       return true;
     } on FirebaseException {
+      progressDialog.dismiss();
+
       showToast(
         msg: 'Something Went Wrong',
       );
       return false;
     } catch (e) {
+      progressDialog.dismiss();
+
       showToast(
         msg: 'Something Went Wrong',
       );
@@ -89,7 +102,7 @@ class DigiController extends GetxController {
       _mainCollection.doc(id).update({
         kCashRecordsField: FieldValue.arrayUnion([record.toMap()])
       });
-      showToast(msg: "Added Record", backColor: Colors.green);
+      showToast(msg: "Success", backColor: Colors.green);
     } on FirebaseException {
       showToast(
         msg: "Error",

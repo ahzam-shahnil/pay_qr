@@ -4,18 +4,20 @@ import 'package:get/get.dart';
 import 'package:pay_qr/config/app_constants.dart';
 import 'package:pay_qr/config/controllers.dart';
 import 'package:pay_qr/model/digi_khata/customer.dart';
-import 'package:pay_qr/view/main_views/digi_khata/customer_record_view.dart';
+import 'package:pay_qr/utils/utility_helper.dart';
+import 'package:pay_qr/widgets/digi_khata/amount_text.dart';
 import 'package:pay_qr/widgets/digi_khata/reusable_card.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../../model/digi_khata/cash_in_model.dart';
 import 'add_customer/contact_view.dart';
+import 'add_customer/customer_record_view.dart';
 
 class DigiKhataView extends StatefulWidget {
   const DigiKhataView({Key? key}) : super(key: key);
 
   @override
-  _DigiKhataViewState createState() => _DigiKhataViewState();
+  State<DigiKhataView> createState() => _DigiKhataViewState();
 }
 
 class _DigiKhataViewState extends State<DigiKhataView> {
@@ -37,8 +39,9 @@ class _DigiKhataViewState extends State<DigiKhataView> {
     double diye = 0;
     double liye = 0;
     for (var item in records) {
-      diye += item.diye;
-      liye += item.liye;
+      //TODO: fix it here
+      // diye += item.diye;
+      liye += item.paisay;
     }
     total = total + diye + (-liye);
 
@@ -122,25 +125,22 @@ class _DigiKhataViewState extends State<DigiKhataView> {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 6, vertical: 2),
                             child: ListTile(
-                              onTap: () => Get.to(() => CustomerRecordsView(
-                                    customer: data[index],
-                                  )),
-                              isThreeLine: false,
-                              title: Text(data[index].name),
-                              leading: CircleAvatar(
-                                backgroundColor: Colors.blueGrey.shade200,
-                                child: const Icon(
-                                  Icons.person_outline,
-                                  color: Colors.white,
+                                onTap: () => Get.to(() => CustomerRecordsView(
+                                      customer: data[index],
+                                    )),
+                                isThreeLine: false,
+                                title: Text(data[index].name),
+                                leading: CircleAvatar(
+                                  backgroundColor: Colors.blueGrey.shade200,
+                                  child: const Icon(
+                                    Icons.person_outline,
+                                    color: Colors.white,
+                                  ),
                                 ),
-                              ),
-                              trailing: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  getRecordText(data[index].cashRecords)
-                                ],
-                              ),
-                            ),
+                                trailing: AmountText(
+                                    totalAmount: Utility.calculateAmount(
+                                            data[index].cashRecords)
+                                        .toStringAsFixed(0))),
                           ),
                           separatorBuilder: (BuildContext context, int index) =>
                               const Divider(),
@@ -159,9 +159,12 @@ class _DigiKhataViewState extends State<DigiKhataView> {
         onPressed: () async {
           _getPermission();
         },
-        label: const Text('Add customer'),
+        label: const Text(
+          'Add customer',
+          // style: Get.textTheme.headline6,
+        ),
         icon: const Icon(Icons.add),
-        backgroundColor: kPrimaryColor.withOpacity(0.5),
+        backgroundColor: kPrimaryColor,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );

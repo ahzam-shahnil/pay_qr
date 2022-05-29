@@ -2,46 +2,50 @@ import 'dart:convert';
 
 class CashModel {
   final String date;
-  final double liye;
-  final double diye;
+  final double paisay;
+  final String details;
+  final bool isMainDiye;
   CashModel({
     required this.date,
-    required this.liye,
-    required this.diye,
+    required this.paisay,
+    required this.details,
+    required this.isMainDiye,
   });
 
   CashModel copyWith({
     String? date,
-    double? liye,
-    double? diye,
+    double? paisay,
+    String? details,
+    bool? isMainDiye,
   }) {
     return CashModel(
       date: date ?? this.date,
-      liye: liye ?? this.liye,
-      diye: diye ?? this.diye,
+      paisay: paisay ?? this.paisay,
+      details: details ?? this.details,
+      isMainDiye: isMainDiye ?? this.isMainDiye,
     );
   }
 
   CashModel.fromSnapshot(snapshot)
       : date = snapshot.data()['date'],
-        liye = snapshot.data()['liye'],
-        diye = snapshot.data()['diye'];
-
+        paisay = snapshot.data()['paisay'],
+        isMainDiye = snapshot.data()['isMainDiye'],
+        details = snapshot.data()['details'];
   Map<String, dynamic> toMap() {
-    final result = <String, dynamic>{};
-
-    result.addAll({'date': date});
-    result.addAll({'liye': liye});
-    result.addAll({'diye': diye});
-
-    return result;
+    return {
+      'date': date,
+      'paisay': paisay,
+      'details': details,
+      'isMainDiye': isMainDiye,
+    };
   }
 
   factory CashModel.fromMap(Map<String, dynamic> map) {
     return CashModel(
       date: map['date'] ?? '',
-      liye: map['liye']?.toDouble() ?? 0.0,
-      diye: map['diye']?.toDouble() ?? 0.0,
+      paisay: map['paisay']?.toDouble() ?? 0.0,
+      details: map['details'] ?? '',
+      isMainDiye: map['isMainDiye'] ?? false,
     );
   }
 
@@ -51,7 +55,9 @@ class CashModel {
       CashModel.fromMap(json.decode(source));
 
   @override
-  String toString() => 'CashModel(date: $date, liye: $liye, diye: $diye)';
+  String toString() {
+    return 'CashModel(date: $date, paisay: $paisay, details: $details, isMainDiye: $isMainDiye)';
+  }
 
   @override
   bool operator ==(Object other) {
@@ -59,10 +65,16 @@ class CashModel {
 
     return other is CashModel &&
         other.date == date &&
-        other.liye == liye &&
-        other.diye == diye;
+        other.paisay == paisay &&
+        other.details == details &&
+        other.isMainDiye == isMainDiye;
   }
 
   @override
-  int get hashCode => date.hashCode ^ liye.hashCode ^ diye.hashCode;
+  int get hashCode {
+    return date.hashCode ^
+        paisay.hashCode ^
+        details.hashCode ^
+        isMainDiye.hashCode;
+  }
 }

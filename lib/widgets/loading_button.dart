@@ -10,7 +10,7 @@ class LoadingButton extends StatefulWidget {
       : super(key: key);
 
   @override
-  _LoadingButtonState createState() => _LoadingButtonState();
+  State<LoadingButton> createState() => _LoadingButtonState();
 }
 
 class _LoadingButtonState extends State<LoadingButton> {

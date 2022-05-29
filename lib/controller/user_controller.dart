@@ -110,8 +110,8 @@ class UserController extends GetxController {
     } else {
       _mainCollection = firestore.collection(kUserDb);
     }
-    logger.i("UPDATED");
-    logger.d(AuthHelperFirebase.getCurrentUserUid());
+    // logger.i("UPDATED");
+    // logger.d(AuthHelperFirebase.getCurrentUserUid());
     return _mainCollection
         .doc(AuthHelperFirebase.getCurrentUserUid())
         .collection(kProfileCollection)

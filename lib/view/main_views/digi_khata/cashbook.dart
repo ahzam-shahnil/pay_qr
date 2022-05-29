@@ -15,7 +15,7 @@ class CashBook extends StatefulWidget {
   const CashBook({Key? key}) : super(key: key);
 
   @override
-  _CashBookState createState() => _CashBookState();
+  State<CashBook> createState() => _CashBookState();
 }
 
 class _CashBookState extends State<CashBook> {
@@ -32,7 +32,8 @@ class _CashBookState extends State<CashBook> {
     double diye = 0;
 
     for (var item in records) {
-      diye += item.diye;
+      //Todo: fix the model here
+      // diye += item.diye;
     }
     return (total = total + diye).toString();
   }
@@ -42,7 +43,7 @@ class _CashBookState extends State<CashBook> {
     double liye = 0;
 
     for (var item in records) {
-      liye += item.liye;
+      liye += item.paisay;
     }
     return (total = total + liye).toString();
   }
@@ -144,7 +145,7 @@ class _CashBookState extends State<CashBook> {
                                     DataCell(Text(data[i].date.toString())),
                                     DataCell(
                                       Text(
-                                        data[i].liye.toString(),
+                                        data[i].paisay.toString(),
                                         style: const TextStyle(
                                           color: Colors.green,
                                         ),
@@ -152,7 +153,7 @@ class _CashBookState extends State<CashBook> {
                                     ),
                                     DataCell(
                                       Text(
-                                        data[i].diye.toString(),
+                                        data[i].paisay.toString(),
                                         style: const TextStyle(
                                           color: Colors.red,
                                         ),

@@ -23,7 +23,7 @@ class NavHomeScreen extends StatefulWidget {
   const NavHomeScreen({Key? key}) : super(key: key);
 
   @override
-  _NavHomeScreenState createState() => _NavHomeScreenState();
+  State<NavHomeScreen> createState() => _NavHomeScreenState();
 }
 
 class _NavHomeScreenState extends State<NavHomeScreen> {

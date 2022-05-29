@@ -73,7 +73,10 @@ class _ContactViewState extends State<ContactView> {
         resizeToAvoidBottomInset: true,
         backgroundColor: kScanBackColor,
         appBar: AppBar(
-          title: (const Text('Contacts')),
+          title: (Text(
+            'Contacts',
+            style: Get.textTheme.headline6,
+          )),
         ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
@@ -99,7 +102,7 @@ class _ContactViewState extends State<ContactView> {
                 alignment: Alignment.topLeft,
                 child: TextButton(
                   onPressed: () {
-                    Get.to(() => const AddCustomer());
+                    Get.to(() => const AddCustomerContact());
                   },
                   child: const Text(
                     "  + Add new Customer",
@@ -129,11 +132,16 @@ class _ContactViewState extends State<ContactView> {
                             ),
                             title: Text(contact.displayName ?? ''),
                             onTap: () {
-                              Get.to(() => AddCustomer(
-                                    contact: contact,
-                                  ));
-                              // logger.d(contact.displayName);
-                              // logger.d(contact.phones);
+                              if (contact.phones != null) {
+                                Get.to(() => AddCustomerContact(
+                                      displayName: contact.displayName ?? '',
+                                      phoneNo: contact.phones!.isNotEmpty
+                                          ? contact.phones!.first.value ?? ''
+                                          : '',
+                                    ));
+                              }
+                              logger.d(contact.displayName);
+                              logger.d(contact.phones);
                             },
                           );
                   },

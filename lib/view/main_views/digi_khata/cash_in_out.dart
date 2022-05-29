@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'package:pay_qr/config/app_constants.dart';
-import 'package:pay_qr/config/controllers.dart';
-import 'package:pay_qr/model/digi_khata/cash_in_model.dart';
 import 'package:pay_qr/utils/toast_dialogs.dart';
 import 'package:pay_qr/utils/utility_helper.dart';
 import 'package:pay_qr/widgets/digi_khata/reuseable_button.dart';
@@ -17,7 +15,7 @@ class CashInOutView extends StatefulWidget {
 
 class _CashInOutViewState extends State<CashInOutView> {
   DateTime date = DateTime.now();
-  late var formattedDate = getFormatedDate(date);
+  late var formattedDate = Utility.getFormatedDate(date);
 
   final TextEditingController amountCashIn = TextEditingController();
   final TextEditingController amountCashOut = TextEditingController();
@@ -66,7 +64,7 @@ class _CashInOutViewState extends State<CashInOutView> {
                       return;
                     } else {
                       setState(() {
-                        formattedDate =getFormatedDate(newDate);
+                        formattedDate = Utility.getFormatedDate(newDate);
                       });
                     }
                   },
@@ -87,8 +85,9 @@ class _CashInOutViewState extends State<CashInOutView> {
                 }
                 double diye = double.parse(amountCashOut.text.trim());
                 double liye = double.parse(amountCashIn.text.trim());
-                digiController.saveCashInOutKhata(
-                    CashModel(date: formattedDate, liye: liye, diye: diye));
+                //Todo: make cash in model
+                // digiController.saveCashInOutKhata(
+                //     CashModel(date: formattedDate, paisay: liye, diye: diye));
                 Get.back();
               },
             )

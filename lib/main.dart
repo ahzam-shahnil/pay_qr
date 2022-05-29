@@ -14,10 +14,11 @@ import 'package:pay_qr/controller/product_controller.dart';
 import 'package:pay_qr/controller/profile_controller.dart';
 import 'package:pay_qr/controller/sign_up_controller.dart';
 import 'package:pay_qr/controller/user_controller.dart';
-import 'package:pay_qr/view/main_views/digi_khata/add_customer/contact_view.dart';
 import 'controller/login_controller.dart';
 
 import 'controller/product_add_controller.dart';
+
+import 'view/intro_views/splash_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -107,7 +108,7 @@ class App extends StatelessWidget {
         colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.deepOrange)
             .copyWith(secondary: Colors.deepOrangeAccent),
       ),
-      home: const ContactView(),
+      home: const SplashScreen(),
     );
   }
 }
