@@ -7,10 +7,7 @@ import 'package:pay_qr/model/digi_khata/customer.dart';
 import 'package:pay_qr/utils/utility_helper.dart';
 import 'package:pay_qr/widgets/digi_khata/amount_text.dart';
 import 'package:pay_qr/widgets/digi_khata/reusable_card.dart';
-import 'package:permission_handler/permission_handler.dart';
 
-import '../../../model/digi_khata/cash_in_model.dart';
-import 'add_customer/contact_view.dart';
 import 'add_customer/customer_record_view.dart';
 
 class DigiKhataView extends StatefulWidget {
@@ -21,152 +18,154 @@ class DigiKhataView extends StatefulWidget {
 }
 
 class _DigiKhataViewState extends State<DigiKhataView> {
-  Color? inactiveRed = Colors.red[100];
-  Color? activeRed = Colors.red;
-  Color? inactiveGreen = Colors.green[100];
-  Color? activeGreen = Colors.green;
-
-  _getPermission() async {
-    if (await Permission.contacts.request().isGranted) {
-      Get.to(
-        () => const ContactView(),
-      );
-    }
+  // Color? inactiveRed = Colors.red[100];
+  // Color? activeRed = Colors.red;
+  // Color? inactiveGreen = Colors.green[100];
+  // Color? activeGreen = Colors.green;
+  // @override
+  // void didChangeDependencies() {
+  //   amountController.resetData();
+  //   super.didChangeDependencies();
+  // }
+  @override
+  void reassemble() {
+    super.reassemble();
+    amountController.resetData();
+    logger.d('ON resAssemble');
   }
 
-  Widget getRecordText(List<CashModel> records) {
-    double total = 0;
-    double diye = 0;
-    double liye = 0;
-    for (var item in records) {
-      //TODO: fix it here
-      // diye += item.diye;
-      liye += item.paisay;
-    }
-    total = total + diye + (-liye);
-
-    return Text(
-      total.toStringAsFixed(0).replaceAll('-', ''),
-      style: Get.textTheme.headline6
-          ?.copyWith(color: diye > liye ? Colors.green : Colors.red),
-    );
+  @override
+  void dispose() {
+    amountController.resetData();
+    // TODO: implement dispose
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: kScanBackColor,
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-        child: Column(
-          // mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            const SizedBox(
-              height: 16.0,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+      child: Column(
+        children: [
+          const SizedBox(
+            height: 16.0,
+          ),
+          Padding(
+            padding: const EdgeInsets.all(14.0),
+            child: Row(
+              children: [
+                Obx(() => Expanded(
+                      child: ReuseableCard(
+                        textColor: Colors.red,
+                        backColor: kScanBackColor,
+                        text: "Maine Lene hain",
+                        description: (amountController.totalPaisayLene.value -
+                                    amountController.totalPaisayDene.value) <
+                                0
+                            ? (amountController.totalPaisayLene.value -
+                                    amountController.totalPaisayDene.value)
+                                .toStringAsFixed(0)
+                                .replaceAll('-', '')
+                            : '0',
+                        isMaineLene: true,
+                      ),
+                    )),
+                const SizedBox(
+                  width: 8.0,
+                ),
+                Obx(() => Expanded(
+                      child: ReuseableCard(
+                        backColor: kScanBackColor,
+                        textColor: Colors.green,
+                        text: "Maine Dene hain",
+                        description: (amountController.totalPaisayLene.value -
+                                    amountController.totalPaisayDene.value) >
+                                0
+                            ? (amountController.totalPaisayLene.value +
+                                    amountController.totalPaisayDene.value)
+                                .toStringAsFixed(0)
+                                .replaceAll('-', '')
+                            : '0',
+                        isMaineLene: false,
+                      ),
+                    )),
+              ],
             ),
-            Padding(
-              padding: const EdgeInsets.all(14.0),
-              child: Row(
-                children: const [
-                  Expanded(
-                    child: ReuseableCard(
-                      textcolour: Colors.white,
-                      buttonColour: Colors.red,
-                      text: "To be given",
-                      description: '',
-                    ),
-                  ),
-                  SizedBox(
-                    width: 8.0,
-                  ),
-                  Expanded(
-                    child: ReuseableCard(
-                      buttonColour: Colors.green,
-                      textcolour: Colors.white,
-                      text: "To be received",
-                      description: '',
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            StreamBuilder(
-              stream: digiController.getRecordStream(),
-              builder: (BuildContext context,
-                  AsyncSnapshot<QuerySnapshot> snapshot) {
-                if (snapshot.hasError) {
-                  return const Center(child: Text('Something went wrong'));
-                }
+          ),
+          StreamBuilder(
+            stream: digiController.getRecordStream(),
+            builder:
+                (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (snapshot.hasError) {
+                return const Center(child: Text('Something went wrong'));
+              }
 
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
 
-                if (snapshot.hasData) {
-                  var data = snapshot.data!.docs
-                      .map((e) => CustomerModel.fromSnapshot(e))
-                      .toList();
+              if (snapshot.hasData) {
+                var data = snapshot.data!.docs
+                    .map((e) => CustomerModel.fromSnapshot(e))
+                    .toList();
 
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    // crossAxisAlignment: CrossAxisAlignment.center,
-                    // mainAxisSize: MainAxisSize.min,
+                return Card(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
                     children: [
-                      const Divider(),
+                      // const Divider(),
                       SizedBox(
-                        height: Get.size.height * 0.7,
+                        height: Get.size.height * 0.63,
                         child: ListView.separated(
                           shrinkWrap: true,
                           itemCount: data.length,
                           primary: true,
-                          itemBuilder: (context, index) => Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 6, vertical: 2),
-                            child: ListTile(
-                                onTap: () => Get.to(() => CustomerRecordsView(
-                                      customer: data[index],
-                                    )),
-                                isThreeLine: false,
-                                title: Text(data[index].name),
-                                leading: CircleAvatar(
-                                  backgroundColor: Colors.blueGrey.shade200,
-                                  child: const Icon(
-                                    Icons.person_outline,
-                                    color: Colors.white,
-                                  ),
+                          itemBuilder: (context, index) {
+                            double amount = Utility.calculateAmount(
+                                data[index].cashRecords);
+
+                            //? to fix marks needs build we use Future delayed
+                            Future.delayed(Duration.zero, () {
+                              if (amount < 0) {
+                                amountController.totalPaisayDene.value +=
+                                    amount;
+                              } else {
+                                amountController.totalPaisayLene.value +=
+                                    amount;
+                              }
+                            });
+                            return ListTile(
+                              onTap: () => Get.to(() => CustomerRecordsView(
+                                    customer: data[index],
+                                  )),
+                              isThreeLine: false,
+                              title: Text(data[index].name),
+                              leading: CircleAvatar(
+                                backgroundColor: Colors.blueGrey.shade200,
+                                child: const Icon(
+                                  Icons.person_outline,
+                                  color: Colors.white,
                                 ),
-                                trailing: AmountText(
-                                    totalAmount: Utility.calculateAmount(
-                                            data[index].cashRecords)
-                                        .toStringAsFixed(0))),
-                          ),
+                              ),
+                              trailing: AmountText(
+                                  totalAmount: amount.toStringAsFixed(0)),
+                            );
+                          },
                           separatorBuilder: (BuildContext context, int index) =>
                               const Divider(),
                         ),
                       ),
                     ],
-                  );
-                }
-                return const Center(child: CircularProgressIndicator());
-              },
-            )
-          ],
-        ),
+                  ),
+                );
+              }
+              return const Center(child: CircularProgressIndicator());
+            },
+          )
+        ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () async {
-          _getPermission();
-        },
-        label: const Text(
-          'Add customer',
-          // style: Get.textTheme.headline6,
-        ),
-        icon: const Icon(Icons.add),
-        backgroundColor: kPrimaryColor,
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 }

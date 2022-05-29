@@ -15,6 +15,7 @@ import 'package:pay_qr/components/rounded_rectangular_input_field.dart';
 
 import 'package:pay_qr/config/app_constants.dart';
 import 'package:pay_qr/config/controllers.dart';
+import 'package:pay_qr/gen/assets.gen.dart';
 
 import 'package:pay_qr/model/product_model.dart';
 
@@ -69,10 +70,13 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    // Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Add Product"),
+        title: Text(
+          "Add Product",
+          style: Get.textTheme.headline6,
+        ),
         actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -91,13 +95,15 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
         child: ListView(
           children: [
             SizedBox(
-              height: size.height * 0.055,
+              height: Get.size.height * 0.045,
             ),
             Column(
               children: [
                 Obx(() => RepaintBoundary(
                       key: _globalKey,
                       child: Container(
+                        height: Get.size.height * 0.45,
+                        width: Get.size.width * 0.9,
                         decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(20)),
@@ -106,43 +112,35 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            // PrettyQr(
-                            //   image: Assets.images.scanIntro,
-                            //   typeNumber: null,
-                            //   size: 200,
-                            //   data: productsAddController.data.value,
-                            //   errorCorrectLevel: QrErrorCorrectLevel.M,
-                            //   roundEdges: true,
-                            // ),
-                            SfBarcodeGenerator(
-                              value: productsAddController.data.value,
-                              symbology: QRCode(),
-                              showValue: false,
+                            SizedBox(
+                              height: Get.size.height * 0.3,
+                              child: SfBarcodeGenerator(
+                                value: productsAddController.data.value,
+                                symbology: QRCode(),
+                                barColor: kPrimaryColor,
+                                showValue: false,
+                              ),
                             ),
-                            // QrImage(
-                            //   backgroundColor: Colors.white,
-                            //   data: productsAddController.data.value,
-                            //   version: QrVersions.auto,
-                            //   size: 200.0,
-                            //   errorStateBuilder: (cxt, err) {
-                            //     return const Center(
-                            //       child: Text(
-                            //         "Uh oh! Something went wrong...",
-                            //         textAlign: TextAlign.center,
-                            //       ),
-                            //     );
-                            //   },
-                            // ),
-                            CircleAvatar(
-                              radius: 60,
-                              foregroundImage: imageFile == null
-                                  ? null
-                                  : Image.file(
-                                      imageFile!,
-                                      // scale: 10,
-                                      fit: BoxFit.fill,
-                                    ).image,
-                              backgroundColor: Colors.deepPurple.shade200,
+                            Container(
+                              height: Get.size.height * 0.12,
+                              width: Get.size.height * 0.12,
+                              padding: const EdgeInsets.all(8),
+                              clipBehavior: Clip.hardEdge,
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.rectangle,
+                                  borderRadius: BorderRadius.circular(15),
+                                  color: imageFile == null
+                                      ? Colors.deepOrange.shade200
+                                      : Colors.transparent,
+                                  image: DecorationImage(
+                                    image: imageFile == null
+                                        ? Assets.images.placeholder
+                                        : Image.file(
+                                            imageFile!,
+                                            // scale: 10,
+                                            fit: BoxFit.fill,
+                                          ).image,
+                                  )),
                               child: imageFile == null
                                   ? Text(
                                       "Product\nPicture\nHere",
@@ -185,7 +183,7 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                     children: [
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                            primary: Colors.yellow.shade900,
+                            // primary: Colors.yellow.shade900,
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20))),
                         onPressed: () async {
@@ -259,7 +257,7 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                       ),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                            primary: Colors.green,
+                            // primary: Colors.green,
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20))),
                         onPressed: () async {

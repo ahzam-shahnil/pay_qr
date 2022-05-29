@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:pay_qr/config/app_constants.dart';
 import 'package:pay_qr/config/firebase.dart';
 import 'package:pay_qr/controller/cart_controller.dart';
+import 'package:pay_qr/controller/digi_khata/amount_controller.dart';
 import 'package:pay_qr/controller/digi_khata/digi_controller.dart';
 import 'package:pay_qr/controller/product_controller.dart';
 import 'package:pay_qr/controller/profile_controller.dart';
@@ -25,6 +26,7 @@ void main() async {
 
   await initialization.then((value) {
     Get.put(UserController());
+    Get.put(AmountController());
     Get.put(LoginController());
     Get.put(ProductController());
     Get.put(CartController());

@@ -4,42 +4,42 @@ import 'package:line_icons/line_icons.dart';
 
 class ReuseableCard extends StatelessWidget {
   final String text;
-  final Color textcolour;
-  final Color buttonColour;
+  final Color textColor;
+  final Color backColor;
   final String description;
+  final bool isMaineLene;
 
   const ReuseableCard(
       {Key? key,
       required this.text,
-      required this.textcolour,
-      required this.buttonColour,
-      required this.description})
+      required this.textColor,
+      required this.backColor,
+      required this.description,
+      required this.isMaineLene})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      contentPadding: const EdgeInsets.symmetric(horizontal: 6, vertical: 8),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-      tileColor: buttonColour.withOpacity(0.7),
+      tileColor: backColor,
       leading: CircleAvatar(
-        backgroundColor: buttonColour,
+        backgroundColor: textColor,
+        radius: Get.size.shortestSide * 0.048,
         child: Icon(
-          text.contains('hand') ||
-                  text.contains('received') ||
-                  text.contains('Lainy') ||
-                  description.contains('Kamae')
-              ? Icons.download_for_offline_rounded
-              : LineIcons.arrowUp,
+          isMaineLene ? Icons.download_for_offline_rounded : LineIcons.arrowUp,
           color: Colors.white,
         ),
       ),
-      title: Text(
-        text,
-        style: Get.textTheme.headline6,
-      ),
       subtitle: Text(
-        description,
-        style: Get.textTheme.headline6,
+        text,
+        style: Get.textTheme.bodyMedium?.copyWith(color: textColor),
+      ),
+      title: Text(
+        'Rs $description',
+        style: Get.textTheme.headline6?.copyWith(
+            color: textColor, fontSize: Get.size.shortestSide * 0.045),
       ),
     );
   }

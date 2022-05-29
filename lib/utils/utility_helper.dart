@@ -22,4 +22,10 @@ class Utility {
     }
     return total = total + diye + (-liye);
   }
+
+  static String calculateHisaab(
+      {required double totalLene, required double totalDene}) {
+    double total = (totalLene - totalDene);
+    return total < 0 ? 'Hisaab Clear h' : total.toStringAsFixed(0);
+  }
 }

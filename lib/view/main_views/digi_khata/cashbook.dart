@@ -85,12 +85,13 @@ class _CashBookState extends State<CashBook> {
                       children: [
                         Expanded(
                           child: ReuseableCard(
-                            textcolour: Colors.white,
-                            buttonColour: Colors.green,
+                            textColor: Colors.white,
+                            backColor: Colors.green,
                             description: "Aaj ki Kamae",
                             text: calculateCashIn(data) == '0.0'
                                 ? ''
                                 : calculateCashIn(data),
+                            isMaineLene: true,
                           ),
                         ),
                         const SizedBox(
@@ -98,12 +99,13 @@ class _CashBookState extends State<CashBook> {
                         ),
                         Expanded(
                           child: ReuseableCard(
-                            buttonColour: Colors.red,
-                            textcolour: Colors.white,
+                            backColor: Colors.red,
+                            textColor: Colors.white,
                             description: "Moujouda Cash",
                             text: calculateCashOut(data) == '0.0'
                                 ? ''
                                 : calculateCashOut(data),
+                            isMaineLene: false,
                           ),
                         ),
                       ],

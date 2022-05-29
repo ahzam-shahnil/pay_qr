@@ -1,5 +1,6 @@
 // Project imports:
 import 'package:pay_qr/controller/cart_controller.dart';
+import 'package:pay_qr/controller/digi_khata/amount_controller.dart';
 import 'package:pay_qr/controller/digi_khata/digi_controller.dart';
 import 'package:pay_qr/controller/login_controller.dart';
 import 'package:pay_qr/controller/product_add_controller.dart';
@@ -19,3 +20,4 @@ ProductAddController productsAddController = ProductAddController.instance;
 // PaymentController paymentController = PaymentController.instance;
 // PaymentsController paymentsController = PaymentsController.instance;
 DigiController digiController = DigiController.instance;
+AmountController amountController = AmountController.instance;
