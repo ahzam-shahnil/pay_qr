@@ -89,13 +89,10 @@ class _AddCustomerContactState extends State<AddCustomerContact> {
                   if (!result) {
                     return;
                   } else {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => CustomerRecordsView(
-                                customer: customer,
-                              )),
-                    );
+                    Get.back();
+                    Get.to(() => CustomerRecordsView(
+                          customer: customer,
+                        ));
                   }
                 },
               ),

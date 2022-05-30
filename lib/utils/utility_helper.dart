@@ -2,9 +2,9 @@ import 'package:intl/intl.dart';
 import 'package:pay_qr/model/digi_khata/cash_in_model.dart';
 
 class Utility {
-  static getFormatedDate(date) {
+  static getFormatedDate(DateTime date) {
     var inputFormat = DateFormat('yyyy-MM-dd HH:mm');
-    var inputDate = inputFormat.parse(date);
+    var inputDate = inputFormat.parse(date.toString());
     var outputFormat = DateFormat('dd/MM/yyyy');
     return outputFormat.format(inputDate);
   }

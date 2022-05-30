@@ -8,11 +8,21 @@ import 'package:pay_qr/model/digi_khata/cash_in_model.dart';
 import 'package:pay_qr/model/digi_khata/customer.dart';
 import 'package:pay_qr/utils/auth_helper_firebase.dart';
 import 'package:pay_qr/utils/toast_dialogs.dart';
+import 'package:permission_handler/permission_handler.dart';
+
+import '../../view/main_views/digi_khata/add_customer/contact_view.dart';
 
 class DigiController extends GetxController {
   static DigiController instance = Get.find();
   late CollectionReference _mainCollection;
   var customer = <CustomerModel>[].obs;
+  getPermissionAndGotoContactView() async {
+    if (await Permission.contacts.request().isGranted) {
+      Get.to(
+        () => const ContactView(),
+      );
+    }
+  }
 
   getRecordStream() {
     _mainCollection = _getCollectionRef();
@@ -95,7 +105,8 @@ class DigiController extends GetxController {
     }
   }
 
-  updateCustomerRecord({required String id, required CashModel record}) async {
+  Future<bool> updateCustomerRecord(
+      {required String id, required CashModel record}) async {
     logger.d(id);
     _mainCollection = await _getCollectionRef();
     try {
@@ -103,10 +114,17 @@ class DigiController extends GetxController {
         kCashRecordsField: FieldValue.arrayUnion([record.toMap()])
       });
       showToast(msg: "Success", backColor: Colors.green);
+      return true;
     } on FirebaseException {
       showToast(
         msg: "Error",
       );
+      return false;
+    } catch (e) {
+      showToast(
+        msg: "Error",
+      );
+      return false;
     }
   }
 

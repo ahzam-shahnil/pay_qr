@@ -5,9 +5,9 @@ import 'package:get/get.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:pay_qr/config/app_constants.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:pay_qr/config/controllers.dart';
 
-import 'add_customer/contact_view.dart';
+import 'cash_in_out.dart';
 import 'cashbook.dart';
 import 'digi_khata_view.dart';
 
@@ -19,14 +19,6 @@ class DigiNavHome extends StatefulWidget {
 }
 
 class _DigiNavHomeState extends State<DigiNavHome> {
-  _getPermission() async {
-    if (await Permission.contacts.request().isGranted) {
-      Get.to(
-        () => const ContactView(),
-      );
-    }
-  }
-
   int selectedIndex = 0;
 
   final padding = const EdgeInsets.symmetric(horizontal: 40, vertical: 12);
@@ -72,18 +64,33 @@ class _DigiNavHomeState extends State<DigiNavHome> {
         },
         itemCount: 2,
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () async {
-          _getPermission();
-        },
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-        label: const Text(
-          'Add customer',
-          // style: Get.textTheme.headline6,
-        ),
-        icon: const Icon(Icons.add),
-        backgroundColor: kPrimaryColor,
-      ),
+      floatingActionButton: selectedIndex == 0
+          ? FloatingActionButton.extended(
+              onPressed: () async {
+                digiController.getPermissionAndGotoContactView();
+              },
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30)),
+              label: const Text(
+                'Add customer',
+                // style: Get.textTheme.headline6,
+              ),
+              icon: const Icon(Icons.add),
+              backgroundColor: kPrimaryColor,
+            )
+          : FloatingActionButton.extended(
+              onPressed: () {
+                Get.to(() => const CashInOutView());
+              },
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30)),
+              label: const Text(
+                'Add Entries',
+                // style: Get.textTheme.headline6,
+              ),
+              icon: const Icon(Icons.add),
+              backgroundColor: kPrimaryColor,
+            ),
       bottomNavigationBar: SafeArea(
         child: Container(
           margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),

@@ -103,16 +103,20 @@ class _AddCustomerRecordState extends State<AddCustomerRecord> {
                     isMainDiye: widget.isMainDiye,
                   );
                   logger.d(record);
-                  await digiController.updateCustomerRecord(
+                  bool result = await digiController.updateCustomerRecord(
                       id: widget.customer!.id, record: record);
-//TODO: replacing the screen customers
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => CustomerRecordsView(
-                              customer: widget.customer!,
-                            )),
-                  );
+                  if (!mounted) return;
+
+                  if (result) {
+                    Get.back();
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => CustomerRecordsView(
+                                customer: widget.customer!,
+                              )),
+                    );
+                  }
                 },
               ),
             )

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pay_qr/config/app_constants.dart';
 import 'package:pay_qr/config/controllers.dart';
+import 'package:pay_qr/gen/assets.gen.dart';
 import 'package:pay_qr/model/digi_khata/customer.dart';
 import 'package:pay_qr/utils/utility_helper.dart';
 import 'package:pay_qr/widgets/digi_khata/amount_text.dart';
@@ -37,7 +38,6 @@ class _DigiKhataViewState extends State<DigiKhataView> {
   @override
   void dispose() {
     amountController.resetData();
-    // TODO: implement dispose
     super.dispose();
   }
 
@@ -102,7 +102,9 @@ class _DigiKhataViewState extends State<DigiKhataView> {
 
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(
-                  child: CircularProgressIndicator(),
+                  child: CircularProgressIndicator(
+                    color: kScanBackColor,
+                  ),
                 );
               }
 
@@ -115,53 +117,84 @@ class _DigiKhataViewState extends State<DigiKhataView> {
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
                     children: [
-                      // const Divider(),
                       SizedBox(
-                        height: Get.size.height * 0.63,
-                        child: ListView.separated(
-                          shrinkWrap: true,
-                          itemCount: data.length,
-                          primary: true,
-                          itemBuilder: (context, index) {
-                            double amount = Utility.calculateAmount(
-                                data[index].cashRecords);
+                        height: Get.size.height * 0.65,
+                        child: data.isNotEmpty
+                            ? ListView.separated(
+                                shrinkWrap: true,
+                                itemCount: data.length,
+                                primary: true,
+                                itemBuilder: (context, index) {
+                                  double amount = Utility.calculateAmount(
+                                      data[index].cashRecords);
 
-                            //? to fix marks needs build we use Future delayed
-                            Future.delayed(Duration.zero, () {
-                              if (amount < 0) {
-                                amountController.totalPaisayDene.value +=
-                                    amount;
-                              } else {
-                                amountController.totalPaisayLene.value +=
-                                    amount;
-                              }
-                            });
-                            return ListTile(
-                              onTap: () => Get.to(() => CustomerRecordsView(
-                                    customer: data[index],
-                                  )),
-                              isThreeLine: false,
-                              title: Text(data[index].name),
-                              leading: CircleAvatar(
-                                backgroundColor: Colors.blueGrey.shade200,
-                                child: const Icon(
-                                  Icons.person_outline,
-                                  color: Colors.white,
+                                  //? to fix marks needs build we use Future delayed
+                                  Future.delayed(Duration.zero, () {
+                                    if (amount < 0) {
+                                      amountController.totalPaisayDene.value +=
+                                          amount;
+                                    } else {
+                                      amountController.totalPaisayLene.value +=
+                                          amount;
+                                    }
+                                  });
+                                  return ListTile(
+                                    onTap: () =>
+                                        Get.to(() => CustomerRecordsView(
+                                              customer: data[index],
+                                            )),
+                                    isThreeLine: false,
+                                    title: Text(data[index].name),
+                                    leading: CircleAvatar(
+                                      backgroundColor: Colors.blueGrey.shade200,
+                                      child: const Icon(
+                                        Icons.person_outline,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    trailing: AmountText(
+                                        totalAmount: amount.toStringAsFixed(0)),
+                                  );
+                                },
+                                separatorBuilder:
+                                    (BuildContext context, int index) =>
+                                        const Divider(),
+                              )
+                            : SizedBox(
+                                height: Get.size.height * 0.65,
+                                width: double.infinity,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    digiController
+                                        .getPermissionAndGotoContactView();
+                                  },
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Image(
+                                        image: Assets.images.addUser,
+                                        height: Get.size.height * 0.2,
+                                      ),
+                                      Text(
+                                        'Tap Here to Add customer',
+                                        style: Get.textTheme.headline5
+                                            ?.copyWith(
+                                                color: kPrimaryColor,
+                                                fontWeight: FontWeight.bold),
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ),
-                              trailing: AmountText(
-                                  totalAmount: amount.toStringAsFixed(0)),
-                            );
-                          },
-                          separatorBuilder: (BuildContext context, int index) =>
-                              const Divider(),
-                        ),
                       ),
                     ],
                   ),
                 );
               }
-              return const Center(child: CircularProgressIndicator());
+              return const Center(
+                  child: CircularProgressIndicator(
+                color: kScanBackColor,
+              ));
             },
           )
         ],

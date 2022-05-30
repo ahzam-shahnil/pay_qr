@@ -12,6 +12,10 @@ import 'package:flutter/services.dart';
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
+  /// File path: assets/images/add_user.png
+  AssetGenImage get addUser =>
+      const AssetGenImage('assets/images/add_user.png');
+
   $AssetsImagesOnboard1stGen get onboard1st =>
       const $AssetsImagesOnboard1stGen();
   $AssetsImagesOnboard2ndGen get onboard2nd =>
