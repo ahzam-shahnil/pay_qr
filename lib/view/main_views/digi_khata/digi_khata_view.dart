@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:pay_qr/config/app_constants.dart';
 import 'package:pay_qr/config/controllers.dart';
 import 'package:pay_qr/gen/assets.gen.dart';
-import 'package:pay_qr/model/digi_khata/customer.dart';
+import 'package:pay_qr/model/customer.dart';
 import 'package:pay_qr/utils/utility_helper.dart';
 import 'package:pay_qr/widgets/digi_khata/amount_text.dart';
 import 'package:pay_qr/widgets/digi_khata/reusable_card.dart';
@@ -24,10 +24,12 @@ class _DigiKhataViewState extends State<DigiKhataView> {
   // Color? inactiveGreen = Colors.green[100];
   // Color? activeGreen = Colors.green;
   // @override
+  // @override
   // void didChangeDependencies() {
   //   amountController.resetData();
   //   super.didChangeDependencies();
   // }
+
   @override
   void reassemble() {
     super.reassemble();
@@ -50,48 +52,6 @@ class _DigiKhataViewState extends State<DigiKhataView> {
           const SizedBox(
             height: 16.0,
           ),
-          Padding(
-            padding: const EdgeInsets.all(14.0),
-            child: Row(
-              children: [
-                Obx(() => Expanded(
-                      child: ReuseableCard(
-                        textColor: Colors.red,
-                        backColor: kScanBackColor,
-                        text: "Maine Lene hain",
-                        description: (amountController.totalPaisayLene.value -
-                                    amountController.totalPaisayDene.value) <
-                                0
-                            ? (amountController.totalPaisayLene.value -
-                                    amountController.totalPaisayDene.value)
-                                .toStringAsFixed(0)
-                                .replaceAll('-', '')
-                            : '0',
-                        isMaineLene: true,
-                      ),
-                    )),
-                const SizedBox(
-                  width: 8.0,
-                ),
-                Obx(() => Expanded(
-                      child: ReuseableCard(
-                        backColor: kScanBackColor,
-                        textColor: Colors.green,
-                        text: "Maine Dene hain",
-                        description: (amountController.totalPaisayLene.value -
-                                    amountController.totalPaisayDene.value) >
-                                0
-                            ? (amountController.totalPaisayLene.value +
-                                    amountController.totalPaisayDene.value)
-                                .toStringAsFixed(0)
-                                .replaceAll('-', '')
-                            : '0',
-                        isMaineLene: false,
-                      ),
-                    )),
-              ],
-            ),
-          ),
           StreamBuilder(
             stream: digiController.getRecordStream(),
             builder:
@@ -112,12 +72,62 @@ class _DigiKhataViewState extends State<DigiKhataView> {
                 var data = snapshot.data!.docs
                     .map((e) => CustomerModel.fromSnapshot(e))
                     .toList();
-
-                return Card(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      SizedBox(
+                // data.isEmpty ? amountController.resetData() : null;
+                return Column(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(14.0),
+                      child: Row(
+                        children: [
+                          Obx(() => Expanded(
+                                child: ReuseableCard(
+                                  textColor: Colors.red,
+                                  backColor: kScanBackColor,
+                                  text: "Maine Lene hain",
+                                  title:
+                                      (amountController.totalPaisayLene.value -
+                                                  amountController
+                                                      .totalPaisayDene.value) >
+                                              0
+                                          ? (amountController
+                                                      .totalPaisayLene.value -
+                                                  amountController
+                                                      .totalPaisayDene.value)
+                                              .toStringAsFixed(0)
+                                              .replaceAll('-', '')
+                                          : '0',
+                                  isMaineLene: true,
+                                ),
+                              )),
+                          const SizedBox(
+                            width: 8.0,
+                          ),
+                          Obx(() => Expanded(
+                                child: ReuseableCard(
+                                  backColor: kScanBackColor,
+                                  textColor: Colors.green,
+                                  text: "Maine Dene hain",
+                                  title:
+                                      (amountController.totalPaisayLene.value -
+                                                  amountController
+                                                      .totalPaisayDene.value) <
+                                              0
+                                          ? (amountController
+                                                      .totalPaisayLene.value +
+                                                  amountController
+                                                      .totalPaisayDene.value)
+                                              .toStringAsFixed(0)
+                                              .replaceAll('-', '')
+                                          : '0',
+                                  isMaineLene: false,
+                                ),
+                              )),
+                        ],
+                      ),
+                    ),
+                    Card(
+                      child: SizedBox(
                         height: Get.size.height * 0.65,
                         child: data.isNotEmpty
                             ? ListView.separated(
@@ -144,7 +154,7 @@ class _DigiKhataViewState extends State<DigiKhataView> {
                                               customer: data[index],
                                             )),
                                     isThreeLine: false,
-                                    title: Text(data[index].name),
+                                    title: Text(data[index].name ),
                                     leading: CircleAvatar(
                                       backgroundColor: Colors.blueGrey.shade200,
                                       child: const Icon(
@@ -187,8 +197,8 @@ class _DigiKhataViewState extends State<DigiKhataView> {
                                 ),
                               ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 );
               }
               return const Center(

@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pay_qr/config/app_constants.dart';
 import 'package:pay_qr/config/controllers.dart';
-import 'package:pay_qr/model/digi_khata/customer.dart';
+import 'package:pay_qr/model/customer.dart';
 
-import 'package:pay_qr/widgets/digi_khata/reuseable_button.dart';
 import 'package:uuid/uuid.dart';
 
 import 'customer_record_view.dart';
@@ -67,34 +66,41 @@ class _AddCustomerContactState extends State<AddCustomerContact> {
                     floatingLabelBehavior: FloatingLabelBehavior.auto),
               ),
               const Spacer(),
-              ReusableButton(
-                text: 'Next',
-                onpress: () async {
-                  if (displayNameController.text.trim().isEmpty) {
-                    return;
-                  }
-                  if (phoneNoController.text.trim().isEmpty) {
-                    return;
-                  }
-                  //TODO: add constraint to not add duplicate contacts
-                  var uid = const Uuid();
-                  String id = uid.v4();
-                  var customer = CustomerModel(
-                      name: displayNameController.text.trim(),
-                      phoneNo: phoneNoController.text.trim(),
-                      cashRecords: [],
-                      id: id);
-                  bool result =
-                      await digiController.saveCustomer(customer, context);
-                  if (!result) {
-                    return;
-                  } else {
-                    Get.back();
-                    Get.to(() => CustomerRecordsView(
-                          customer: customer,
-                        ));
-                  }
-                },
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: Get.size.width * 0.3),
+                child: ElevatedButton(
+                  child: Text(
+                    'Next',
+                    style:
+                        Get.textTheme.headline6?.copyWith(color: kPrimaryColor),
+                  ),
+                  onPressed: () async {
+                    if (displayNameController.text.trim().isEmpty) {
+                      return;
+                    }
+                    if (phoneNoController.text.trim().isEmpty) {
+                      return;
+                    }
+                    //TODO: add constraint to not add duplicate contacts
+                    var uid = const Uuid();
+                    String id = uid.v4();
+                    var customer = CustomerModel(
+                        name: displayNameController.text.trim(),
+                        phoneNo: phoneNoController.text.trim(),
+                        cashRecords: [],
+                        id: id);
+                    bool result =
+                        await digiController.saveCustomer(customer, context);
+                    if (!result) {
+                      return;
+                    } else {
+                      Get.back();
+                      Get.to(() => CustomerRecordsView(
+                            customer: customer,
+                          ));
+                    }
+                  },
+                ),
               ),
             ],
           ),

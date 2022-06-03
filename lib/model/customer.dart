@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 
-import 'package:pay_qr/model/digi_khata/cash_in_model.dart';
+import 'package:pay_qr/model/digi_khata/cash_model.dart';
 
 class CustomerModel {
   final String id;

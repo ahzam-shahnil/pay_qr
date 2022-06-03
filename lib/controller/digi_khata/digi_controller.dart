@@ -4,8 +4,8 @@ import 'package:get/get.dart';
 import 'package:pay_qr/config/app_constants.dart';
 import 'package:pay_qr/config/controllers.dart';
 import 'package:pay_qr/config/firebase.dart';
-import 'package:pay_qr/model/digi_khata/cash_in_model.dart';
-import 'package:pay_qr/model/digi_khata/customer.dart';
+import 'package:pay_qr/model/customer.dart';
+import 'package:pay_qr/model/digi_khata/cash_model.dart';
 import 'package:pay_qr/utils/auth_helper_firebase.dart';
 import 'package:pay_qr/utils/toast_dialogs.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -36,6 +36,8 @@ class DigiController extends GetxController {
       return _mainCollection
           .doc(AuthHelperFirebase.getCurrentUserUid())
           .collection(kCashInOutCollection)
+          .orderBy('date', descending: true)
+          // .startAfter(lastDoc)
           .snapshots();
     } on FirebaseException {
       showToast(
@@ -44,18 +46,133 @@ class DigiController extends GetxController {
     }
   }
 
-  saveCashInOutKhata(CashModel cash) async {
+  Future<bool> saveCashInOutKhata({required CashModel record}) async {
     _mainCollection = _getCashInOutCollectionRef();
+    DocumentReference? doc;
     try {
-      await _mainCollection
+      doc = _mainCollection
           .doc(AuthHelperFirebase.getCurrentUserUid())
           .collection(kCashInOutCollection)
-          .add(cash.toMap());
+          .doc();
+      //*setting doc id here
+      record = record.copyWith(id: doc.id);
+      await doc.set(
+        record.toMap(),
+      );
       showToast(msg: 'Success', backColor: Colors.green);
+      return true;
     } on FirebaseException {
       showToast(
         msg: 'Error',
       );
+      return false;
+    } catch (e) {
+      showToast(
+        msg: 'Error',
+      );
+      return false;
+    }
+  }
+
+  Future<bool> updateCashInOutKhata({required CashModel record}) async {
+    _mainCollection = _getCashInOutCollectionRef();
+    DocumentReference docRef;
+    try {
+      docRef = _mainCollection
+          .doc(AuthHelperFirebase.getCurrentUserUid())
+          .collection(kCashInOutCollection)
+          .doc(record.id);
+      // .update(record.toMap());
+      await docRef.set(record.toMap());
+      showToast(msg: 'Success', backColor: Colors.green);
+      return true;
+    } on FirebaseException {
+      showToast(
+        msg: 'Error',
+      );
+      return false;
+    } catch (e) {
+      showToast(
+        msg: 'Error',
+      );
+      return false;
+    }
+  }
+
+  // void removeCashRecord(CartItemModel cartItem) {
+  //   try {
+  //     userController.updateUserData({
+  //       "cart": FieldValue.arrayRemove([cartItem.toMap()])
+  //     });
+  //   }
+  // }
+
+  Future<bool> deleteCashInOutKhata({required String id}) async {
+    _mainCollection = _getCashInOutCollectionRef();
+
+    try {
+      await _mainCollection
+          .doc(AuthHelperFirebase.getCurrentUserUid())
+          .collection(kCashInOutCollection)
+          .doc(id)
+          .delete();
+      // .update(record.toMap());
+      showToast(msg: 'Success', backColor: Colors.green);
+      return true;
+    } on FirebaseException {
+      showToast(
+        msg: 'Error',
+      );
+      return false;
+    } catch (e) {
+      showToast(
+        msg: 'Error',
+      );
+      return false;
+    }
+  }
+
+  Future<bool> removeCustomerRecord({required CustomerModel customer}) async {
+    logger.d(customer);
+    _mainCollection = await _getCollectionRef();
+    try {
+      // logger.d(record);
+      _mainCollection.doc(customer.id).set(customer.toMap());
+      showToast(msg: "Success", backColor: Colors.green);
+      return true;
+    } on FirebaseException {
+      showToast(
+        msg: "Error",
+      );
+      return false;
+    } catch (e) {
+      Get.snackbar("Error", "Cannot remove this");
+      // debugPrint(e);
+      logger.e(e);
+      return false;
+    }
+  }
+
+  Future<bool> updateCustomerRecord(
+      {required String id, required CashModel record}) async {
+    logger.d(id);
+    _mainCollection = await _getCollectionRef();
+    try {
+      _mainCollection.doc(id).update({
+        kCashRecordsField: FieldValue.arrayUnion([record.toMap()])
+      });
+      showToast(msg: "Success", backColor: Colors.green);
+      return true;
+    } on FirebaseException {
+      showToast(
+        msg: "Error",
+      );
+      return false;
+    } catch (e) {
+      showToast(
+        msg: "Error",
+      );
+      return false;
     }
   }
 
@@ -102,29 +219,6 @@ class DigiController extends GetxController {
     } catch (e) {
       logger.e(e);
       return null;
-    }
-  }
-
-  Future<bool> updateCustomerRecord(
-      {required String id, required CashModel record}) async {
-    logger.d(id);
-    _mainCollection = await _getCollectionRef();
-    try {
-      _mainCollection.doc(id).update({
-        kCashRecordsField: FieldValue.arrayUnion([record.toMap()])
-      });
-      showToast(msg: "Success", backColor: Colors.green);
-      return true;
-    } on FirebaseException {
-      showToast(
-        msg: "Error",
-      );
-      return false;
-    } catch (e) {
-      showToast(
-        msg: "Error",
-      );
-      return false;
     }
   }
 

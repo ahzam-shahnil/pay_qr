@@ -15,6 +15,7 @@ import 'package:pay_qr/controller/product_controller.dart';
 import 'package:pay_qr/controller/profile_controller.dart';
 import 'package:pay_qr/controller/sign_up_controller.dart';
 import 'package:pay_qr/controller/user_controller.dart';
+import 'controller/digi_khata/cashbook_controller.dart';
 import 'controller/login_controller.dart';
 
 import 'controller/product_add_controller.dart';
@@ -35,6 +36,7 @@ void main() async {
     Get.put(ProductAddController());
     // Get.put(PaymentsController());
     Get.put(DigiController());
+    Get.put(CashbookController());
   });
 
   runApp(const App());
@@ -98,7 +100,6 @@ class App extends StatelessWidget {
           color: Colors.deepOrange.withOpacity(0.5),
           // color: kPrimaryColor,
           systemOverlayStyle: SystemUiOverlayStyle.light,
-
           iconTheme: const IconThemeData(color: kScanBackColor),
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.only(

@@ -45,7 +45,7 @@ dependencies:
   path_provider: ^2.0.9
   pdf: ^3.8.1
   permission_handler: ^9.2.0
-  pluto_grid: ^3.1.1
+  pluto_grid: ^3.1.2
   pluto_grid_export: ^1.0.1
   printing: ^5.9.1
   scan: ^1.6.0
@@ -64,7 +64,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 environment:
-  sdk: '>=2.16.0 <3.0.0'
+  sdk: ">=2.16.0 <3.0.0"
 flutter:
   assets:
     - assets/images/

@@ -6,16 +6,18 @@ class ReuseableCard extends StatelessWidget {
   final String text;
   final Color textColor;
   final Color backColor;
-  final String description;
+  final String title;
   final bool isMaineLene;
+  final bool? useIcon;
 
   const ReuseableCard(
       {Key? key,
       required this.text,
       required this.textColor,
       required this.backColor,
-      required this.description,
-      required this.isMaineLene})
+      required this.title,
+      required this.isMaineLene,
+      this.useIcon})
       : super(key: key);
 
   @override
@@ -24,22 +26,32 @@ class ReuseableCard extends StatelessWidget {
       contentPadding: const EdgeInsets.symmetric(horizontal: 6, vertical: 8),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       tileColor: backColor,
-      leading: CircleAvatar(
-        backgroundColor: textColor,
-        radius: Get.size.shortestSide * 0.048,
-        child: Icon(
-          isMaineLene ? Icons.download_for_offline_rounded : LineIcons.arrowUp,
-          color: Colors.white,
-        ),
-      ),
+      leading: useIcon == null
+          ? CircleAvatar(
+              backgroundColor: textColor,
+              radius: Get.size.shortestSide * 0.048,
+              child: Icon(
+                isMaineLene
+                    ? Icons.download_for_offline_rounded
+                    : LineIcons.arrowUp,
+                color: Colors.white,
+              ),
+            )
+          : null,
       subtitle: Text(
         text,
-        style: Get.textTheme.bodyMedium?.copyWith(color: textColor),
+        textAlign: useIcon != null ? TextAlign.center : TextAlign.start,
+        style: Get.textTheme.bodyMedium?.copyWith(
+            color: textColor,
+            fontWeight: useIcon != null ? FontWeight.bold : null),
       ),
       title: Text(
-        'Rs $description',
+        'Rs $title',
+        textAlign: useIcon != null ? TextAlign.center : TextAlign.start,
         style: Get.textTheme.headline6?.copyWith(
-            color: textColor, fontSize: Get.size.shortestSide * 0.045),
+            color: textColor,
+            fontSize: Get.size.shortestSide * 0.045,
+            fontWeight: useIcon != null ? FontWeight.bold : null),
       ),
     );
   }
