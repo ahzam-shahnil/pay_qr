@@ -59,7 +59,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
             ),
             Obx(() => Padding(
                   padding:
-                      EdgeInsets.symmetric(horizontal: Get.size.width * 0.3),
+                      EdgeInsets.symmetric(horizontal: kWidth * 0.3),
                   child: LoadingButton(
                       onPressed: () async {
                         //TODO: Add payment controller

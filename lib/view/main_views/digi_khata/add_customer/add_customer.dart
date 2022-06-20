@@ -4,32 +4,21 @@ import 'package:pay_qr/config/app_constants.dart';
 import 'package:pay_qr/config/controllers.dart';
 import 'package:pay_qr/model/customer.dart';
 
-import 'package:uuid/uuid.dart';
-
 import 'customer_record_view.dart';
 
-class AddCustomerContact extends StatefulWidget {
+class AddCustomerContact extends StatelessWidget {
   // final Contact? contact;
   final String displayName;
   final String phoneNo;
 
-  const AddCustomerContact({Key? key, this.displayName = '', this.phoneNo = ''})
+  late final TextEditingController displayNameController =
+      TextEditingController(text: displayName);
+
+  late final TextEditingController phoneNoController =
+      TextEditingController(text: phoneNo);
+
+  AddCustomerContact({Key? key, this.displayName = '', this.phoneNo = ''})
       : super(key: key);
-
-  @override
-  State<AddCustomerContact> createState() => _AddCustomerContactState();
-}
-
-class _AddCustomerContactState extends State<AddCustomerContact> {
-  late final TextEditingController displayNameController;
-  @override
-  void initState() {
-    displayNameController = TextEditingController(text: widget.displayName);
-    phoneNoController = TextEditingController(text: widget.phoneNo);
-    super.initState();
-  }
-
-  late final TextEditingController phoneNoController;
 
   @override
   Widget build(BuildContext context) {
@@ -62,17 +51,16 @@ class _AddCustomerContactState extends State<AddCustomerContact> {
                 controller: phoneNoController,
                 keyboardType: TextInputType.phone,
                 decoration: const InputDecoration(
-                    labelText: "Add Customer's contact No (optional)",
+                    labelText: "Add Customer's Contact No",
                     floatingLabelBehavior: FloatingLabelBehavior.auto),
               ),
               const Spacer(),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: Get.size.width * 0.3),
+                padding: EdgeInsets.symmetric(horizontal: kWidth * 0.3),
                 child: ElevatedButton(
                   child: Text(
                     'Next',
-                    style:
-                        Get.textTheme.headline6?.copyWith(color: kPrimaryColor),
+                    style: Get.textTheme.headline6,
                   ),
                   onPressed: () async {
                     if (displayNameController.text.trim().isEmpty) {
@@ -82,7 +70,7 @@ class _AddCustomerContactState extends State<AddCustomerContact> {
                       return;
                     }
                     //TODO: add constraint to not add duplicate contacts
-                    var uid = const Uuid();
+
                     String id = uid.v4();
                     var customer = CustomerModel(
                         name: displayNameController.text.trim(),

@@ -11,37 +11,26 @@ import 'package:pay_qr/widgets/digi_khata/reusable_card.dart';
 
 import 'add_customer/customer_record_view.dart';
 
-class DigiKhataView extends StatefulWidget {
+class DigiKhataView extends StatelessWidget {
   const DigiKhataView({Key? key}) : super(key: key);
 
-  @override
-  State<DigiKhataView> createState() => _DigiKhataViewState();
-}
-
-class _DigiKhataViewState extends State<DigiKhataView> {
-  // Color? inactiveRed = Colors.red[100];
-  // Color? activeRed = Colors.red;
-  // Color? inactiveGreen = Colors.green[100];
-  // Color? activeGreen = Colors.green;
+  final double total = 0;
   // @override
-  // @override
-  // void didChangeDependencies() {
-  //   amountController.resetData();
-  //   super.didChangeDependencies();
+  // void reassemble() {
+  //   super.reassemble();
+  //   Future.delayed(Duration.zero, () {
+  //     amountController.resetData();
+  //   });
+  //   logger.d('ON resAssemble');
   // }
 
-  @override
-  void reassemble() {
-    super.reassemble();
-    amountController.resetData();
-    logger.d('ON resAssemble');
-  }
-
-  @override
-  void dispose() {
-    amountController.resetData();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   Future.delayed(Duration.zero, () {
+  //     amountController.resetData();
+  //   });
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -72,6 +61,7 @@ class _DigiKhataViewState extends State<DigiKhataView> {
                 var data = snapshot.data!.docs
                     .map((e) => CustomerModel.fromSnapshot(e))
                     .toList();
+                String total = Utility.calculateDigiTotal(customers: data);
                 // data.isEmpty ? amountController.resetData() : null;
                 return Column(
                   mainAxisSize: MainAxisSize.max,
@@ -80,55 +70,38 @@ class _DigiKhataViewState extends State<DigiKhataView> {
                       padding: const EdgeInsets.all(14.0),
                       child: Row(
                         children: [
-                          Obx(() => Expanded(
-                                child: ReuseableCard(
-                                  textColor: Colors.red,
-                                  backColor: kScanBackColor,
-                                  text: "Maine Lene hain",
-                                  title:
-                                      (amountController.totalPaisayLene.value -
-                                                  amountController
-                                                      .totalPaisayDene.value) >
-                                              0
-                                          ? (amountController
-                                                      .totalPaisayLene.value -
-                                                  amountController
-                                                      .totalPaisayDene.value)
-                                              .toStringAsFixed(0)
-                                              .replaceAll('-', '')
-                                          : '0',
-                                  isMaineLene: true,
-                                ),
-                              )),
+                          Expanded(
+                            child: ReuseableCard(
+                              textColor: Colors.red,
+                              backColor: kScanBackColor,
+                              text: "Maine Lene hain",
+                              // title:(total=Utility.calculateTotal(records, total)).toString(),
+                              title: total.contains('-')
+                                  ? '0'
+                                  : total.replaceAll('-', ''),
+                              isMaineLene: true,
+                            ),
+                          ),
                           const SizedBox(
                             width: 8.0,
                           ),
-                          Obx(() => Expanded(
-                                child: ReuseableCard(
-                                  backColor: kScanBackColor,
-                                  textColor: Colors.green,
-                                  text: "Maine Dene hain",
-                                  title:
-                                      (amountController.totalPaisayLene.value -
-                                                  amountController
-                                                      .totalPaisayDene.value) <
-                                              0
-                                          ? (amountController
-                                                      .totalPaisayLene.value +
-                                                  amountController
-                                                      .totalPaisayDene.value)
-                                              .toStringAsFixed(0)
-                                              .replaceAll('-', '')
-                                          : '0',
-                                  isMaineLene: false,
-                                ),
-                              )),
+                          Expanded(
+                            child: ReuseableCard(
+                              backColor: kScanBackColor,
+                              textColor: Colors.green,
+                              text: "Maine Dene hain",
+                              title: total.contains('-')
+                                  ? total.replaceAll('-', '')
+                                  : '0',
+                              isMaineLene: false,
+                            ),
+                          ),
                         ],
                       ),
                     ),
                     Card(
                       child: SizedBox(
-                        height: Get.size.height * 0.65,
+                        height: kHeight * 0.65,
                         child: data.isNotEmpty
                             ? ListView.separated(
                                 shrinkWrap: true,
@@ -138,23 +111,13 @@ class _DigiKhataViewState extends State<DigiKhataView> {
                                   double amount = Utility.calculateAmount(
                                       data[index].cashRecords);
 
-                                  //? to fix marks needs build we use Future delayed
-                                  Future.delayed(Duration.zero, () {
-                                    if (amount < 0) {
-                                      amountController.totalPaisayDene.value +=
-                                          amount;
-                                    } else {
-                                      amountController.totalPaisayLene.value +=
-                                          amount;
-                                    }
-                                  });
                                   return ListTile(
                                     onTap: () =>
                                         Get.to(() => CustomerRecordsView(
                                               customer: data[index],
                                             )),
                                     isThreeLine: false,
-                                    title: Text(data[index].name ),
+                                    title: Text(data[index].name),
                                     leading: CircleAvatar(
                                       backgroundColor: Colors.blueGrey.shade200,
                                       child: const Icon(
@@ -171,7 +134,7 @@ class _DigiKhataViewState extends State<DigiKhataView> {
                                         const Divider(),
                               )
                             : SizedBox(
-                                height: Get.size.height * 0.65,
+                                height: kHeight * 0.65,
                                 width: double.infinity,
                                 child: GestureDetector(
                                   onTap: () {
@@ -183,7 +146,7 @@ class _DigiKhataViewState extends State<DigiKhataView> {
                                     children: [
                                       Image(
                                         image: Assets.images.addUser,
-                                        height: Get.size.height * 0.2,
+                                        height: kHeight * 0.2,
                                       ),
                                       Text(
                                         'Tap Here to Add customer',

@@ -5,6 +5,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:pay_qr/config/app_constants.dart';
 
 import '../../animations/text_animated_background.dart';
 
@@ -82,6 +83,7 @@ class _SplashScreenState extends State<SplashScreen>
     double height = MediaQuery.of(context).size.height;
 
     return Scaffold(
+      backgroundColor: kPrimaryColor.withOpacity(0.8),
       body: Stack(
         children: [
           const TextAnimatedBackground(),

@@ -88,7 +88,9 @@ class _ScanScreenState extends State<ScanScreen> {
             filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
             child: AppBar(
               backgroundColor: kPrimaryColor.withOpacity(0.3),
-              title: const Text('Scan To Shop'),
+              title: const Text(
+                'Scan To Shop',
+              ),
               actions: [
                 IconButton(
                   color: Colors.white,

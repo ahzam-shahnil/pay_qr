@@ -16,10 +16,7 @@ import '../model/product_model.dart';
 
 class AuthHelperFirebase {
   String? userUid;
-  // static final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
-  // static final FirebaseAuth auth = FirebaseAuth.instance;
 
-  // static Logger log = Logger();
 
   // Create storage
   // static const storagePrefs = FlutterSecureStorage();

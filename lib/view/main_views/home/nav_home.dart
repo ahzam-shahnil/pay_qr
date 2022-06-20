@@ -1,18 +1,12 @@
 // Dart imports:
-import 'dart:ui';
 
 // Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 // Package imports:
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:pay_qr/config/app_constants.dart';
-import 'package:pay_qr/config/controllers.dart';
-import 'package:pay_qr/utils/auth_helper_firebase.dart';
-import 'package:pay_qr/view/main_views/auth/login_screen.dart';
-import 'package:pay_qr/widgets/shared/custom_text.dart';
 
 // Project imports:
 import '../../intro_views/scan_intro_screen.dart';
@@ -46,64 +40,57 @@ class _NavHomeScreenState extends State<NavHomeScreen> {
     return Scaffold(
       extendBody: true,
       extendBodyBehindAppBar: true,
-      // backgroundColor: selectedIndex == 2 ? kScanBackColor : null,
-      appBar: PreferredSize(
-        preferredSize: const Size(
-          double.infinity,
-          56.0,
-        ),
-        child: ClipRRect(
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-            child: AppBar(
-              title: Text(
-                'PayQr',
-                style: Get.textTheme.headline6?.copyWith(
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-              actions: const [
-                // Padding(
-                //   padding: const EdgeInsets.all(8.0),
-                //   child:
-                // )
-              ],
-              // backgroundColor: Colors.white,
-              // systemOverlayStyle: SystemUiOverlayStyle.dark,
-            ),
-          ),
-        ),
-      ),
-      drawer: Drawer(
-        child: ListView(
-          children: [
-            Obx(() => UserAccountsDrawerHeader(
-                decoration: const BoxDecoration(color: kPrimaryDarkColor),
-                accountName:
-                    Text(userController.userModel.value.fullName ?? ""),
-                accountEmail:
-                    Text(userController.userModel.value.email ?? ""))),
-            ListTile(
-              leading: const Icon(Icons.book),
-              title: const CustomText(
-                text: "Payments History",
-              ),
-              onTap: () async {
-                //TODO: add payment controller here
-                // paymentsController.getPaymentHistory();
-              },
-            ),
-            ListTile(
-              onTap: () async {
-                await AuthHelperFirebase.signOutAndCacheClear();
-                Get.offAll(() => const LoginScreen());
-              },
-              leading: const Icon(Icons.exit_to_app),
-              title: const Text("Log out"),
-            )
-          ],
-        ),
-      ),
+      backgroundColor: kScanBackColor,
+      // appBar: PreferredSize(
+      //   preferredSize: const Size(
+      //     double.infinity,
+      //     56.0,
+      //   ),
+      //   child: ClipRRect(
+      //     child: BackdropFilter(
+      //       filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+      //       child: AppBar(
+      //         title: Text(
+      //           kAppName,
+      //           style: Get.textTheme.headline6?.copyWith(
+      //             fontWeight: FontWeight.w700,
+      //           ),
+      //         ),
+      //         actions: const [],
+      //       ),
+      //     ),
+      //   ),
+      // ),
+      // drawer: Drawer(
+      //   child: ListView(
+      //     children: [
+      //       Obx(() => UserAccountsDrawerHeader(
+      //           decoration: const BoxDecoration(color: kPrimaryDarkColor),
+      //           accountName:
+      //               Text(userController.userModel.value.fullName ?? ""),
+      //           accountEmail:
+      //               Text(userController.userModel.value.email ?? ""))),
+      //       ListTile(
+      //         leading: const Icon(Icons.book),
+      //         title: const CustomText(
+      //           text: "Payments History",
+      //         ),
+      //         onTap: () async {
+      //           //TODO: add payment controller here
+      //           // paymentsController.getPaymentHistory();
+      //         },
+      //       ),
+      //       ListTile(
+      //         onTap: () async {
+      //           await AuthHelperFirebase.signOutAndCacheClear();
+      //           Get.offAll(() => const LoginScreen());
+      //         },
+      //         leading: const Icon(Icons.exit_to_app),
+      //         title: const Text("Log out"),
+      //       )
+      //     ],
+      //   ),
+      // ),
       body: PageView.builder(
         onPageChanged: (page) {
           setState(() {
@@ -137,10 +124,10 @@ class _NavHomeScreenState extends State<NavHomeScreen> {
               tabs: [
                 GButton(
                   gap: gap,
-                  iconActiveColor: Colors.purple,
-                  iconColor: Colors.black,
-                  textColor: Colors.purple,
-                  backgroundColor: Colors.purple.withOpacity(.2),
+                  iconActiveColor: kPrimaryColor,
+                  iconColor: kPrimaryColor,
+                  textColor: kPrimaryColor,
+                  backgroundColor: kPrimaryColor.withOpacity(.2),
                   iconSize: 24,
                   padding: padding,
                   icon: LineIcons.home,
@@ -161,10 +148,10 @@ class _NavHomeScreenState extends State<NavHomeScreen> {
                 // ),
                 GButton(
                   gap: gap,
-                  iconActiveColor: Colors.amber[600],
-                  iconColor: Colors.black,
-                  textColor: Colors.amber[600],
-                  backgroundColor: Colors.amber[600]!.withOpacity(.2),
+                  iconActiveColor: kPrimaryColor,
+                  iconColor: kPrimaryColor,
+                  textColor: kPrimaryColor,
+                  backgroundColor: kPrimaryColor.withOpacity(.2),
                   iconSize: 24,
                   padding: padding,
                   icon: LineIcons.shoppingCart,
@@ -172,10 +159,10 @@ class _NavHomeScreenState extends State<NavHomeScreen> {
                 ),
                 GButton(
                   gap: gap,
-                  iconActiveColor: Colors.teal,
-                  iconColor: Colors.black,
-                  textColor: Colors.teal,
-                  backgroundColor: Colors.teal.withOpacity(.2),
+                  iconActiveColor: kPrimaryColor,
+                  iconColor: kPrimaryColor,
+                  textColor: kPrimaryColor,
+                  backgroundColor: kPrimaryColor.withOpacity(.2),
                   iconSize: 24,
                   padding: padding,
                   icon: LineIcons.user,

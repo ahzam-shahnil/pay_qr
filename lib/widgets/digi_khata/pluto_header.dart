@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:file_saver/file_saver.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:pay_qr/config/app_constants.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 import 'package:pluto_grid_export/pluto_grid_export.dart' as pluto_grid_export;
 
@@ -58,10 +60,18 @@ class _PlutoHeaderState extends State<PlutoHeader> {
           children: [
             ElevatedButton(
                 onPressed: () => _printToPdfAndShareOrSave(widget.title),
-                child: const Text("Print to PDF and Share")),
+                child: Text(
+                  "Print to PDF and Share",
+                  style:
+                      Get.textTheme.bodyLarge?.copyWith(color: kScanBackColor),
+                )),
             ElevatedButton(
                 onPressed: () => _defaultExportGridAsCSV(widget.title),
-                child: const Text("Export to CSV")),
+                child: Text(
+                  "Export to CSV",
+                  style:
+                      Get.textTheme.bodyLarge?.copyWith(color: kScanBackColor),
+                )),
             // ElevatedButton(
             //     onPressed: _defaultExportGridAsCSVCompatibleWithExcel(),
             //     child: const Text("UTF-8 CSV compatible with MS Excel")),

@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:get/get.dart';
-
-// Project imports:
+import 'package:pay_qr/config/app_constants.dart';
 import 'package:pay_qr/config/controllers.dart';
 import 'package:pay_qr/view/main_views/digi_khata/digi_nav.dart';
 import 'package:pay_qr/view/main_views/product_add/product_add_screen.dart';
+import 'package:pay_qr/widgets/shared/custom_card.dart';
+
+// Project imports:
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({
@@ -16,39 +18,63 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(15),
-      child: Center(
-        child: GridView.count(
-            childAspectRatio: 3 / 2,
-            crossAxisSpacing: 20,
-            mainAxisSpacing: 20,
-            crossAxisCount: 2,
-            shrinkWrap: true,
+    return SafeArea(
+      child: Padding(
+          padding: const EdgeInsets.all(15),
+          child: Column(
             children: [
-              ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      // primary: kScanBackColor,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20))),
-                  onPressed: () {
-                    Get.to(() => const DigiNavHome());
-                  },
-                  child: const Text('DIGI Khata')),
-              Obx(
-                () => loginController.isMerchant()
-                    ? ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            // primary: kScanBackColor,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20))),
-                        onPressed: () => Get.to(() => const ProductAddScreen()),
-                        child: const Text("Add Product"),
-                      )
-                    : const SizedBox(),
-              )
-            ]),
-      ),
+              SizedBox(
+                width: kWidth,
+                height: kHeight * 0.4,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Column(
+                      children: [
+                        CustomCard(
+                          color: kTealColor,
+                          height: kHeight * 0.3,
+                          onTap: () {
+                            // Get.to(() => const ProductAddScreen());
+                          },
+                          text: 'Current balance',
+                          width: kWidth * 0.43,
+                        )
+                      ],
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        CustomCard(
+                          color: Colors.blue,
+                          onTap: () {
+                            Get.to(() => const DigiNavHome());
+                          },
+                          width: kWidth * 0.43,
+                          height: kHeight * 0.14,
+                          text: 'DIGI Khata',
+                        ),
+                        Obx(() => loginController.isMerchant()
+                            ? CustomCard(
+                                color: kPrimaryColor,
+                                onTap: () {
+                                  Get.to(() => const ProductAddScreen());
+                                },
+                                width: kWidth * 0.43,
+                                height: kHeight * 0.14,
+                                text: 'Add Product',
+                              )
+                            : const SizedBox()),
+                        SizedBox(
+                          height: kHeight * 0.01,
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ],
+          )),
     );
   }
 }

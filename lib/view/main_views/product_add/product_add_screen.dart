@@ -72,6 +72,7 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
   Widget build(BuildContext context) {
     // Size size = MediaQuery.of(context).size;
     return Scaffold(
+      backgroundColor: kScanBackColor,
       appBar: AppBar(
         title: Text(
           "Add Product",
@@ -81,10 +82,12 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(primary: kTextFieldColor),
               onPressed: () => pickImage(),
-              icon: const Icon(Icons.add_a_photo_rounded),
+              icon: const Icon(Icons.add_a_photo_rounded, color: Colors.white),
               label: Text(
                 imageFile == null ? 'Add Image' : 'Change Image',
+                style: Get.textTheme.headline6,
               ),
             ),
           )
@@ -95,15 +98,15 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
         child: ListView(
           children: [
             SizedBox(
-              height: Get.size.height * 0.045,
+              height: kHeight * 0.045,
             ),
             Column(
               children: [
                 Obx(() => RepaintBoundary(
                       key: _globalKey,
                       child: Container(
-                        height: Get.size.height * 0.45,
-                        width: Get.size.width * 0.9,
+                        height: kHeight * 0.45,
+                        width: kWidth * 0.9,
                         decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(20)),
@@ -113,7 +116,7 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             SizedBox(
-                              height: Get.size.height * 0.3,
+                              height: kHeight * 0.3,
                               child: SfBarcodeGenerator(
                                 value: productsAddController.data.value,
                                 symbology: QRCode(),
@@ -122,8 +125,8 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                               ),
                             ),
                             Container(
-                              height: Get.size.height * 0.12,
-                              width: Get.size.height * 0.12,
+                              height: kHeight * 0.12,
+                              width: kHeight * 0.12,
                               padding: const EdgeInsets.all(8),
                               clipBehavior: Clip.hardEdge,
                               decoration: BoxDecoration(
@@ -182,10 +185,6 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            // primary: Colors.yellow.shade900,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20))),
                         onPressed: () async {
                           ProductModel product;
                           final String name =
@@ -253,11 +252,12 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                             }
                           }
                         },
-                        child: const Text("Add Product"),
+                        child:
+                            Text("Add Product", style: Get.textTheme.headline6),
                       ),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                            // primary: Colors.green,
+                            primary: kTealColor,
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20))),
                         onPressed: () async {
@@ -299,7 +299,8 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                                 textColor: Colors.white);
                           }
                         },
-                        child: const Text("Save As Image"),
+                        child: Text("Save As Image",
+                            style: Get.textTheme.headline6),
                       ),
                     ],
                   ),

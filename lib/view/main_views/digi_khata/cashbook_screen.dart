@@ -7,8 +7,8 @@ import 'package:pay_qr/config/controllers.dart';
 import 'package:pay_qr/model/digi_khata/cash_model.dart';
 import 'package:pay_qr/utils/utility_helper.dart';
 import 'package:pay_qr/view/main_views/digi_khata/add_customer/add_customers_record.dart';
+import 'package:pay_qr/widgets/digi_khata/cashbook_amount_row.dart';
 import 'package:pay_qr/widgets/digi_khata/pluto_header.dart';
-import 'package:pay_qr/widgets/digi_khata/reusable_card.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 
 class CashBookScreen extends StatefulWidget {
@@ -28,15 +28,20 @@ class _CashBookScreenState extends State<CashBookScreen> {
   @override
   void reassemble() {
     super.reassemble();
-    cashbookController.resetData();
+    // Future.delayed(Duration.zero, () {
+    //   cashbookController.resetData();
+    // });
+
     logger.d('ON resAssemble');
   }
 
-  @override
-  void dispose() {
-    cashbookController.resetData();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   Future.delayed(Duration.zero, () {
+  //     cashbookController.resetData();
+  //   });
+  //   super.dispose();
+  // }
 
   @override
   void initState() {
@@ -55,7 +60,6 @@ class _CashBookScreenState extends State<CashBookScreen> {
           enableContextMenu: false,
           enableRowDrag: false,
           enableRowChecked: false,
-          // minWidth: Get.size.width * 0.07,
           type: PlutoColumnType.text(),
           renderer: (rendererContext) {
             String text = rendererContext.cell.value.toString();
@@ -76,8 +80,8 @@ class _CashBookScreenState extends State<CashBookScreen> {
           enableColumnDrag: false,
           readOnly: true,
           // enableSorting: true,
-          width: Get.size.width * 0.42,
-          minWidth: Get.size.width * 0.2,
+          width: kWidth * 0.42,
+          minWidth: kWidth * 0.2,
           renderer: (rendererContext) {
             String text = rendererContext.cell.value.toString();
             return RichText(
@@ -104,8 +108,8 @@ class _CashBookScreenState extends State<CashBookScreen> {
         enableRowDrag: false,
         enableRowChecked: false,
         cellPadding: 20,
-        minWidth: Get.size.width * 0.15,
-        width: Get.size.width * 0.27,
+        minWidth: kWidth * 0.15,
+        width: kWidth * 0.27,
         type: PlutoColumnType.number(),
         renderer: (rendererContext) {
           Color textColor = Colors.green;
@@ -122,7 +126,7 @@ class _CashBookScreenState extends State<CashBookScreen> {
       PlutoColumn(
         title: 'Cash Out',
         readOnly: true,
-        width: Get.size.width * 0.27,
+        width: kWidth * 0.27,
         field: 'cashout',
         cellPadding: 20,
         enableColumnDrag: false,
@@ -130,7 +134,7 @@ class _CashBookScreenState extends State<CashBookScreen> {
         enableContextMenu: false,
         enableRowDrag: false,
         enableRowChecked: false,
-        minWidth: Get.size.width * 0.15,
+        minWidth: kWidth * 0.15,
         type: PlutoColumnType.number(),
         renderer: (rendererContext) {
           Color textColor = Colors.red;
@@ -169,8 +173,8 @@ class _CashBookScreenState extends State<CashBookScreen> {
               .map((e) => CashModel.fromSnapshot(e))
               .toList();
           //? calculating total here
-          cashbookController.calculateTotalHisaab(data);
-          data.isEmpty ? cashbookController.resetData() : null;
+          // cashbookController.calculateTotalHisaab(data);
+          // data.isEmpty ? cashbookController.resetData() : null;
 
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
@@ -180,53 +184,13 @@ class _CashBookScreenState extends State<CashBookScreen> {
                 const SizedBox(
                   height: 16.0,
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: Row(
-                    children: [
-                      Obx(() => Expanded(
-                              child: ReuseableCard(
-                            textColor: cashbookController.totalHisaab.value < 0
-                                ? Colors.red
-                                : Colors.green,
-                            backColor: kScanBackColor,
-                            text: "Cash in hand",
-                            title: cashbookController.totalHisaab.value
-                                .toStringAsFixed(0)
-                            // .replaceAll('-', '')
-                            ,
-                            isMaineLene: true,
-                            useIcon: false,
-                          ))),
-                      const SizedBox(
-                        width: 8.0,
-                      ),
-                      Obx(
-                        () => Expanded(
-                          child: ReuseableCard(
-                            backColor: kScanBackColor,
-                            textColor: cashbookController.totalHisaab.value < 0
-                                ? Colors.red
-                                : Colors.green,
-                            text: "Aaj ka balance",
-                            title: cashbookController.totalHisaab.value
-                                .toStringAsFixed(0)
-                            // .replaceAll('-', '')
-                            ,
-                            isMaineLene: false,
-                            useIcon: false,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                CashBookAmountRow(total: Utility.calculateAmount(data)),
                 Container(
                   decoration: BoxDecoration(
                       color: kScanBackColor,
                       shape: BoxShape.rectangle,
                       borderRadius: BorderRadius.circular(15)),
-                  height: Get.size.height * 0.66,
+                  height: kHeight * 0.66,
                   child: PlutoGrid(
                     configuration: PlutoGridConfiguration(
                       gridBackgroundColor: Colors.transparent,
@@ -234,7 +198,7 @@ class _CashBookScreenState extends State<CashBookScreen> {
                       defaultCellPadding: 10,
                       defaultColumnTitlePadding: 5,
                       enableGridBorderShadow: true,
-                      rowHeight: Get.size.width * 0.15,
+                      rowHeight: kWidth * 0.15,
                       enableColumnBorder: true,
                       gridBorderRadius:
                           const BorderRadius.all(Radius.circular(12)),
@@ -271,19 +235,19 @@ class _CashBookScreenState extends State<CashBookScreen> {
                         ),
                     ],
                     onChanged: (PlutoGridOnChangedEvent event) {
-                      print(event);
+                      logger.d(event);
                     },
                     onLoaded: (PlutoGridOnLoadedEvent event) {
                       event.stateManager
                           .setSelectingMode(PlutoGridSelectingMode.cell);
-                      // profileController.getProfile();
+                      profileController.getProfile();
 
                       stateManager = event.stateManager;
                     },
                     createHeader: (stateManager) => PlutoHeader(
                       stateManager: stateManager,
                       title: profileController.currentUser.value.fullName ??
-                          "Pay Qr",
+                          kAppName,
                     ),
                   ),
                 ),

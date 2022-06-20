@@ -1,4 +1,5 @@
 // Flutter imports:
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
@@ -6,6 +7,7 @@ import 'package:get/get.dart';
 
 // Project imports:
 import 'package:pay_qr/config/app_constants.dart';
+import 'package:pay_qr/config/firebase.dart';
 import 'package:pay_qr/model/product_model.dart';
 import 'package:pay_qr/view/main_views/shopping/widgets/shop_app_bar.dart';
 import 'package:pay_qr/widgets/Shared/clipr_container.dart';
@@ -13,12 +15,37 @@ import 'package:pay_qr/widgets/product/top_image_blur.dart';
 import 'package:pay_qr/widgets/product/top_image_cover.dart';
 import 'package:pay_qr/widgets/shared/header_text.dart';
 
-class ProductDetailScreen extends StatelessWidget {
+class ProductDetailScreen extends StatefulWidget {
   const ProductDetailScreen({
     Key? key,
     required this.product,
   }) : super(key: key);
   final ProductModel product;
+
+  @override
+  State<ProductDetailScreen> createState() => _ProductDetailScreenState();
+}
+
+class _ProductDetailScreenState extends State<ProductDetailScreen> {
+  @override
+  void initState() {
+    logEvent(widget.product);
+    super.initState();
+  }
+
+  logEvent(ProductModel product) async {
+    await analytics.logBeginCheckout(
+        value: 1,
+        currency: 'PKR',
+        items: [
+          AnalyticsEventItem(
+              currency: "PKR",
+              itemName: product.title,
+              itemId: product.id,
+              price: product.price),
+        ],
+        coupon: '10PERCENTOFF');
+  }
 
   // final ProductController productController = Get.find<ProductController>();
   @override
@@ -42,10 +69,10 @@ class ProductDetailScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Hero(
-                tag: product.id,
+                tag: widget.product.id,
                 child: Align(
                   alignment: Alignment.topCenter,
-                  child: product.imageUrl == null
+                  child: widget.product.imageUrl == null
                       ? TopImageBlur(
                           height: Get.size.shortestSide * 0.5,
                           width: Get.size.shortestSide,
@@ -53,7 +80,7 @@ class ProductDetailScreen extends StatelessWidget {
                       : TopImageCover(
                           height: Get.size.shortestSide * 0.5,
                           width: Get.size.shortestSide,
-                          urlToImg: product.imageUrl!,
+                          urlToImg: widget.product.imageUrl!,
                         ),
                 ),
               ),
@@ -62,7 +89,7 @@ class ProductDetailScreen extends StatelessWidget {
               ),
               //? title of article
               Text(
-                product.title,
+                widget.product.title,
                 style: Get.textTheme.headline4!.copyWith(
                   fontWeight: FontWeight.w900,
                   // color: kPrimaryDarkColor,
@@ -80,9 +107,9 @@ class ProductDetailScreen extends StatelessWidget {
                       fontSize: Get.size.shortestSide * 0.033,
                     ),
                   ),
-                  if (product.qr?.shopName != null)
+                  if (widget.product.qr?.shopName != null)
                     TextHeader(
-                      sourceName: product.qr?.shopName,
+                      sourceName: widget.product.qr?.shopName,
                     ),
                 ],
               ),
@@ -102,14 +129,14 @@ class ProductDetailScreen extends StatelessWidget {
                 height: 30,
               ),
               Text(
-                product.description,
+                widget.product.description,
                 style: Get.textTheme.headline4!.copyWith(
                   fontWeight: FontWeight.w600,
                   fontSize: Get.size.shortestSide * 0.045,
                 ),
               ),
               Text(
-                'Rs. ${product.price}',
+                'Rs. ${widget.product.price}',
                 style: Get.textTheme.headline6!.copyWith(
                   fontWeight: FontWeight.w600,
                   fontSize: Get.size.shortestSide * 0.045,

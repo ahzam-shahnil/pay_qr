@@ -64,7 +64,7 @@ class CashModel {
     String date = map?['date']?.value;
     double diyeTotal = double.parse(map?['diye']?.value.toString() ?? '0');
     double liye = double.parse(map?['liye']?.value.toString() ?? '0');
-    logger.d(diye);
+    logger.d(date);
     return CashModel(
       date: date.substring(0, date.indexOf('#')),
       paisay: diye != '0' ? diye : map?['liye']?.value.toString() ?? '0',

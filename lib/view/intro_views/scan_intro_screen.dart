@@ -51,7 +51,7 @@ class ScanIntroScreen extends StatelessWidget {
               const SizedBox(height: 30),
               Padding(
                 padding: EdgeInsets.symmetric(
-                    horizontal: Get.size.width * 0.24, vertical: 8),
+                    horizontal: kWidth * 0.24, vertical: 8),
                 child: ElevatedButton.icon(
                   onPressed: () => Get.to(() => const ScanScreen()),
                   label: Text(

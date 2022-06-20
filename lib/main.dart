@@ -15,7 +15,6 @@ import 'package:pay_qr/controller/product_controller.dart';
 import 'package:pay_qr/controller/profile_controller.dart';
 import 'package:pay_qr/controller/sign_up_controller.dart';
 import 'package:pay_qr/controller/user_controller.dart';
-import 'controller/digi_khata/cashbook_controller.dart';
 import 'controller/login_controller.dart';
 
 import 'controller/product_add_controller.dart';
@@ -27,7 +26,7 @@ void main() async {
 
   await initialization.then((value) {
     Get.put(UserController());
-    Get.put(AmountController());
+    // Get.put(AmountController());
     Get.put(LoginController());
     Get.put(ProductController());
     Get.put(CartController());
@@ -36,7 +35,7 @@ void main() async {
     Get.put(ProductAddController());
     // Get.put(PaymentsController());
     Get.put(DigiController());
-    Get.put(CashbookController());
+    // Get.put(CashbookController());
   });
 
   runApp(const App());
@@ -60,6 +59,7 @@ class App extends StatelessWidget {
         ),
         iconTheme: const IconThemeData(color: kScanBackColor),
         textTheme: const TextTheme(
+          // button: TextStyle(color: Colors.white),
           headline6: TextStyle(color: Colors.white),
           headline5: TextStyle(color: Colors.white),
           headline4: TextStyle(color: Colors.white),
@@ -69,15 +69,11 @@ class App extends StatelessWidget {
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            primary: kLightBackColor,
+            primary: kPrimaryColor,
             elevation: 1,
-            textStyle: TextStyle(
-                fontWeight: FontWeight.w400,
-                letterSpacing: 1,
-                fontSize: Get.textTheme.bodyMedium?.fontSize,
-                color: kPrimaryColor),
+            textStyle: Get.textTheme.bodyMedium,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12.0),
+              borderRadius: BorderRadius.circular(20),
             ),
           ),
         ),
@@ -87,21 +83,23 @@ class App extends StatelessWidget {
                   fontWeight: FontWeight.w400,
                   letterSpacing: 1,
                   fontSize: Get.textTheme.bodyMedium?.fontSize,
-                  color: Colors.white),
+                  color: kPrimaryColor),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12.0),
               ),
-              primary: Colors.white),
+              primary: kPrimaryColor),
         ),
 
         useMaterial3: true,
         // textTheme: GoogleFonts.lato(),
-        appBarTheme: AppBarTheme(
-          color: Colors.deepOrange.withOpacity(0.5),
+        appBarTheme: const AppBarTheme(
+          color: kPrimaryColor,
           // color: kPrimaryColor,
-          systemOverlayStyle: SystemUiOverlayStyle.light,
-          iconTheme: const IconThemeData(color: kScanBackColor),
-          shape: const RoundedRectangleBorder(
+          foregroundColor: Colors.white,
+          systemOverlayStyle: SystemUiOverlayStyle.dark,
+          iconTheme: IconThemeData(color: kScanBackColor),
+
+          shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(15),
                 bottomRight: Radius.circular(15)),

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:get/get.dart';
+import 'package:pay_qr/config/app_constants.dart';
 
 // Project imports:
 import 'package:pay_qr/config/controllers.dart';
@@ -23,8 +24,8 @@ class CartItemWidget extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: FancyShimmerImage(
-            width: Get.size.width * 0.2,
-            height: Get.size.width * 0.2,
+            width: kWidth * 0.2,
+            height: kWidth * 0.2,
             // height: ,
             boxFit: BoxFit.scaleDown,
             imageUrl: cartItem.image ?? '',

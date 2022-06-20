@@ -8,7 +8,6 @@ import 'package:pay_qr/utils/toast_dialogs.dart';
 import 'package:pay_qr/utils/utility_helper.dart';
 import 'package:pay_qr/view/main_views/digi_khata/add_customer/customer_record_view.dart';
 import 'package:pay_qr/view/main_views/digi_khata/digi_nav.dart';
-import 'package:uuid/uuid.dart';
 
 class AddCustomerRecord extends StatefulWidget {
   final CustomerModel? customer;
@@ -30,9 +29,7 @@ class AddCustomerRecord extends StatefulWidget {
 }
 
 class _AddCustomerRecordState extends State<AddCustomerRecord> {
-  // final _firestore = FirebaseFirestore.instance;
   late DateTime date;
-  // late var formattedDate = DateFormat('d-MMM-yy').format(date);
   late TextEditingController paisayController;
   late TextEditingController detailsController;
   @override
@@ -65,80 +62,13 @@ class _AddCustomerRecordState extends State<AddCustomerRecord> {
               ? IconButton(
                   onPressed: () async {
                     FocusScope.of(context).unfocus();
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: Text(
-                              'Confirmation',
-                              style: Get.textTheme.headline6
-                                  ?.copyWith(color: Colors.black),
-                            ),
-                            content: Text(
-                              'Do you want to delete?',
-                              style: Get.textTheme.bodyLarge,
-                            ),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  Get.back();
-                                },
-                                child: const Text('No'),
-                              ),
-                              TextButton(
-                                onPressed: () async {
-                                  if (widget.isFromCashBook == false) {
-                                    var records = widget.cashRecords;
-
-                                    records?.retainWhere((element) =>
-                                        widget.record!.id == element.id);
-                                    var customer = widget.customer
-                                        ?.copyWith(cashRecords: records);
-                                    logger.d(customer);
-                                    bool result = await digiController
-                                        .removeCustomerRecord(
-                                            customer: customer!);
-                                    if (!mounted) return;
-
-                                    if (result) {
-                                      Get.back();
-                                      Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                CustomerRecordsView(
-                                                  customer: widget.customer!,
-                                                )),
-                                      );
-                                    }
-                                  } else {
-                                    bool result = await digiController
-                                        .deleteCashInOutKhata(
-                                            id: widget.record!.id);
-                                    if (!mounted) return;
-
-                                    if (result) {
-                                      Get.back();
-                                      Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const DigiNavHome(
-                                                  selectedScreen: 1,
-                                                )),
-                                      );
-                                    }
-                                  }
-                                },
-                                child: const Text('Yes'),
-                              ),
-                            ],
-                          );
-                        });
 
                     // logger.d(widget.record?.id);
                   },
-                  icon: const Icon(Icons.delete_outline),
+                  icon: const Icon(
+                    Icons.delete_outline,
+                    color: kScanBackColor,
+                  ),
                 )
               : const SizedBox()
         ],
@@ -166,8 +96,15 @@ class _AddCustomerRecordState extends State<AddCustomerRecord> {
             Row(
               children: [
                 ElevatedButton.icon(
-                    label: Text(Utility.getFormatedDate(date)),
-                    icon: const Icon(Icons.date_range_outlined),
+                    label: Text(
+                      Utility.getFormatedDate(date),
+                      style: Get.textTheme.bodyLarge
+                          ?.copyWith(color: kScanBackColor),
+                    ),
+                    icon: const Icon(
+                      Icons.date_range_outlined,
+                      color: kScanBackColor,
+                    ),
                     onPressed: () async {
                       final pickerDate = await showDatePicker(
                           context: context,
@@ -196,10 +133,12 @@ class _AddCustomerRecordState extends State<AddCustomerRecord> {
             ),
             const Spacer(),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: Get.size.width * 0.2),
+              padding: EdgeInsets.symmetric(horizontal: kWidth * 0.2),
               child: ElevatedButton(
-                child: const Text(
+                child: Text(
                   'Save',
+                  style:
+                      Get.textTheme.bodyLarge?.copyWith(color: kScanBackColor),
                 ),
                 onPressed: () async {
                   FocusScope.of(context).unfocus();
@@ -210,7 +149,7 @@ class _AddCustomerRecordState extends State<AddCustomerRecord> {
                   }
                   var details = detailsController.text;
                   var paisay = paisayController.text;
-                  var id = const Uuid();
+                  // var id = const Uuid();
                   var record = CashModel(
                       date: date.toString(),
                       paisay: paisay,
@@ -219,7 +158,7 @@ class _AddCustomerRecordState extends State<AddCustomerRecord> {
                           ? widget.isMainDiye
                           : widget.record!.isMainDiye,
                       id: widget.record == null
-                          ? id.v4()
+                          ? uid.v4()
                           : widget.record?.id ?? '');
                   logger.d(widget.record?.id);
                   if (widget.isFromCashBook == false) {
@@ -242,12 +181,18 @@ class _AddCustomerRecordState extends State<AddCustomerRecord> {
 
                     if (result) {
                       Get.back();
+                      // Get.off(
+                      //   () => CustomerRecordsView(
+                      //     customer: widget.customer!,
+                      //   ),
+                      // );
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => CustomerRecordsView(
-                                  customer: widget.customer!,
-                                )),
+                          builder: (context) => CustomerRecordsView(
+                            customer: widget.customer!,
+                          ),
+                        ),
                       );
                     }
                   } else {
@@ -260,6 +205,9 @@ class _AddCustomerRecordState extends State<AddCustomerRecord> {
 
                     if (result) {
                       Get.back();
+                      // Get.off(() => const DigiNavHome(
+                      //       selectedScreen: 1,
+                      //     ));
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(

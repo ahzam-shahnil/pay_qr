@@ -66,7 +66,7 @@ class OnBoardScreen extends StatelessWidget {
       globalFooter: Padding(
         padding: const EdgeInsets.only(bottom: 40),
         child: SizedBox(
-          width: Get.size.width * 0.8,
+          width: kWidth * 0.8,
           height: kToolbarHeight,
           child: ElevatedButton(
             child: Text(

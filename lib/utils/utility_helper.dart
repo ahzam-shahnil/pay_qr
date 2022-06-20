@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:pay_qr/config/app_constants.dart';
 import 'package:pay_qr/model/digi_khata/cash_model.dart';
 
-import '../config/controllers.dart';
+import '../model/customer.dart';
 
 class Utility {
   static getFormatedDate(DateTime date) {
@@ -36,30 +37,59 @@ class Utility {
     return total = total + diye + (-liye);
   }
 
-  static String calculateHisaab(
-      {required double totalLene, required double totalDene}) {
-    double total = (totalLene - totalDene);
-    return total < 0 ? 'Hisaab Clear h' : total.toStringAsFixed(0);
-  }
-
-  static double calculateDigiTotal({required List<CashModel> records}) {
-    double total = 0;
+  calculateTotalHisaab(List<CashModel> cashRecords) {
+    double totalHisaab;
     double diye = 0;
     double liye = 0;
-    for (var item in records) {
+    for (var item in cashRecords) {
       if (item.isMainDiye) {
         diye += double.parse(item.paisay);
       } else {
         liye += double.parse(item.paisay);
       }
     }
-    total = total + diye + (-liye);
-
-    if (total < 0) {
-      amountController.totalPaisayDene.value += total;
-    } else {
-      amountController.totalPaisayLene.value += total;
-    }
-    return total;
+    logger.d(diye);
+    logger.d(liye);
+    totalHisaab = liye - diye;
+    logger.d(totalHisaab);
+    return totalHisaab;
   }
+
+  static String calculateHisaab(
+      {required double totalLene, required double totalDene}) {
+    double total = (totalLene - totalDene);
+    return total < 0 ? 'Hisaab Clear h' : total.toStringAsFixed(0);
+  }
+
+  static String calculateDigiTotal({required List<CustomerModel> customers}) {
+    double total = 0;
+    // customers.map((e) => total += Utility.calculateAmount(e.cashRecords));
+    total = customers.fold(
+        total,
+        (double previousValue, element) =>
+            previousValue + calculateAmount(element.cashRecords));
+    logger.d(total);
+    return total.toStringAsFixed(0);
+  }
+
+  // static double calculateDigiTotal({required List<CashModel> records}) {
+  //   double total = 0;
+  //   double diye = 0;
+  //   double liye = 0;
+  //   for (var item in records) {
+  //     if (item.isMainDiye) {
+  //       diye += double.parse(item.paisay);
+  //     } else {
+  //       liye += double.parse(item.paisay);
+  //     }
+  //   }
+  //   total = total + diye + (-liye);
+
+  //   if (total < 0) {
+  //     amountController.totalPaisayDene.value += total;
+  //   } else {
+  //     amountController.totalPaisayLene.value += total;
+  //   }
+  //   return total;
+  // }
 }

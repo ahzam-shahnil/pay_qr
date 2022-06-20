@@ -84,6 +84,7 @@ class ProfileController extends GetxController {
     } catch (e) {
       log.i('catch sign up : $e');
       showToast(msg: 'Something went wrong');
+      rethrow;
     }
   }
 

@@ -147,7 +147,11 @@ class _ProfileScreenState extends State<ProfileScreen> with BaseController {
     }
     logger.d(profile);
     progressDialog.setMessage(const Text('Updating Profile'));
-    await profileController.updateProfile(profile, context);
+    try {
+      await profileController.updateProfile(profile, context);
+    } catch (e) {
+      logger.e(e);
+    }
     progressDialog.dismiss();
     saveWork();
     refresh();
@@ -158,7 +162,7 @@ class _ProfileScreenState extends State<ProfileScreen> with BaseController {
     return Scaffold(
       extendBody: true,
       extendBodyBehindAppBar: true,
-      // backgroundColor: kScanBackColor,
+      backgroundColor: kScanBackColor,
       body: SafeArea(
         child: Obx(() => profileController.isLoading.value
             ? const ProfileShimmer()

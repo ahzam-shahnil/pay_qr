@@ -6,7 +6,6 @@ import 'dart:io';
 
 // Package imports:
 import 'package:http/http.dart' as http;
-import 'package:logger/logger.dart';
 
 // Project imports:
 import 'package:pay_qr/config/app_constants.dart';
@@ -43,15 +42,15 @@ class ApiService {
   }
 
   Future<dynamic> getQueryResult(String path) async {
-    var url = "http://192.168.43.158:8080/";
+    var url = kChatBotUrl;
     log(url);
     try {
       var uri = Uri.parse(url + path);
       var response = await http
           .get(uri)
           .timeout(const Duration(seconds: kTimeOutDuration));
-      Logger lo = Logger();
-      lo.d(response.body);
+      // Logger lo = Logger();
+      logger.d(response.body);
       return _processResponse(response);
     } on SocketException {
       throw FetchDataException(

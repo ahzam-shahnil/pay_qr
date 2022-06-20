@@ -103,7 +103,7 @@ class _DigiNavHomeState extends State<DigiNavHome> {
                     ),
                   ),
                   SizedBox(
-                    width: Get.size.width * 0.02,
+                    width: kWidth * 0.02,
                   ),
                   Expanded(
                     child: ReusableButton(

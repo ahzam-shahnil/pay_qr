@@ -4,39 +4,43 @@ import 'package:get/get.dart';
 
 // Package imports:
 import 'package:logger/logger.dart';
+import 'package:uuid/uuid.dart';
 
 Logger logger = Logger();
-
+var uid = const Uuid();
 //Text
 const kDigiCollection = 'digiKhata';
+const kAppName = 'PayQr';
 const kCashInOutCollection = 'cashInCashOut';
 const kCashRecordsField = 'cashRecords';
-const stripePublishableKey =
-    'pk_test_51KekjqK1mBX6Dyox1xmsx7XFBcrzLRXlv1O0yzSN0h5MiadXPQm3J2iSSLrVhX87fNgoOgLmq2aLUN4ZXR0iDIwV00BkxsHNx3';
-const stripeSecretKey =
-    'sk_test_51KekjqK1mBX6Dyox9NaL9naNAen9PA9Q1v7aHEp5w1TCEWBUWWDK1QPmxE62FfMJZ6AbYq4AIQIKSWraeELy56JC00V4Jbp6wP';
-const kChatBotUrl = 'http://10.0.2.2:8080/';
+const kChatBotUrl = 'http://192.168.43.158:5000/';
 const kError = "Something went wrong";
 const kScanDescText =
     'Scan products you want to buy at your favorite store and pay by your phone & enjoy happy, friendly Shopping!';
-
-// const kPrimaryColor = Color(0xff978ae0);
 
 const kPlaceHolderImg = "assets/images/placeholder.png";
 const kDefaultImgUrl =
     'https://firebasestorage.googleapis.com/v0/b/pay-qr-b5905.appspot.com/o/placeholder.png?alt=media&token=6b5c9aab-83a8-48b9-8149-db666bfed60d';
 
 //? Colors for App
+// const kPrimaryColor = Color(0xFFEEEEEE);
+// const kTextFieldColor = Color(0xFFEFB7B7);
+// const kLightBackColor = Color(0xFFBD4B4B);
+// const kTealColor = Color(0xFF01D2AF);
+// const kPrimaryDarkColor = Color(0xFF000000);
+// const kBtnColor = Color(0xFFEFB7B7);
+// const kScanBackColor = Color(0xFFEEEEEE);
 const kPrimaryColor = Color(0xFFFF7B66);
-const kTextFieldColor = Color(0xFFE6FBF7);
-const kLightBackColor = Color(0xfffff7f6);
+const kTextFieldColor = Color.fromARGB(255, 252, 162, 148);
+const kLightBackColor = Color(0xFFFF7B66);
 const kTealColor = Color(0xFF01D2AF);
 const kPrimaryDarkColor = Color(0xFFFF7B66);
 const kBtnColor = Color(0xFFFF7B66);
-const kScanBackColor = Color(0xfffff7f6);
+const kScanBackColor = Color(0xFFEEEEEE);
 const kAppBarPrefSize = Size(double.infinity, 56.0);
-// const kScaffoldBgColor = Color(0xff121212);
 
+var kWidth = Get.size.width;
+var kHeight = Get.size.height;
 // enum kUsers { merchant, user }
 
 //? User Data Names

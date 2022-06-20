@@ -102,7 +102,7 @@ class _ContactViewState extends State<ContactView> {
                 alignment: Alignment.topLeft,
                 child: TextButton(
                   onPressed: () {
-                    Get.to(() => const AddCustomerContact());
+                    Get.to(() =>  AddCustomerContact());
                   },
                   child: const Text(
                     "  + Add new Customer",

@@ -99,13 +99,6 @@ class DigiController extends GetxController {
     }
   }
 
-  // void removeCashRecord(CartItemModel cartItem) {
-  //   try {
-  //     userController.updateUserData({
-  //       "cart": FieldValue.arrayRemove([cartItem.toMap()])
-  //     });
-  //   }
-  // }
 
   Future<bool> deleteCashInOutKhata({required String id}) async {
     _mainCollection = _getCashInOutCollectionRef();
