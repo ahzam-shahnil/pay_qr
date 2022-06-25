@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 
 // Project imports:
 import 'package:pay_qr/config/app_constants.dart';
-import 'package:pay_qr/config/controllers.dart';
 import 'package:pay_qr/config/firebase.dart';
 import 'package:pay_qr/model/user_model.dart';
 import 'package:pay_qr/utils/auth_helper_firebase.dart';
@@ -13,7 +12,17 @@ import 'package:pay_qr/utils/auth_helper_firebase.dart';
 class UserController extends GetxController {
   static UserController instance = Get.find();
   late CollectionReference _mainCollection;
-  Rx<UserModel> userModel = UserModel().obs;
+  Rx<UserModel> userModel = UserModel(
+    cart: [],
+    email: '',
+    fullName: '',
+    imageUrl: '',
+    isMerchant: false,
+    password: '',
+    shopName: '',
+    uid: '',
+    balance: 0,
+  ).obs;
 
   late Rx<User?> firebaseUser;
 
@@ -90,11 +99,12 @@ class UserController extends GetxController {
 
   updateUserData(Map<String, dynamic> data) async {
     //* Checking User to store Data
-    if (loginController.isMerchant()) {
-      _mainCollection = firestore.collection(kMerchantDb);
-    } else {
-      _mainCollection = firestore.collection(kUserDb);
-    }
+    // if (loginController.isMerchant()) {
+    //   _mainCollection = firestore.collection(kMerchantDb);
+    // } else {
+    //   _mainCollection = firestore.collection(kUserDb);
+    // }
+    _mainCollection = firestore.collection(kUserDb);
     logger.i("UPDATED");
     await _mainCollection
         .doc(AuthHelperFirebase.getCurrentUserUid())
@@ -105,11 +115,12 @@ class UserController extends GetxController {
 
   Stream<UserModel> listenToUser() {
     //* Checking User to store Data
-    if (loginController.isMerchant()) {
-      _mainCollection = firestore.collection(kMerchantDb);
-    } else {
-      _mainCollection = firestore.collection(kUserDb);
-    }
+    // if (loginController.isMerchant()) {
+    //   _mainCollection = firestore.collection(kMerchantDb);
+    // } else {
+    //   _mainCollection = firestore.collection(kUserDb);
+    // }
+    _mainCollection = firestore.collection(kUserDb);
     // logger.i("UPDATED");
     // logger.d(AuthHelperFirebase.getCurrentUserUid());
     return _mainCollection

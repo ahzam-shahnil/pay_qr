@@ -33,6 +33,7 @@ dependencies:
   image_picker: ^0.8.5+3
   import_sorter: ^4.6.0
   introduction_screen: ^3.0.2
+  supercharged: ^2.1.1
   line_icons: ^2.0.1
   logger: ^1.1.0
   marquee: ^2.2.1
@@ -65,7 +66,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 environment:
-  sdk: '>=2.16.0 <3.0.0'
+  sdk: ">=2.16.0 <3.0.0"
 flutter:
   assets:
     - assets/images/

@@ -152,7 +152,7 @@ class DigiKhataView extends StatelessWidget {
                                         'Tap Here to Add customer',
                                         style: Get.textTheme.headline5
                                             ?.copyWith(
-                                                color: kPrimaryColor,
+                                                color: kTealColor,
                                                 fontWeight: FontWeight.bold),
                                       )
                                     ],

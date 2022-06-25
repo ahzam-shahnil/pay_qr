@@ -1,4 +1,5 @@
 // Flutter imports:
+
 import 'package:flutter/material.dart';
 
 // Package imports:
@@ -23,12 +24,14 @@ class ProfileController extends GetxController {
   final TextEditingController priceController = TextEditingController();
   final TextEditingController descController = TextEditingController();
   var currentUser = UserModel(
-      uid: '',
-      fullName: '',
-      email: '',
-      password: '',
-      isMerchant: false,
-      cart: []).obs;
+    uid: '',
+    fullName: '',
+    email: '',
+    password: '',
+    isMerchant: false,
+    cart: [],
+    balance: 0,
+  ).obs;
   // final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
   final loginController = Get.find<LoginController>();
   final isLoading = true.obs;
@@ -50,31 +53,36 @@ class ProfileController extends GetxController {
   }
 
   Future<void> updateProfile(UserModel userUpdate, BuildContext context) async {
+    logger.d('updating Profile');
     try {
       CollectionReference mainCollection;
 
-      //* Checking User to store Data
-      if (currentUser.value.isMerchant!) {
-        mainCollection = firestore.collection(kMerchantDb);
-      } else {
-        mainCollection = firestore.collection(kUserDb);
-      }
+      // //* Checking User to store Data
+      // if (currentUser.value.isMerchant!) {
+      //   mainCollection = firestore.collection(kUserDb);
+      // } else {
+      mainCollection = firestore.collection(kUserDb);
 
+      User? user = AuthHelperFirebase.getCurrentUserDetails();
 //? setting account password
-      await AuthHelperFirebase.getCurrentUserDetails()!
-          .updatePhotoURL(userUpdate.imageUrl);
-      await AuthHelperFirebase.getCurrentUserDetails()!
-          .updatePassword(userUpdate.password!);
-      DocumentReference documentReferencer = mainCollection
-          .doc(userUpdate.uid)
-          .collection(kProfileCollection)
-          .doc(userUpdate.uid);
+      if (user != null) {
+        logger.d(userUpdate.imageUrl);
+        logger.i(userUpdate.uid);
+        user.updatePhotoURL(userUpdate.imageUrl);
+        await user.updatePassword(userUpdate.password!);
+        DocumentReference documentReferencer = mainCollection
+            .doc(userUpdate.uid)
+            .collection(kProfileCollection)
+            .doc(userUpdate.uid);
 
-      await documentReferencer
-          .set(userUpdate.toMap())
-          .whenComplete(
-              () => showToast(msg: "Profile Updated", backColor: Colors.green))
-          .catchError((e) => throw (e));
+        await documentReferencer.update(userUpdate.toMap()).whenComplete(() {
+          currentUser.value = userUpdate;
+          showToast(msg: "Profile Updated", backColor: Colors.green);
+        }).catchError((e) => throw (e));
+      } else {
+        logger.d('Current user is Null');
+        throw Exception;
+      }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {
         showToast(msg: 'Email is already in Use');
@@ -143,17 +151,17 @@ class ProfileController extends GetxController {
       final CollectionReference mainCollection;
       if (user != null) {
         //* Checking User to store Data
-        if (loginController.isMerchant()) {
-          mainCollection = firestore
-              .collection(kMerchantDb)
-              .doc(user.uid)
-              .collection(kProfileCollection);
-        } else {
-          mainCollection = firestore
-              .collection(kUserDb)
-              .doc(user.uid)
-              .collection(kProfileCollection);
-        }
+        // if (loginController.isMerchant()) {
+        //   mainCollection = firestore
+        //       .collection(kMerchantDb)
+        //       .doc(user.uid)
+        //       .collection(kProfileCollection);
+        // } else {
+        mainCollection = firestore
+            .collection(kUserDb)
+            .doc(user.uid)
+            .collection(kProfileCollection);
+        // }
         return mainCollection;
       }
     } on FirebaseAuthException {

@@ -29,6 +29,13 @@
             {
               "client_id": "516942972335-op8dhk7ql6c5ia9r5j0ug85ffrqg7som.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "516942972335-ojfduj9p1jimilk63ksn44g8omdh1i8d.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.payqr.payqr.payQr"
+              }
             }
           ]
         }

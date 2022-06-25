@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pay_qr/config/app_constants.dart';
-import 'package:pay_qr/config/controllers.dart';
 import 'package:pay_qr/config/firebase.dart';
 import 'package:pay_qr/model/customer.dart';
 import 'package:pay_qr/model/digi_khata/cash_model.dart';
@@ -98,7 +97,6 @@ class DigiController extends GetxController {
       return false;
     }
   }
-
 
   Future<bool> deleteCashInOutKhata({required String id}) async {
     _mainCollection = _getCashInOutCollectionRef();
@@ -217,27 +215,28 @@ class DigiController extends GetxController {
 
   _getCashInOutCollectionRef() {
     final CollectionReference tempRef;
-    if (loginController.isMerchant()) {
-      tempRef = firestore.collection(kMerchantDb);
-    } else {
-      tempRef = firestore.collection(kUserDb);
-    }
+    // if (loginController.isMerchant()) {
+    //   tempRef = firestore.collection(kMerchantDb);
+    // } else {
+    //   tempRef = firestore.collection(kUserDb);
+    // }
+    tempRef = firestore.collection(kUserDb);
     return tempRef;
   }
 
   _getCollectionRef() {
     final CollectionReference tempRef;
-    if (loginController.isMerchant()) {
-      tempRef = firestore
-          .collection(kMerchantDb)
-          .doc(AuthHelperFirebase.getCurrentUserUid())
-          .collection(kDigiCollection);
-    } else {
-      tempRef = firestore
-          .collection(kUserDb)
-          .doc(AuthHelperFirebase.getCurrentUserUid())
-          .collection(kDigiCollection);
-    }
+    // if (loginController.isMerchant()) {
+    //   tempRef = firestore
+    //       .collection(kMerchantDb)
+    //       .doc(AuthHelperFirebase.getCurrentUserUid())
+    //       .collection(kDigiCollection);
+    // } else {
+    tempRef = firestore
+        .collection(kUserDb)
+        .doc(AuthHelperFirebase.getCurrentUserUid())
+        .collection(kDigiCollection);
+    // }
     return tempRef;
   }
 }

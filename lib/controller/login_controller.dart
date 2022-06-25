@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 
 // Project imports:
 import 'package:pay_qr/config/controllers.dart';
+import 'package:pay_qr/model/user_model.dart';
 import 'package:pay_qr/utils/auth_helper_firebase.dart';
 import 'package:pay_qr/view/main_views/home/nav_home.dart';
 import '../config/app_constants.dart';
@@ -21,7 +22,7 @@ class LoginController extends GetxController {
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  var userType = UserType.merchant.toString().obs;
+
   var isLoggedIn = false.obs;
 
   @override
@@ -33,9 +34,9 @@ class LoginController extends GetxController {
   Future<void> _setInitialScreen() async {
     await Future.delayed(const Duration(seconds: 5));
     String? userCredential = await getLoggedInUser();
-    userType.value =
+    signUpController.userType.value =
         await getLoggedInUserType() ?? UserType.merchant.toString();
-    if (userCredential != null && userType.value.isNotEmpty) {
+    if (userCredential != null && signUpController.userType.value.isNotEmpty) {
       isLoggedIn.value = true;
       userController.bindUserStream();
       Get.offAll(() => const NavHomeScreen(),
@@ -44,18 +45,6 @@ class LoginController extends GetxController {
       isLoggedIn.value = false;
       Get.offAll(() => const LoginScreen(), transition: Transition.rightToLeft);
     }
-  }
-
-  bool isMerchant() {
-    return userType.value == UserType.merchant.toString();
-  }
-
-  bool isUser() {
-    return userType.value == UserType.user.toString();
-  }
-
-  void changeUser(String user) {
-    userType.value = user;
   }
 
   loginUser(BuildContext context) {
@@ -92,42 +81,55 @@ class LoginController extends GetxController {
       UserCredential? userCredential =
           await AuthHelperFirebase.logInUser(email, password);
 
-      if (userCredential?.user?.emailVerified == false) {
-        progressDialog.setMessage(const Text("Verify your email to login."));
-        progressDialog.dismiss();
-        throw FirebaseAuthException(code: 'verify_email');
-      }
+      //TODO: enable this when firebase email is up
+      // User? userFirebase = userCredential?.user;
+      // if (userFirebase != null && !userFirebase.emailVerified) {
+      //   await userFirebase.sendEmailVerification();
+      //   progressDialog.setMessage(const Text("Verify your email to login."));
+
+      //   progressDialog.dismiss();
+
+      //   // await userCredential?.user?.sendEmailVerification();
+      //   throw FirebaseAuthException(code: 'verify_email');
+      // }
+      logger.d(userCredential?.user);
       if (userCredential?.user != null) {
-        //*saving User to secure storageR
-        storeTokenAndData(userCredential!, userType.value.toString());
+        //?saving User to secure storageR
+        storeTokenAndData(
+            userCredential!, signUpController.userType.value.toString());
         // final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-        final CollectionReference mainCollection;
+        final DocumentReference mainCollection;
 
         //* Checking User to store Data
-        if (isMerchant()) {
-          mainCollection = firestore
-              .collection(kMerchantDb)
-              .doc(userCredential.user?.uid)
-              .collection(kProfileCollection);
-        } else {
-          mainCollection = firestore
-              .collection(kUserDb)
-              .doc(userCredential.user?.uid)
-              .collection(kProfileCollection);
-        }
+        // if (isMerchant()) {
+        //   mainCollection = firestore
+        //       .collection(kMerchantDb)
+        //       .doc(userCredential.user?.uid)
+        //       .collection(kProfileCollection);
+        // } else {
+        mainCollection = firestore
+            .collection(kUserDb)
+            .doc(userCredential.user?.uid)
+            .collection(kProfileCollection)
+            .doc(userCredential.user?.uid);
+        // }
         // bool? isUser;
         var collection = await mainCollection
-            .where(kUserIdDoc, isEqualTo: userCredential.user?.uid)
+            // .where(
+            //   kUserIdDoc,
+            //   isEqualTo: userCredential.user?.uid,
+            // )
             .get();
 
-        logger.i("In Login Collection $collection");
+        logger.i("In Login Collection ${UserModel.fromSnapshot(collection)}");
 
-        if (collection.docs.isNotEmpty) {
+        if (collection.exists) {
           progressDialog.dismiss();
 
           Get.offAll(() => const NavHomeScreen());
         } else {
           progressDialog.dismiss();
+          AuthHelperFirebase.signOutAndCacheClear();
           showToast(
             msg: 'User not found',
           );
@@ -156,7 +158,7 @@ class LoginController extends GetxController {
       showToast(
         msg: 'Something went wrong',
       );
-      debugPrint('e : $e');
+      logger.e(e);
     }
   }
 

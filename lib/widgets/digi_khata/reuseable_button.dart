@@ -29,7 +29,8 @@ class ReusableButton extends StatelessWidget {
       icon: Icon(
         text.contains('hand') ||
                 text.contains('received') ||
-                text.contains('Liye')
+                text.contains('Liye') ||
+                text.contains('Cash In')
             ? Icons.download_for_offline_rounded
             : LineIcons.arrowUp,
         color: Colors.white,

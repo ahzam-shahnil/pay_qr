@@ -23,24 +23,25 @@ class AccountTypeRow extends StatelessWidget {
             CheckButton(
               text: 'Merchant',
               textStyle: TextStyle(
-                color: loginController.isMerchant()
-                    ? kTextFieldColor
-                    : kPrimaryColor,
-              ),
+                  color: signUpController.isMerchant()
+                      ? kTextFieldColor
+                      : kScanBackColor,
+                  fontWeight: FontWeight.bold),
               onPressed: () =>
-                  loginController.changeUser(UserType.merchant.toString()),
+                  signUpController.changeUser(UserType.merchant.toString()),
               icon: Icon(
-                loginController.isMerchant()
+                signUpController.isMerchant()
                     ? Icons.check_box_outlined
                     : Icons.check_box_outline_blank_rounded,
-                color: loginController.isMerchant()
+                color: signUpController.isMerchant()
                     ? kTextFieldColor
-                    : kPrimaryColor,
+                    : kScanBackColor,
               ),
               style: ElevatedButton.styleFrom(
-                  primary: loginController.isMerchant()
-                      ? kTealColor
-                      : kTextFieldColor),
+                primary: signUpController.isMerchant()
+                    ? kScanBackColor
+                    : kTextFieldColor,
+              ),
             ),
             const SizedBox(
               width: 20,
@@ -48,21 +49,24 @@ class AccountTypeRow extends StatelessWidget {
             CheckButton(
               text: 'User',
               textStyle: TextStyle(
-                color:
-                    loginController.isUser() ? kTextFieldColor : kPrimaryColor,
-              ),
+                  color: signUpController.isUser()
+                      ? kTextFieldColor
+                      : kScanBackColor,
+                  fontWeight: FontWeight.bold),
               onPressed: () =>
-                  loginController.changeUser(UserType.user.toString()),
+                  signUpController.changeUser(UserType.user.toString()),
               icon: Icon(
-                loginController.isUser()
+                signUpController.isUser()
                     ? Icons.check_box_outlined
                     : Icons.check_box_outline_blank_rounded,
-                color:
-                    loginController.isUser() ? kTextFieldColor : kPrimaryColor,
+                color: signUpController.isUser()
+                    ? kTextFieldColor
+                    : kScanBackColor,
               ),
               style: ElevatedButton.styleFrom(
-                  primary:
-                      loginController.isUser() ? kTealColor : kTextFieldColor),
+                  primary: signUpController.isUser()
+                      ? kScanBackColor
+                      : kTextFieldColor),
             ),
           ],
         ));

@@ -7,9 +7,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 
 // Project imports:
-import 'package:pay_qr/config/controllers.dart';
 import 'package:pay_qr/config/firebase.dart';
 import 'package:pay_qr/utils/auth_helper_firebase.dart';
+import 'package:pay_qr/utils/enum/user_type.dart';
 import 'package:pay_qr/utils/toast_dialogs.dart';
 import '../config/app_constants.dart';
 import '../model/user_model.dart';
@@ -18,7 +18,7 @@ import '../model/user_model.dart';
 
 class SignUpController extends GetxController {
   static SignUpController instance = Get.find();
-
+  var userType = UserType.merchant.toString().obs;
   // final loginController = Get.find<LoginController>();
   // Create storage
   // final storage = const FlutterSecureStorage();
@@ -60,8 +60,6 @@ class SignUpController extends GetxController {
       email: email,
       password: password,
       fullName: fullName,
-
-      //* shop Name is only available for Merchant Account
       shopName: shopName,
     );
   }
@@ -81,7 +79,6 @@ class SignUpController extends GetxController {
     try {
       UserCredential? userCredential =
           await AuthHelperFirebase.signUp(email, password);
-      logger.i('before database');
 
       if (userCredential?.user != null) {
         final CollectionReference mainCollection;
@@ -90,32 +87,34 @@ class SignUpController extends GetxController {
         String? uid = userCredential?.user!.uid;
 
         //* Checking User to store Data
-        if (loginController.isMerchant()) {
-          mainCollection = firestore.collection(kMerchantDb);
-          user = UserModel(
-            fullName: fullName,
-            email: email,
-            password: password,
-            uid: uid!,
-            isMerchant: true,
-            shopName: shopName,
-            cart: [],
-          );
-        } else {
-          mainCollection = firestore.collection(kUserDb);
-          //?Make models for Shop keeper and user sign up
-          user = UserModel(
-            fullName: fullName,
-            email: email,
-            password: password,
-            uid: uid!,
-            isMerchant: false,
-            cart: [],
-          );
-        }
+        // if (loginController.isMerchant()) {
+        //   mainCollection = firestore.collection(kMerchantDb);
+        //   user = UserModel(
+        //     fullName: fullName,
+        //     email: email,
+        //     password: password,
+        //     uid: uid!,
+        //     isMerchant: true,
+        //     shopName: shopName,
+        //     cart: [],
+        //   );
+        // } else {
+        mainCollection = firestore.collection(kUserDb);
+        //?Make models for Shop keeper and user sign up
+        user = UserModel(
+          fullName: fullName,
+          email: email,
+          password: password,
+          uid: uid!,
+          isMerchant: isMerchant(),
+          shopName: isMerchant() ? shopName ?? '' : '',
+          cart: [],
+          imageUrl: '',
+          balance: 0,
+        );
+        // }
 
-        logger.i('after database');
-//? Here we get the ref to collection of profile
+        //* Here we get the ref to collection of profile
         DocumentReference documentReferencer =
             mainCollection.doc(uid).collection(kProfileCollection).doc(uid);
 
@@ -131,10 +130,13 @@ class SignUpController extends GetxController {
         progressDialog.setMessage(const Text('Verify email is sent.'));
         //* sending verify email
         await userCredential?.user?.sendEmailVerification();
+        // User? userFirebase = userCredential?.user;
+        // if (userFirebase != null && !userFirebase.emailVerified) {
+        //   await userFirebase.sendEmailVerification();
+        // }
         Future.delayed(const Duration(milliseconds: 200));
         progressDialog.dismiss();
 
-//TOdo:
         AuthHelperFirebase.signOutAndCacheClear();
         Get.back();
       } else {
@@ -154,5 +156,17 @@ class SignUpController extends GetxController {
       logger.i('catch sign up : $e');
       showToast(msg: 'Something went wrong');
     }
+  }
+
+  void changeUser(String user) {
+    userType.value = user;
+  }
+
+  bool isMerchant() {
+    return userType.value == UserType.merchant.toString();
+  }
+
+  bool isUser() {
+    return userType.value == UserType.user.toString();
   }
 }

@@ -16,6 +16,23 @@ class $AssetsImagesGen {
   AssetGenImage get addUser =>
       const AssetGenImage('assets/images/add_user.png');
 
+  /// File path: assets/images/arrow.png
+  AssetGenImage get arrow => const AssetGenImage('assets/images/arrow.png');
+
+  /// File path: assets/images/logo.png
+  AssetGenImage get logo => const AssetGenImage('assets/images/logo.png');
+
+  /// File path: assets/images/logo_gif.gif
+  AssetGenImage get logoGif =>
+      const AssetGenImage('assets/images/logo_gif.gif');
+
+  /// File path: assets/images/logo_wn.png
+  AssetGenImage get logoWn => const AssetGenImage('assets/images/logo_wn.png');
+
+  /// File path: assets/images/name_logo.png
+  AssetGenImage get nameLogo =>
+      const AssetGenImage('assets/images/name_logo.png');
+
   $AssetsImagesOnboard1stGen get onboard1st =>
       const $AssetsImagesOnboard1stGen();
   $AssetsImagesOnboard2ndGen get onboard2nd =>
@@ -28,6 +45,19 @@ class $AssetsImagesGen {
   /// File path: assets/images/scan_intro.png
   AssetGenImage get scanIntro =>
       const AssetGenImage('assets/images/scan_intro.png');
+
+  /// File path: assets/images/shop.png
+  AssetGenImage get shop => const AssetGenImage('assets/images/shop.png');
+
+  /// File path: assets/images/user.png
+  AssetGenImage get user => const AssetGenImage('assets/images/user.png');
+
+  /// File path: assets/images/user_2.png
+  AssetGenImage get user2 => const AssetGenImage('assets/images/user_2.png');
+
+  /// File path: assets/images/user_profile.png
+  AssetGenImage get userProfile =>
+      const AssetGenImage('assets/images/user_profile.png');
 }
 
 class $AssetsSvgsGen {

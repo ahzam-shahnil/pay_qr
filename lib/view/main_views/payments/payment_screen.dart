@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pay_qr/config/app_constants.dart';
-import 'package:pay_qr/widgets/loading_button.dart';
+import 'package:pay_qr/widgets/shared/custom_card.dart';
 
 import '../../../config/controllers.dart';
 
@@ -13,62 +13,84 @@ class PaymentScreen extends StatefulWidget {
 }
 
 class _PaymentScreenState extends State<PaymentScreen> {
-  String cardNumber = "5450 7879 4864 7854";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: kScanBackColor,
+      backgroundColor: kTealColor,
       appBar: AppBar(
-        title: const Text('Payment Screen'),
+        title: const Text('Current Balance'),
+        backgroundColor: kTealColor,
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 20),
+        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 8),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // CreditCard(
-            //     cardNumber: cardNumber,
-            //     cardExpiry: "10/25",
-            //     cardHolderName: "Card Holder",
-            //     cvv: "456",
-            //     bankName: "Axis Bank",
-            //     // cardType: CardType
-            //     //     .masterCard, // Optional if you want to override Card Type
-            //     showBackSide: false,
-            //     frontBackground: CardBackgrounds.black,
-            //     backBackground: CardBackgrounds.white,
-            //     showShadow: true,
-            //     textExpDate: 'Exp. Date',
-            //     textName: 'Name',
-            //     textExpiry: 'MM/YY'),
+            Container(
+              height: kHeight * 0.11,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                color: kScanBackColor,
+              ),
+              child: ListTile(
+                title: Text(
+                  'Current Balance',
+                  style: Get.textTheme.headline6?.copyWith(color: kTealColor),
+                  maxLines: 3,
+                ),
+                subtitle: Obx(
+                  () => Text(
+                    '${userController.userModel.value.balance}',
+                    style: Get.textTheme.headline6?.copyWith(color: kTealColor),
+                  ),
+                ),
+                trailing: ElevatedButton(
+                  onPressed: () {
+                    // logger.d('Imp')
+                    //TODO: implement Qr show Dialog here
+                  },
+                  style: ElevatedButton.styleFrom(
+                      primary: kTealColor.withOpacity(0.6)),
+                  child: Text(
+                    'Show My Qr',
+                    style: Get.textTheme.bodyLarge
+                        ?.copyWith(color: kScanBackColor),
+                  ),
+                ),
+              ),
+            ),
             const SizedBox(
               height: 25,
             ),
-            // CardField(
-            //   dangerouslyUpdateFullCardDetails: true,
-            //   onCardChanged: (card) {
-            //     logger.i(card);
-            //     // setState(() {
-            //     //   cardNumber = card?.number ?? '5450 7879 4864 7854';
-            //     // });
-            //   },
-            // ),
-            const SizedBox(
-              height: 25,
-            ),
-            Obx(() => Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: kWidth * 0.3),
-                  child: LoadingButton(
-                      onPressed: () async {
-                        //TODO: Add payment controller
-                        // await paymentsController.createPaymentMethod();
-                        // Get.back();
-                      },
-                      text:
-                          'Pay (Rs ${cartController.totalCartPrice.value.toStringAsFixed(2)})'),
-                ))
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                CustomCard(
+                  color: kPrimaryColor,
+                  onTap: () {
+                    // Get.to(() => const DigiNavHome());
+                  },
+                  width: kWidth * 0.4,
+                  height: kHeight * 0.2,
+                  text: 'Send Money',
+                  colors: const [Color(0xFFFF5F6D), Color(0xffFFC371)],
+                ),
+                CustomCard(
+                  color: kTealColor,
+                  onTap: () {
+                    // Get.to(() => const DigiNavHome());
+                  },
+                  width: kWidth * 0.4,
+                  height: kHeight * 0.2,
+                  text: 'Load Money',
+                  colors: const [
+                    Color(0xFF20bf55),
+                    Color.fromARGB(255, 5, 235, 82)
+                  ],
+                ),
+              ],
+            )
           ],
         ),
       ),

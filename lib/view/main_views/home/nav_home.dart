@@ -2,10 +2,12 @@
 
 // Flutter imports:
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 // Package imports:
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:pay_qr/animations/background_animation.dart';
 import 'package:pay_qr/config/app_constants.dart';
 
 // Project imports:
@@ -22,6 +24,16 @@ class NavHomeScreen extends StatefulWidget {
 
 class _NavHomeScreenState extends State<NavHomeScreen> {
   int selectedIndex = 0;
+  @override
+  void initState() {
+    super.initState();
+    SystemChrome.setEnabledSystemUIMode(
+      SystemUiMode.manual,
+      overlays: [
+        SystemUiOverlay.bottom, //This line is used for showing the bottom bar
+      ],
+    );
+  }
 
   final padding = const EdgeInsets.symmetric(horizontal: 18, vertical: 12);
   double gap = 10;
@@ -34,6 +46,17 @@ class _NavHomeScreenState extends State<NavHomeScreen> {
     const ScanIntroScreen(),
     const ProfileScreen()
   ];
+  @override
+  void dispose() {
+    SystemChrome.setEnabledSystemUIMode(
+      SystemUiMode.manual,
+      overlays: [
+        SystemUiOverlay.bottom, //This line is used for showing the bottom bar
+        SystemUiOverlay.top //This line is used for showing the bottom bar
+      ],
+    );
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -91,17 +114,22 @@ class _NavHomeScreenState extends State<NavHomeScreen> {
       //     ],
       //   ),
       // ),
-      body: PageView.builder(
-        onPageChanged: (page) {
-          setState(() {
-            selectedIndex = page;
-          });
-        },
-        controller: controller,
-        itemBuilder: (context, position) {
-          return pages[position];
-        },
-        itemCount: 3,
+      body: Stack(
+        children: [
+          const AnimatedBackground(),
+          PageView.builder(
+            onPageChanged: (page) {
+              setState(() {
+                selectedIndex = page;
+              });
+            },
+            controller: controller,
+            itemBuilder: (context, position) {
+              return pages[position];
+            },
+            itemCount: 3,
+          ),
+        ],
       ),
       bottomNavigationBar: SafeArea(
         child: Container(

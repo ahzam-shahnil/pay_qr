@@ -209,7 +209,7 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                                 context: context);
                             progressDialog.show();
                             //showLoading('Adding ...');
-                            //TODO: add username here
+
                             imgUrl = await uploadImage(
                                 imageFile: imageFile!,
                                 metaData: {
@@ -217,7 +217,9 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                                   'description':
                                       profileController.descController.text
                                 },
-                                userName: '');
+                                userName:
+                                    userController.userModel.value.fullName ??
+                                        '');
                             progressDialog
                                 .setMessage(const Text('Saving Product...'));
                             //? Add Product Details Here

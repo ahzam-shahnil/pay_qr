@@ -39,7 +39,7 @@ class ProductAddController extends GetxController with BaseController {
       if (uid != null) {
         //? check that product is added as seaprate not overlapped on one
         documentReferencer = firestore
-            .collection(kMerchantDb)
+            .collection(kUserDb)
             .doc(uid)
             .collection(kProductCollection)
             .doc();

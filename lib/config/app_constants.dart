@@ -45,7 +45,7 @@ var kHeight = Get.size.height;
 
 //? User Data Names
 // const kAdminData = 'adminData';
-const kMerchantDb = 'retailerData';
+// const kMerchantDb = 'retailerData';
 // const kProductDb = 'productData';
 const kUserDb = 'userData';
 const kProfileCollection = 'profile';
@@ -78,7 +78,7 @@ Migrationsgeschichte innerhalb der letzten2 Generationn in deiner Familie?""";
 
 const kOnBoardBtnText = 'WEITER';
 const kDisabilityText = 'Körperl. Einschränkungen';
-const kPassWordForgotTxt = 'Passwort vergessen?';
+const kPassWordForgotTxt = 'Forgot Password?';
 const kNameText = 'Vollständiger Name (nicht öffentlich)';
 const kUserNameText = 'Benutzername (öffentlich)';
 const kMotherLngGerText = """Ist deine Muttersprache Deutsch?""";

@@ -49,7 +49,7 @@ class SignupScreen extends StatelessWidget {
                     autofillHints: const [AutofillHints.name],
                   ),
                   Obx(
-                    () => loginController.isMerchant()
+                    () => signUpController.isMerchant()
                         ? Column(
                             children: [
                               const SizedBox(
@@ -104,6 +104,7 @@ class SignupScreen extends StatelessWidget {
                       // TextInput.finishAutofillContext();
                       signUpController.signUp(context);
                     },
+                    style: ElevatedButton.styleFrom(primary: kScanBackColor),
                     child: Text(
                       'Sign Up',
                       style: Get.textTheme.headline6?.copyWith(

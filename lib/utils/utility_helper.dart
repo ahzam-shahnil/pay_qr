@@ -34,7 +34,7 @@ class Utility {
         liye += double.parse(item.paisay);
       }
     }
-    return total = total + diye + (-liye);
+    return total = total + (-diye) + (liye);
   }
 
   calculateTotalHisaab(List<CashModel> cashRecords) {

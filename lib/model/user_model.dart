@@ -1,8 +1,10 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 // Dart imports:
 import 'dart:convert';
 
-// Flutter imports:
 import 'package:flutter/foundation.dart';
+
+// Flutter imports:
 
 // Project imports:
 import 'cart_item.dart';
@@ -15,6 +17,7 @@ class UserModel {
   final String? shopName;
   final bool? isMerchant;
   final String? imageUrl;
+  final double balance;
   final List<CartItemModel>? cart;
   UserModel({
     this.uid,
@@ -24,6 +27,7 @@ class UserModel {
     this.shopName,
     this.isMerchant,
     this.imageUrl,
+    required this.balance,
     this.cart,
   });
 
@@ -35,6 +39,7 @@ class UserModel {
     String? shopName,
     bool? isMerchant,
     String? imageUrl,
+    double? balance,
     List<CartItemModel>? cart,
   }) {
     return UserModel(
@@ -45,12 +50,13 @@ class UserModel {
       shopName: shopName ?? this.shopName,
       isMerchant: isMerchant ?? this.isMerchant,
       imageUrl: imageUrl ?? this.imageUrl,
+      balance: balance ?? this.balance,
       cart: cart ?? this.cart,
     );
   }
 
   Map<String, dynamic> toMap() {
-    return {
+    return <String, dynamic>{
       'uid': uid,
       'fullName': fullName,
       'email': email,
@@ -58,22 +64,9 @@ class UserModel {
       'shopName': shopName,
       'isMerchant': isMerchant,
       'imageUrl': imageUrl,
+      'balance': balance,
       'cart': cart?.map((x) => x.toMap()).toList(),
     };
-  }
-
-  factory UserModel.fromMap(Map<String, dynamic> map) {
-    return UserModel(
-      uid: map['uid'] ?? '',
-      fullName: map['fullName'] ?? '',
-      email: map['email'] ?? '',
-      password: map['password'] ?? '',
-      shopName: map['shopName'],
-      isMerchant: map['isMerchant'] ?? false,
-      imageUrl: map['imageUrl'],
-      cart: List<CartItemModel>.from(
-          map['cart']?.map((x) => CartItemModel.fromMap(x))),
-    );
   }
 
   static List<CartItemModel> _convertCartItems(List cartFomDb) {
@@ -89,6 +82,7 @@ class UserModel {
   UserModel.fromSnapshot(snapshot)
       : uid = snapshot.data()['uid'],
         fullName = snapshot.data()['fullName'],
+        balance = snapshot.data()['balance'],
         email = snapshot.data()['email'],
         password = snapshot.data()['password'],
         shopName = snapshot.data()['shopName'],
@@ -97,14 +91,35 @@ class UserModel {
         cart = _convertCartItems(snapshot.data()['cart'] ?? []);
 
   List cartItemsToJson() => cart!.map((item) => item.toMap()).toList();
+
+  factory UserModel.fromMap(Map<String, dynamic> map) {
+    return UserModel(
+      uid: map['uid'] != null ? map['uid'] as String : null,
+      fullName: map['fullName'] != null ? map['fullName'] as String : null,
+      email: map['email'] != null ? map['email'] as String : null,
+      password: map['password'] != null ? map['password'] as String : null,
+      shopName: map['shopName'] != null ? map['shopName'] as String : null,
+      isMerchant: map['isMerchant'] != null ? map['isMerchant'] as bool : null,
+      imageUrl: map['imageUrl'] != null ? map['imageUrl'] as String : null,
+      balance: map['balance'] as double,
+      cart: map['cart'] != null
+          ? List<CartItemModel>.from(
+              (map['cart'] as List<int>).map<CartItemModel?>(
+                (x) => CartItemModel.fromMap(x as Map<String, dynamic>),
+              ),
+            )
+          : null,
+    );
+  }
+
   String toJson() => json.encode(toMap());
 
   factory UserModel.fromJson(String source) =>
-      UserModel.fromMap(json.decode(source));
+      UserModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() {
-    return 'UserModel(uid: $uid, fullName: $fullName, email: $email, password: $password, shopName: $shopName, isMerchant: $isMerchant, imageUrl: $imageUrl, cart: $cart)';
+    return 'UserModel(uid: $uid, fullName: $fullName, email: $email, password: $password, shopName: $shopName, isMerchant: $isMerchant, imageUrl: $imageUrl, balance: $balance, cart: $cart)';
   }
 
   @override
@@ -119,6 +134,7 @@ class UserModel {
         other.shopName == shopName &&
         other.isMerchant == isMerchant &&
         other.imageUrl == imageUrl &&
+        other.balance == balance &&
         listEquals(other.cart, cart);
   }
 
@@ -131,6 +147,7 @@ class UserModel {
         shopName.hashCode ^
         isMerchant.hashCode ^
         imageUrl.hashCode ^
+        balance.hashCode ^
         cart.hashCode;
   }
 }

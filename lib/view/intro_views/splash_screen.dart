@@ -4,8 +4,8 @@ import 'dart:async';
 // Flutter imports:
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get.dart';
 import 'package:pay_qr/config/app_constants.dart';
+import 'package:pay_qr/gen/assets.gen.dart';
 
 import '../../animations/text_animated_background.dart';
 
@@ -20,7 +20,7 @@ class _SplashScreenState extends State<SplashScreen>
     with TickerProviderStateMixin {
   double _fontSize = 2;
   double _containerSize = 1.5;
-  // double _textOpacity = 0.0;
+  double _textOpacity = 0.0;
   double _containerOpacity = 0.0;
 
   late AnimationController _controller;
@@ -34,12 +34,12 @@ class _SplashScreenState extends State<SplashScreen>
         AnimationController(vsync: this, duration: const Duration(seconds: 3));
 
     animation1 = Tween<double>(begin: 40, end: 20).animate(CurvedAnimation(
-        parent: _controller, curve: Curves.fastLinearToSlowEaseIn));
-    // ..addListener(() {
-    //   setState(() {
-    //     _textOpacity = 1.0;
-    //   });
-    // });
+        parent: _controller, curve: Curves.fastLinearToSlowEaseIn))
+      ..addListener(() {
+        setState(() {
+          _textOpacity = 1.0;
+        });
+      });
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
         overlays: [SystemUiOverlay.bottom]);
     _controller.forward();
@@ -93,18 +93,19 @@ class _SplashScreenState extends State<SplashScreen>
                   duration: const Duration(milliseconds: 2000),
                   curve: Curves.fastLinearToSlowEaseIn,
                   height: height / _fontSize),
-              // AnimatedOpacity(
-              //   duration: const Duration(milliseconds: 1000),
-              //   opacity: _textOpacity,
-              //   child: Text(
-              //     '',
-              //     style: TextStyle(
-              //       color: Colors.white,
-              //       fontWeight: FontWeight.bold,
-              //       fontSize: animation1.value,
-              //     ),
-              //   ),
-              // ),
+              AnimatedOpacity(
+                duration: const Duration(milliseconds: 1000),
+                opacity: _textOpacity,
+                child: Text(
+                  kAppName,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: animation1.value,
+                    
+                  ),
+                ),
+              ),
             ],
           ),
           Positioned(
@@ -116,22 +117,18 @@ class _SplashScreenState extends State<SplashScreen>
               curve: Curves.fastLinearToSlowEaseIn,
               opacity: _containerOpacity,
               child: AnimatedContainer(
-                duration: const Duration(milliseconds: 2000),
-                curve: Curves.fastLinearToSlowEaseIn,
-                height: height / _containerSize,
-                width: width * 0.9,
-                alignment: Alignment.center,
-                child: Text(
-                  "PayQr",
-                  style: Get.textTheme.headline2,
-                ),
-              ),
-              // child: Image.asset(
-              //   Assets.images.placeholder.path,
-              //   colorBlendMode: BlendMode.clear,
-              //   fit: BoxFit.cover,
-              // )),
+                  duration: const Duration(milliseconds: 2000),
+                  curve: Curves.fastLinearToSlowEaseIn,
+                  height: height / _containerSize,
+                  width: width * 0.9,
+                  alignment: Alignment.center,
+                  child: Image.asset(
+                    Assets.images.nameLogo.path,
+                    colorBlendMode: BlendMode.clear,
+                    fit: BoxFit.cover,
+                  )),
             ),
+            //
           ),
         ],
       ),

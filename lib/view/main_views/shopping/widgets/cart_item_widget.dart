@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
-import 'package:get/get.dart';
 import 'package:pay_qr/config/app_constants.dart';
 
 // Project imports:

@@ -15,7 +15,7 @@ void showToast({required String msg, Color? backColor, Color? textColor}) {
     gravity: ToastGravity.BOTTOM,
     timeInSecForIosWeb: 1,
     backgroundColor: backColor ?? kTealColor,
-    textColor: textColor ?? kTextFieldColor,
+    textColor: textColor ?? kScanBackColor,
   );
 }
 

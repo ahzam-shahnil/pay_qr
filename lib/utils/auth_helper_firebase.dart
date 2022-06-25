@@ -17,20 +17,6 @@ import '../model/product_model.dart';
 class AuthHelperFirebase {
   String? userUid;
 
-
-  // Create storage
-  // static const storagePrefs = FlutterSecureStorage();
-  // Future<void> addItem(
-  //     {required UserDetail userDetail, required String collectionName}) async {
-  //   DocumentReference documentReferencer =
-  //       _firestore.collection(collectionName).doc(userUid);
-
-  //   await documentReferencer
-  //       .set(userDetail)
-  //       .whenComplete(() => debugPrint("Notes item added to the database"))
-  //       .catchError((e) => debugPrint(e));
-  // }
-
   Stream<DocumentSnapshot<Map<String, dynamic>>> readItems(
       {required String collectionName}) {
     DocumentReference<Map<String, dynamic>> notesItemCollection =
@@ -88,15 +74,12 @@ class AuthHelperFirebase {
     try {
       if (auth.currentUser != null) {
         loginController.isLoggedIn.value = false;
-        debugPrint(auth.currentUser?.uid);
+        logger.i(auth.currentUser?.uid);
         await auth.signOut();
         // Delete value
         await storagePrefs.deleteAll();
         // await storagePrefs.delete(key: kUserTypeSharedPrefKey);
         _clearCache();
-
-// Delete all
-        // await _sharedPref.deleteAll();
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {
@@ -114,7 +97,7 @@ class AuthHelperFirebase {
     // FirebaseAuth auth = FirebaseAuth.instance;
     try {
       if (auth.currentUser != null) {
-        logger.i(auth.currentUser);
+        // logger.i(auth.currentUser);
         return auth.currentUser;
       }
       return null;
@@ -125,7 +108,7 @@ class AuthHelperFirebase {
 
   static Future<List<ProductModel>?> fetchProducts(String uid) async {
     var data = await firestore
-        .collection(kMerchantDb)
+        .collection(kUserDb)
         .doc(uid)
         .collection(kProductCollection)
         .orderBy('title', descending: true)

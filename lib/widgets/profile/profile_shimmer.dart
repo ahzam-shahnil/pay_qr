@@ -1,5 +1,6 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
+import 'package:pay_qr/config/app_constants.dart';
 
 // Package imports:
 import 'package:shimmer/shimmer.dart';
@@ -19,9 +20,13 @@ class ProfileShimmer extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         child: Column(children: [
-          CircleAvatar(
-            radius: 50,
-            backgroundColor: Colors.grey.shade300,
+          Container(
+            width: kWidth * 0.6,
+            height: kHeight * 0.3,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(60),
+              color: Colors.grey.shade300,
+            ),
           ),
           const SizedBox(height: 20),
           const TextShimmer(

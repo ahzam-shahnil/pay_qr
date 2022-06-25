@@ -184,7 +184,10 @@ class _CashBookScreenState extends State<CashBookScreen> {
                 const SizedBox(
                   height: 16.0,
                 ),
-                CashBookAmountRow(total: Utility.calculateAmount(data)),
+                CashBookAmountRow(
+                  total: Utility.calculateAmount(data),
+                 
+                ),
                 Container(
                   decoration: BoxDecoration(
                       color: kScanBackColor,
@@ -240,14 +243,14 @@ class _CashBookScreenState extends State<CashBookScreen> {
                     onLoaded: (PlutoGridOnLoadedEvent event) {
                       event.stateManager
                           .setSelectingMode(PlutoGridSelectingMode.cell);
-                      profileController.getProfile();
+                      // profileController.getProfile();
 
                       stateManager = event.stateManager;
                     },
                     createHeader: (stateManager) => PlutoHeader(
                       stateManager: stateManager,
-                      title: profileController.currentUser.value.fullName ??
-                          kAppName,
+                      title:
+                          userController.userModel.value.fullName ?? kAppName,
                     ),
                   ),
                 ),
