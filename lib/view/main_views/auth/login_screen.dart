@@ -11,7 +11,7 @@ import 'package:pay_qr/config/controllers.dart';
 import 'package:pay_qr/config/firebase.dart';
 import 'package:pay_qr/gen/assets.gen.dart';
 import 'package:pay_qr/utils/toast_dialogs.dart';
-import '../../../components/already_have_an_account_acheck.dart';
+import '../../../components/already_have_an_account_check.dart';
 import 'signup_screen.dart';
 
 class LoginScreen extends StatefulWidget {

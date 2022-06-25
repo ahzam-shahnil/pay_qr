@@ -41,6 +41,7 @@ class _RectangularPasswordFieldState extends State<RectangularPasswordField> {
         enableIMEPersonalizedLearning: true,
         enableSuggestions: true,
         // textAlign: TextAlign.right,
+
         onChanged: widget.onChanged,
         readOnly: widget.isReadOnly ?? false,
         // cursorColor: kActiveBtnColor,
@@ -54,8 +55,8 @@ class _RectangularPasswordFieldState extends State<RectangularPasswordField> {
         // onEditingComplete: () => TextInput.finishAutofillContext(),
         decoration: InputDecoration(
           isCollapsed: true,
-          hintText: "Password",
-          labelText: widget.text,
+          hintText: widget.text ?? "Password",
+          // labelText: widget.text,
           hintStyle: Theme.of(context)
               .textTheme
               .headline6

@@ -21,7 +21,6 @@ import 'package:pay_qr/utils/toast_dialogs.dart';
 import 'package:pay_qr/utils/upload_image.dart';
 
 import '../../../controller/base_controller.dart';
-import '../../../widgets/profile/profile_shimmer.dart';
 import '../../../widgets/profile/profile_widget.dart';
 import '../auth/login_screen.dart';
 import 'chatbot_screen.dart';
@@ -37,7 +36,7 @@ class _ProfileScreenState extends State<ProfileScreen> with BaseController {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _passController = TextEditingController();
   final TextEditingController _shopNameController = TextEditingController();
-  //TODO: Add money to profile model
+
   bool isEdit = false;
   @override
   void initState() {
@@ -80,16 +79,11 @@ class _ProfileScreenState extends State<ProfileScreen> with BaseController {
   }
 
   refresh() {
-    profileController.getProfile().then((value) {
-      if (mounted) {
-        setState(() {
-          _passController.text = profileController.currentUser.value.password!;
-          _nameController.text = profileController.currentUser.value.fullName!;
-          if (profileController.currentUser.value.isMerchant!) {
-            _shopNameController.text =
-                profileController.currentUser.value.shopName!;
-          }
-        });
+    setState(() {
+      _passController.text = userController.userModel.value.password!;
+      _nameController.text = userController.userModel.value.fullName!;
+      if (userController.userModel.value.isMerchant!) {
+        _shopNameController.text = userController.userModel.value.shopName!;
       }
     });
   }
@@ -108,7 +102,7 @@ class _ProfileScreenState extends State<ProfileScreen> with BaseController {
       );
       return;
     }
-    if (profileController.currentUser.value.isMerchant! && shopName.isEmpty) {
+    if (userController.userModel.value.isMerchant! && shopName.isEmpty) {
       showToast(
         msg: 'Please Shop Name',
       );
@@ -134,14 +128,14 @@ class _ProfileScreenState extends State<ProfileScreen> with BaseController {
     }
 
     logger.d(imgUrl);
-    var profile = profileController.currentUser.value.copyWith(
+    var profile = userController.userModel.value.copyWith(
       fullName: _nameController.text,
       shopName: _shopNameController.text,
       password: _passController.text,
       imageUrl: imgUrl,
     );
 
-    if (profile == profileController.currentUser.value) {
+    if (profile == userController.userModel.value) {
       progressDialog.dismiss();
       showToast(msg: 'Nothing to Save', backColor: Colors.grey);
       saveWork();
@@ -150,7 +144,7 @@ class _ProfileScreenState extends State<ProfileScreen> with BaseController {
     // logger.d(profile);
     progressDialog.setMessage(const Text('Updating Profile'));
     try {
-      await profileController.updateProfile(profile, context);
+      await profileController.updateProfile(profile);
     } catch (e) {
       logger.e(e);
     }
@@ -166,134 +160,130 @@ class _ProfileScreenState extends State<ProfileScreen> with BaseController {
       extendBodyBehindAppBar: true,
       backgroundColor: Colors.transparent,
       body: SafeArea(
-        child: Stack(
-          children: [
-            Obx(() => profileController.isLoading.value
-                ? const ProfileShimmer()
-                : GestureDetector(
-                    onTap: () => FocusScope.of(context).unfocus(),
-                    child: ListView(
-                      physics: const BouncingScrollPhysics(),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 10),
-                      children: [
-                        Obx(() => ProfileWidget(
-                              onClicked: () async {
-                                logger.i('Edit Profile');
+        child: GestureDetector(
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: ListView(
+            physics: const BouncingScrollPhysics(),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            children: [
+              Obx(() => ProfileWidget(
+                    onClicked: () async {
+                      logger.i('Edit Profile');
 
-                                if (mounted) {
-                                  if (!isEdit) {
-                                    setState(() {
-                                      isEdit = true;
-                                    });
-                                  } else {
-                                    await pickImage();
-                                  }
-                                }
-                              },
-                              imageUrl:
-                                  userController.firebaseUser.value?.photoURL,
-                              imageFile: imageFile,
-                              isEdit: isEdit,
-                            )),
-                        const SizedBox(height: 12),
-                        Obx(() => RoundedRectangleInputField(
-                              textCapitalization: TextCapitalization.words,
-                              hintText:
-                                  profileController.currentUser.value.fullName!,
-                              textController: _nameController,
-                              isEnabled: isEdit,
-                            )),
-                        const SizedBox(height: 12),
-                        Obx(() => RoundedRectangleInputField(
-                              hintText:
-                                  profileController.currentUser.value.email!,
+                      if (mounted) {
+                        if (!isEdit) {
+                          setState(() {
+                            isEdit = true;
+                          });
+                        } else {
+                          await pickImage();
+                        }
+                      }
+                    },
+                    imageUrl: userController.firebaseUser.value?.photoURL,
+                    imageFile: imageFile,
+                    isEdit: isEdit,
+                  )),
+              const SizedBox(height: 12),
+              Obx(() => RoundedRectangleInputField(
+                    textCapitalization: TextCapitalization.words,
+                    hintText: userController.userModel.value.fullName!,
+                    textController: _nameController,
+                    isEnabled: isEdit,
+                  )),
+              const SizedBox(height: 12),
+              Obx(() => RoundedRectangleInputField(
+                    hintText: userController.userModel.value.email!,
 
-                              // textController: _emailController,
-                              autofillHints: const [AutofillHints.email],
-                              textInputType: TextInputType.emailAddress,
-                              //? to make sure that email is not changed
-                              isEnabled: false,
-                            )),
-                        const SizedBox(height: 12),
-                        RectangularPasswordField(
-                            isReadOnly: !isEdit,
-                            textController: _passController),
-                        const SizedBox(height: 12),
-                        Obx(
-                          () => profileController.currentUser.value.isMerchant!
-                              ? Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.stretch,
-                                  children: [
-                                    RoundedRectangleInputField(
-                                      textCapitalization:
-                                          TextCapitalization.words,
-                                      isEnabled: isEdit,
-                                      hintText: profileController
-                                          .currentUser.value.shopName!,
-                                      icon: Icons.shopping_basket_outlined,
-                                      textController: _shopNameController,
-                                      textInputType: TextInputType.name,
-                                      autofillHints: const [
-                                        AutofillHints.organizationName
-                                      ],
-                                    ),
-                                  ],
-                                )
-                              : const SizedBox(),
-                        ),
-                        if (isEdit) ...[
-                          const SizedBox(height: 20),
-                          Padding(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: kWidth * 0.3,
-                            ),
-                            child: ElevatedButton(
-                              onPressed: () => saveProfile(),
-                              style: ElevatedButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                              ),
-                              child: Text(
-                                'Save',
-                                style: Get.textTheme.headline6,
-                              ),
-                            ),
-                          )
-                        ],
-
-                        if (!isEdit)
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              OutlinedButton.icon(
-                                // style: ElevatedButton.styleFrom(
-                                //   primary: kTealColor,
-                                // ),
-                                onPressed: () async {
-                                  await AuthHelperFirebase
-                                      .signOutAndCacheClear();
-                                  Get.offAll(() => const LoginScreen());
-                                },
-                                icon: const Icon(Icons.logout_rounded),
-                                label: const Text('Logout'),
-                              ),
-                              OutlinedButton(
-                                onPressed: () =>
-                                    Get.to(() => const ChatBotScreen()),
-                                child: const Text("Chat with Us"),
-                              ),
+                    // textController: _emailController,
+                    autofillHints: const [AutofillHints.email],
+                    textInputType: TextInputType.emailAddress,
+                    //? to make sure that email is not changed
+                    isEnabled: false,
+                  )),
+              const SizedBox(height: 12),
+              RectangularPasswordField(
+                  isReadOnly: !isEdit, textController: _passController),
+              const SizedBox(height: 12),
+              Obx(
+                () => userController.userModel.value.isMerchant!
+                    ? Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          RoundedRectangleInputField(
+                            textCapitalization: TextCapitalization.words,
+                            isEnabled: isEdit,
+                            hintText: userController.userModel.value.shopName!,
+                            icon: Icons.shopping_basket_outlined,
+                            textController: _shopNameController,
+                            textInputType: TextInputType.name,
+                            autofillHints: const [
+                              AutofillHints.organizationName
                             ],
                           ),
-                        //  const Text('Terms of Service'),
-                        // const Text('Privacy Policy'),
-                      ],
+                        ],
+                      )
+                    : const SizedBox(),
+              ),
+              if (isEdit) ...[
+                const SizedBox(height: 20),
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: kWidth * 0.3,
+                  ),
+                  child: ElevatedButton(
+                    onPressed: () => saveProfile(),
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
                     ),
-                  )),
-          ],
+                    child: Text(
+                      'Save',
+                      style: Get.textTheme.headline6,
+                    ),
+                  ),
+                )
+              ],
+
+              if (!isEdit)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    ElevatedButton.icon(
+                      style: ElevatedButton.styleFrom(
+                        primary: kPrimaryColor,
+                      ),
+                      onPressed: () async {
+                        await AuthHelperFirebase.signOutAndCacheClear();
+                        Get.offAll(() => const LoginScreen());
+                      },
+                      icon: const Icon(
+                        Icons.logout_rounded,
+                        color: kScanBackColor,
+                      ),
+                      label: const Text(
+                        'Logout',
+                        style: TextStyle(color: kScanBackColor),
+                      ),
+                    ),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.blue.shade600,
+                      ),
+                      onPressed: () => Get.to(() => const ChatBotScreen()),
+                      child: const Text(
+                        "Chat with Us",
+                        style: TextStyle(color: kScanBackColor),
+                      ),
+                    ),
+                  ],
+                ),
+              //  const Text('Terms of Service'),
+              // const Text('Privacy Policy'),
+            ],
+          ),
         ),
       ),
     );

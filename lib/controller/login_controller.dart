@@ -134,6 +134,8 @@ class LoginController extends GetxController {
             msg: 'User not found',
           );
         }
+
+        
       } else {
         AuthHelperFirebase.signOutAndCacheClear();
       }

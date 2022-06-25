@@ -95,7 +95,7 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
       _textController.clear();
       ChatMessage message = ChatMessage(
         text: text,
-        name: profileController.currentUser.value.fullName!,
+        name: userController.userModel.value.fullName!,
         type: true,
       );
       setState(() {

@@ -20,6 +20,8 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
+      left: false,
+      right: false,
       child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
           child: Column(
@@ -28,7 +30,7 @@ class HomeScreen extends StatelessWidget {
                 width: kWidth,
                 height: kHeight * 0.4,
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Column(
                       children: [
@@ -39,7 +41,7 @@ class HomeScreen extends StatelessWidget {
                             Get.to(() => const PaymentScreen());
                           },
                           text: 'Current balance',
-                          width: kWidth * 0.55,
+                          width: kWidth * 0.5,
                           colors: const [Color(0xFF20bf55), kTealColor],
                         )
                       ],
@@ -49,7 +51,7 @@ class HomeScreen extends StatelessWidget {
                       children: [
                         Obx(
                           () =>
-                              userController.userModel.value.isMerchant ?? false
+                              userController.userModel.value.isMerchant == true
                                   ? CustomCard(
                                       color: Colors.blue,
                                       onTap: () {
@@ -68,7 +70,7 @@ class HomeScreen extends StatelessWidget {
                                       onTap: () {
                                         Get.to(() => const DigiNavHome());
                                       },
-                                      width: kWidth * 0.55,
+                                      width: kWidth * 0.42,
                                       height: kHeight * 0.35,
                                       text: 'DIGI Khata',
                                       colors: const [
@@ -79,7 +81,7 @@ class HomeScreen extends StatelessWidget {
                         ),
                         Obx(
                           () =>
-                              userController.userModel.value.isMerchant ?? false
+                              userController.userModel.value.isMerchant == true
                                   ? CustomCard(
                                       color: kPrimaryColor,
                                       onTap: () {

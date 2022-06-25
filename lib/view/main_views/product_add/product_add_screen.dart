@@ -37,11 +37,11 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
   File? imageFile;
   final picker = ImagePicker();
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    profileController.getProfile();
-  }
+  // @override
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  //   // productsAddController.getProfile();
+  // }
 
   String? imgUrl;
 
@@ -159,7 +159,7 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                 RoundedRectangleInputField(
                   hintText: "Enter Item Name",
                   textCapitalization: TextCapitalization.words,
-                  textController: profileController.nameController,
+                  textController: productsAddController.nameController,
                   textInputType: TextInputType.name,
                   maxLines: null,
                 ),
@@ -167,7 +167,7 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                   hintText: "Enter Item Description",
                   textCapitalization: TextCapitalization.sentences,
                   icon: Icons.description_rounded,
-                  textController: profileController.descController,
+                  textController: productsAddController.descController,
                   maxLines: 5,
                   textInputType: TextInputType.multiline,
                 ),
@@ -175,7 +175,7 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                   hintText: "Enter Item Price",
                   textInputType: TextInputType.number,
                   icon: Icons.monetization_on_rounded,
-                  textController: profileController.priceController,
+                  textController: productsAddController.priceController,
                 ),
                 Container(
                   margin:
@@ -188,17 +188,17 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                         onPressed: () async {
                           ProductModel product;
                           final String name =
-                              profileController.nameController.text;
+                              productsAddController.nameController.text;
                           final String price =
-                              profileController.priceController.text;
+                              productsAddController.priceController.text;
                           final String description =
-                              profileController.descController.text;
+                              productsAddController.descController.text;
 
-                          if (profileController.nameController.text.trim().isNotEmpty &&
-                              profileController.nameController.text
+                          if (productsAddController.nameController.text.trim().isNotEmpty &&
+                              productsAddController.nameController.text
                                   .trim()
                                   .isNotEmpty &&
-                              profileController.nameController.text
+                              productsAddController.nameController.text
                                   .trim()
                                   .isNotEmpty &&
                               imageFile != null) {
@@ -213,9 +213,9 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                             imgUrl = await uploadImage(
                                 imageFile: imageFile!,
                                 metaData: {
-                                  'name': profileController.nameController.text,
+                                  'name': productsAddController.nameController.text,
                                   'description':
-                                      profileController.descController.text
+                                      productsAddController.descController.text
                                 },
                                 userName:
                                     userController.userModel.value.fullName ??
@@ -273,11 +273,11 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                             progress.show();
                             await captureAndSavePng(
                                 globalKey: _globalKey,
-                                name: profileController.nameController.text
+                                name: productsAddController.nameController.text
                                         .trim()
                                         .isEmpty
                                     ? "image"
-                                    : profileController.nameController.text
+                                    : productsAddController.nameController.text
                                         .trim());
                             logger.i("Qr Saved");
                             progress.dismiss();
@@ -286,9 +286,9 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                                 backColor: Colors.green,
                                 textColor: Colors.white);
                             // Clear the text fields
-                            profileController.nameController.text = '';
-                            profileController.priceController.text = '';
-                            profileController.descController.clear();
+                            productsAddController.nameController.text = '';
+                            productsAddController.priceController.text = '';
+                            productsAddController.descController.clear();
                             setState(() {
                               imageFile = null;
                             });

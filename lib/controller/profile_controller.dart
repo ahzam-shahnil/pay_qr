@@ -5,13 +5,11 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
-import 'package:logger/logger.dart';
+import 'package:pay_qr/config/controllers.dart';
 
 // Project imports:
 import 'package:pay_qr/config/firebase.dart';
-import 'package:pay_qr/controller/login_controller.dart';
 import 'package:pay_qr/model/user_model.dart';
 import 'package:pay_qr/utils/auth_helper_firebase.dart';
 import 'package:pay_qr/utils/toast_dialogs.dart';
@@ -20,39 +18,60 @@ import '../config/app_constants.dart';
 class ProfileController extends GetxController {
   static ProfileController instance = Get.find();
 
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController priceController = TextEditingController();
-  final TextEditingController descController = TextEditingController();
-  var currentUser = UserModel(
-    uid: '',
-    fullName: '',
-    email: '',
-    password: '',
-    isMerchant: false,
-    cart: [],
-    balance: 0,
-  ).obs;
-  // final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
-  final loginController = Get.find<LoginController>();
-  final isLoading = true.obs;
-  // Create storage
-  final storage = const FlutterSecureStorage();
-  Logger log = Logger();
+  Rx<TextEditingController> nameController = TextEditingController().obs;
+  Rx<TextEditingController> passController = TextEditingController().obs;
+  Rx<TextEditingController> shopNameController = TextEditingController().obs;
+  // Rx<TextEditingController> priceController = TextEditingController().obs;
+  // Rx<TextEditingController> descController = TextEditingController().obs;
+
   // @override
   // void onInit() {
   //   super.onInit();
-  //   getProfile();
+  //   initiaLTextFieldData();
   // }
 
-  showLoading() {
-    isLoading.value = true;
-  }
+  var isEdit = false.obs;
+  // var currentUser = UserModel(
+  //   uid: '',
+  //   fullName: '',
+  //   email: '',
+  //   password: '',
+  //   isMerchant: false,
+  //   cart: [],
+  //   balance: 0,
+  // ).obs;
+  // final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+  // final loginController = Get.find<LoginController>();
+  // final isLoading = true.obs;
+  // // Create storage
+  // // final storage = const FlutterSecureStorage();
+  // // Logger log = Logger();
+  // // @override
+  // initiaLTextFieldData() {
+  //   // profileController.getProfile().then((value) {
+  //   //   if (mounted) {
+  //   logger.d("intinal Data");
 
-  hideLoading() {
-    isLoading.value = false;
-  }
+  //   passController.value.text = userController.userModel.value.password!;
 
-  Future<void> updateProfile(UserModel userUpdate, BuildContext context) async {
+  //   nameController.value.text = userController.userModel.value.fullName!;
+  //   if (userController.userModel.value.isMerchant!) {
+  //     shopNameController.value.text = userController.userModel.value.shopName!;
+  //   }
+
+  //   //   }
+  //   // });
+  // }
+
+  // showLoading() {
+  //   isLoading.value = true;
+  // }
+
+  // hideLoading() {
+  //   isLoading.value = false;
+  // }
+
+  Future<void> updateProfile(UserModel userUpdate) async {
     logger.d('updating Profile');
     try {
       CollectionReference mainCollection;
@@ -67,16 +86,20 @@ class ProfileController extends GetxController {
 //? setting account password
       if (user != null) {
         logger.d(userUpdate.imageUrl);
-        logger.i(userUpdate.uid);
-        user.updatePhotoURL(userUpdate.imageUrl);
-        await user.updatePassword(userUpdate.password!);
+        logger.i(userUpdate);
+        if (userController.userModel.value.imageUrl != userUpdate.imageUrl) {
+          user.updatePhotoURL(userUpdate.imageUrl);
+        }
+        if (userController.userModel.value.password != userUpdate.password) {
+          await user.updatePassword(userUpdate.password!);
+        }
         DocumentReference documentReferencer = mainCollection
-            .doc(userUpdate.uid)
+            .doc(userController.userModel.value.uid)
             .collection(kProfileCollection)
-            .doc(userUpdate.uid);
+            .doc(userController.userModel.value.uid);
 
         await documentReferencer.update(userUpdate.toMap()).whenComplete(() {
-          currentUser.value = userUpdate;
+          // userController.userModel.value = userUpdate;
           showToast(msg: "Profile Updated", backColor: Colors.green);
         }).catchError((e) => throw (e));
       } else {
@@ -90,65 +113,67 @@ class ProfileController extends GetxController {
         showToast(msg: 'Password is weak');
       }
     } catch (e) {
-      log.i('catch sign up : $e');
+      logger.i('catch sign up : $e');
       showToast(msg: 'Something went wrong');
       rethrow;
     }
   }
 
-  Future<QuerySnapshot<Object?>?> getProfile() async {
-    showLoading();
-    try {
-      final CollectionReference? mainCollection = getProfileCollection();
-      if (mainCollection != null) {
-        var data = await mainCollection.get();
+  // Future<QuerySnapshot<Object?>?> getProfile() async {
+  //   showLoading();
+  //   try {
+  //     final DocumentReference? mainCollection = getProfileCollection();
+  //     if (mainCollection != null) {
+  //       var data = await mainCollection.get();
 
-        // await collection.then((QuerySnapshot querySnapshot) => {
-        //       for (final document in querySnapshot.docs) {document.data()}
-        //     });
+  //       // await collection.then((QuerySnapshot querySnapshot) => {
+  //       //       for (final document in querySnapshot.docs) {document.data()}
+  //       //     });
 
-        var users = data.docs.map((e) => UserModel.fromSnapshot(e));
-        // log.i(users);
-        // users.isEmpty;
-        for (var item in users) {
-          currentUser.value = item;
-          log.i("Current user is $currentUser");
-        }
-        hideLoading();
-        return data;
-      }
-    } on FirebaseAuthException catch (e) {
-      // progressDialog.dismiss();
-      hideLoading();
-      log.d(e.code);
-      if (e.code == 'user-not-found') {
-        showToast(
-          msg: 'User not found',
-        );
-      } else if (e.code == 'wrong-password') {
-        showToast(
-          msg: 'Wrong password',
-        );
-      } else if (e.code == 'verify_email') {
-        showToast(msg: "Verify your Email to Login");
-      } else if (e.code == 'too-many-requests') {
-        showToast(msg: "Too many requests from you. Slow down");
-      }
-    } catch (e) {
-      // progressDialog.dismiss();
-      hideLoading();
-      showToast(
-        msg: 'Something went wrong',
-      );
-      debugPrint('e : $e');
-    }
-    return null;
-  }
+  //       // var users = data.docs.map((e) => UserModel.fromSnapshot(e));
 
-  CollectionReference? getProfileCollection() {
+  //       // log.i(users);
+  //       // users.isEmpty;
+  //       if (data.exists) {
+  //         // progressDialog.dismiss();
+
+  //         // Get.offAll(() => const NavHomeScreen());
+  //       }
+  //       hideLoading();
+  //       return null;
+  //     }
+  //   } on FirebaseAuthException catch (e) {
+  //     // progressDialog.dismiss();
+  //     hideLoading();
+  //     logger.d(e.code);
+  //     if (e.code == 'user-not-found') {
+  //       showToast(
+  //         msg: 'User not found',
+  //       );
+  //     } else if (e.code == 'wrong-password') {
+  //       showToast(
+  //         msg: 'Wrong password',
+  //       );
+  //     } else if (e.code == 'verify_email') {
+  //       showToast(msg: "Verify your Email to Login");
+  //     } else if (e.code == 'too-many-requests') {
+  //       showToast(msg: "Too many requests from you. Slow down");
+  //     }
+  //   } catch (e) {
+  //     // progressDialog.dismiss();
+  //     hideLoading();
+  //     showToast(
+  //       msg: 'Something went wrong',
+  //     );
+  //     debugPrint('e : $e');
+  //   }
+  //   return null;
+  // }
+
+  DocumentReference? getProfileCollection() {
     try {
       User? user = AuthHelperFirebase.getCurrentUserDetails();
-      final CollectionReference mainCollection;
+      final DocumentReference mainCollection;
       if (user != null) {
         //* Checking User to store Data
         // if (loginController.isMerchant()) {
@@ -159,8 +184,9 @@ class ProfileController extends GetxController {
         // } else {
         mainCollection = firestore
             .collection(kUserDb)
-            .doc(user.uid)
-            .collection(kProfileCollection);
+            .doc(userController.userModel.value.uid)
+            .collection(kProfileCollection)
+            .doc(userController.userModel.value.uid);
         // }
         return mainCollection;
       }

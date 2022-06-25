@@ -8,14 +8,13 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
-import 'package:logger/logger.dart';
+import 'package:pay_qr/config/controllers.dart';
 import 'package:uuid/uuid.dart';
 
 // Project imports:
 import 'package:pay_qr/config/app_constants.dart';
 import 'package:pay_qr/config/firebase.dart';
 import 'package:pay_qr/controller/base_controller.dart';
-import 'package:pay_qr/controller/profile_controller.dart';
 import 'package:pay_qr/model/product_model.dart';
 import 'package:pay_qr/model/qr_model.dart';
 import 'package:pay_qr/utils/auth_helper_firebase.dart';
@@ -25,7 +24,10 @@ class ProductAddController extends GetxController with BaseController {
   static ProductAddController instance = Get.find();
   var data = ''.obs;
   // final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
-  Logger log = Logger();
+  // Logger log = Logger();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController priceController = TextEditingController();
+  TextEditingController descController = TextEditingController();
   String? uid;
 
   dynamic saveProduct(ProductModel product) async {
@@ -44,7 +46,7 @@ class ProductAddController extends GetxController with BaseController {
             .collection(kProductCollection)
             .doc();
         //*Saving Qr Details to Qr image
-        var shopName = Get.find<ProfileController>().currentUser.value.shopName;
+        var shopName = userController.userModel.value.shopName;
         // log.i(shopName);
         var qr = QrModel(
           uid: uid!,
@@ -60,11 +62,11 @@ class ProductAddController extends GetxController with BaseController {
           id: productId.v4(),
           numberOfViews: 0,
         );
-        log.i(product);
+        logger.i(product);
         await documentReferencer
             .set(product.toMap())
-            .whenComplete(() => log.i("Item item added to the database"))
-            .catchError((e) => log.e(e));
+            .whenComplete(() => logger.i("Item item added to the database"))
+            .catchError((e) => logger.e(e));
 
         data.value = qr.toJson();
 
@@ -79,7 +81,7 @@ class ProductAddController extends GetxController with BaseController {
         showToast(msg: 'Password is weak');
       }
     } catch (e) {
-      log.i('catch sign up : $e');
+      logger.i('catch sign up : $e');
       showToast(msg: 'Something went wrong');
     }
   }

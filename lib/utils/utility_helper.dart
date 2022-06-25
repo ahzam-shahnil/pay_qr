@@ -68,7 +68,7 @@ class Utility {
         total,
         (double previousValue, element) =>
             previousValue + calculateAmount(element.cashRecords));
-    logger.d(total);
+    // logger.d(total);
     return total.toStringAsFixed(0);
   }
 

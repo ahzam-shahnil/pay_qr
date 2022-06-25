@@ -9,7 +9,7 @@ import 'package:pay_qr/config/app_constants.dart';
 
 // Project imports:
 import 'package:pay_qr/config/controllers.dart';
-import '../../../components/already_have_an_account_acheck.dart';
+import '../../../components/already_have_an_account_check.dart';
 import '../../../widgets/auth/account_type_row.dart';
 
 // Package imports:
