@@ -5,7 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pay_qr/config/app_constants.dart';
 import 'package:pay_qr/config/controllers.dart';
 import 'package:pay_qr/model/digi_khata/cash_model.dart';
-import 'package:pay_qr/utils/utility_helper.dart';
+import 'package:pay_qr/utils/utility.dart';
 import 'package:pay_qr/view/main_views/digi_khata/add_customer/add_customers_record.dart';
 import 'package:pay_qr/widgets/digi_khata/cashbook_amount_row.dart';
 import 'package:pay_qr/widgets/digi_khata/pluto_header.dart';

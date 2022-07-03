@@ -19,20 +19,13 @@ import '../model/user_model.dart';
 class SignUpController extends GetxController {
   static SignUpController instance = Get.find();
   var userType = UserType.merchant.toString().obs;
-  // final loginController = Get.find<LoginController>();
-  // Create storage
-  // final storage = const FlutterSecureStorage();
-  // final Logger log = Logger();
 
-  // final Logger log = Logger();
   final TextEditingController emailController = TextEditingController();
 
   final TextEditingController nameController = TextEditingController();
   final TextEditingController shopNameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  // final signUpController = Get.find<SignUpController>();
-  // final loginController = Get.find<LoginController>();
   Future<void> signUp(BuildContext context) async {
     var fullName = nameController.text.trim();
     var shopName = shopNameController.text.trim();
@@ -75,7 +68,7 @@ class SignUpController extends GetxController {
         context: context, msg: 'Please wait', title: 'Signing Up');
 
     progressDialog.show();
-
+    resetTextControllers();
     try {
       UserCredential? userCredential =
           await AuthHelperFirebase.signUp(email, password);
@@ -86,19 +79,6 @@ class SignUpController extends GetxController {
         // Merchant? _merchant;
         String? uid = userCredential?.user!.uid;
 
-        //* Checking User to store Data
-        // if (loginController.isMerchant()) {
-        //   mainCollection = firestore.collection(kMerchantDb);
-        //   user = UserModel(
-        //     fullName: fullName,
-        //     email: email,
-        //     password: password,
-        //     uid: uid!,
-        //     isMerchant: true,
-        //     shopName: shopName,
-        //     cart: [],
-        //   );
-        // } else {
         mainCollection = firestore.collection(kUserDb);
         //?Make models for Shop keeper and user sign up
         user = UserModel(
@@ -125,9 +105,12 @@ class SignUpController extends GetxController {
         await documentReferencer
             .set(data)
             .whenComplete(() => showToast(
-                msg: "Success\nVerify email is sent.", backColor: Colors.green))
+                msg: "Success",
+                backColor: Colors.green,
+                iconData: Icons.done_rounded))
             .catchError((e) => logger.e(e));
-        progressDialog.setMessage(const Text('Verify email is sent.'));
+        // progressDialog.setMessage(const Text('Verify email is sent.'));
+        // resetTextControllers();
         //* sending verify email
         await userCredential?.user?.sendEmailVerification();
         // User? userFirebase = userCredential?.user;
@@ -168,5 +151,12 @@ class SignUpController extends GetxController {
 
   bool isUser() {
     return userType.value == UserType.user.toString();
+  }
+
+  resetTextControllers() {
+    emailController.clear();
+    nameController.clear();
+    shopNameController.clear();
+    passwordController.clear();
   }
 }

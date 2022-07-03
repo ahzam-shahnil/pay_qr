@@ -5,7 +5,7 @@ import 'package:pay_qr/config/app_constants.dart';
 import 'package:pay_qr/config/controllers.dart';
 import 'package:pay_qr/gen/assets.gen.dart';
 import 'package:pay_qr/model/customer.dart';
-import 'package:pay_qr/utils/utility_helper.dart';
+import 'package:pay_qr/utils/utility.dart';
 import 'package:pay_qr/widgets/digi_khata/amount_text.dart';
 import 'package:pay_qr/widgets/digi_khata/reusable_card.dart';
 

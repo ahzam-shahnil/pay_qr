@@ -5,7 +5,7 @@ import 'package:pay_qr/config/controllers.dart';
 import 'package:pay_qr/model/customer.dart';
 import 'package:pay_qr/model/digi_khata/cash_model.dart';
 import 'package:pay_qr/utils/toast_dialogs.dart';
-import 'package:pay_qr/utils/utility_helper.dart';
+import 'package:pay_qr/utils/utility.dart';
 import 'package:pay_qr/view/main_views/digi_khata/add_customer/customer_record_view.dart';
 import 'package:pay_qr/view/main_views/digi_khata/digi_nav.dart';
 
@@ -62,8 +62,39 @@ class _AddCustomerRecordState extends State<AddCustomerRecord> {
               ? IconButton(
                   onPressed: () async {
                     FocusScope.of(context).unfocus();
+                    if (widget.isFromCashBook == false) {
+                      var records = widget.cashRecords;
 
-                    // logger.d(widget.record?.id);
+                      // logger.d(widget.record?.id);
+                      records?.retainWhere(
+                          (element) => widget.record!.id != element.id);
+
+                      logger.d(records);
+                      var customer =
+                          widget.customer?.copyWith(cashRecords: records);
+                      logger.d(customer);
+
+                      bool result = await digiController.removeCustomerRecord(
+                          customer: customer!);
+                      if (!mounted) return;
+
+                      if (result) {
+                        Get.back();
+                        // Get.off(
+                        //   () => CustomerRecordsView(
+                        //     customer: widget.customer!,
+                        //   ),
+                        // );
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => CustomerRecordsView(
+                              customer: widget.customer!,
+                            ),
+                          ),
+                        );
+                      }
+                    }
                   },
                   icon: const Icon(
                     Icons.delete_outline,
@@ -165,7 +196,7 @@ class _AddCustomerRecordState extends State<AddCustomerRecord> {
                     var records = widget.cashRecords;
 
                     records?.retainWhere(
-                        (element) => widget.record!.id == element.id);
+                        (element) => widget.record!.id != element.id);
                     records?.add(record);
                     logger.d(records);
                     var customer =

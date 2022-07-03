@@ -2,6 +2,7 @@
 import 'package:pay_qr/controller/cart_controller.dart';
 import 'package:pay_qr/controller/digi_khata/digi_controller.dart';
 import 'package:pay_qr/controller/login_controller.dart';
+import 'package:pay_qr/controller/payment/payments_controller.dart';
 import 'package:pay_qr/controller/product_add_controller.dart';
 import 'package:pay_qr/controller/product_controller.dart';
 import 'package:pay_qr/controller/profile_controller.dart';
@@ -16,7 +17,7 @@ LoginController loginController = LoginController.instance;
 ProfileController profileController = ProfileController.instance;
 CartController cartController = CartController.instance;
 ProductAddController productsAddController = ProductAddController.instance;
-// PaymentController paymentController = PaymentController.instance;
+PaymentsController paymentsController = PaymentsController.instance;
 // PaymentsController paymentsController = PaymentsController.instance;
 DigiController digiController = DigiController.instance;
 // AmountController amountController = AmountController.instance;

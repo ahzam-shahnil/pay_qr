@@ -28,7 +28,7 @@ Future<String?> uploadImage(
       // Uploading the selected image with some custom meta data
       var taskSnapshot = await storage
           .ref()
-          .child('images/users/$userName')
+          .child('images/users/$userName/${uid.v4()}')
           .putFile(imageFile, SettableMetadata(customMetadata: metaData));
 
       imgUrl = await taskSnapshot.ref.getDownloadURL();

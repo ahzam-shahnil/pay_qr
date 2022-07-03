@@ -38,10 +38,11 @@ class DigiController extends GetxController {
           .orderBy('date', descending: true)
           // .startAfter(lastDoc)
           .snapshots();
-    } on FirebaseException {
+    } on FirebaseException catch (e) {
       showToast(
         msg: 'Error',
       );
+      logger.e(e);
     }
   }
 
@@ -58,7 +59,11 @@ class DigiController extends GetxController {
       await doc.set(
         record.toMap(),
       );
-      showToast(msg: 'Success', backColor: Colors.green);
+      showToast(
+        msg: 'Success',
+        backColor: Colors.green,
+        iconData: Icons.done_rounded,
+      );
       return true;
     } on FirebaseException {
       showToast(
@@ -83,7 +88,11 @@ class DigiController extends GetxController {
           .doc(record.id);
       // .update(record.toMap());
       await docRef.set(record.toMap());
-      showToast(msg: 'Success', backColor: Colors.green);
+      showToast(
+        msg: 'Success',
+        backColor: Colors.green,
+        iconData: Icons.done_rounded,
+      );
       return true;
     } on FirebaseException {
       showToast(
@@ -108,7 +117,11 @@ class DigiController extends GetxController {
           .doc(id)
           .delete();
       // .update(record.toMap());
-      showToast(msg: 'Success', backColor: Colors.green);
+      showToast(
+        msg: 'Success',
+        backColor: Colors.green,
+        iconData: Icons.done_rounded,
+      );
       return true;
     } on FirebaseException {
       showToast(
@@ -129,7 +142,11 @@ class DigiController extends GetxController {
     try {
       // logger.d(record);
       _mainCollection.doc(customer.id).set(customer.toMap());
-      showToast(msg: "Success", backColor: Colors.green);
+      showToast(
+        msg: "Success",
+        backColor: Colors.green,
+        iconData: Icons.done_rounded,
+      );
       return true;
     } on FirebaseException {
       showToast(
@@ -152,7 +169,11 @@ class DigiController extends GetxController {
       _mainCollection.doc(id).update({
         kCashRecordsField: FieldValue.arrayUnion([record.toMap()])
       });
-      showToast(msg: "Success", backColor: Colors.green);
+      showToast(
+        msg: "Success",
+        backColor: Colors.green,
+        iconData: Icons.done_rounded,
+      );
       return true;
     } on FirebaseException {
       showToast(
@@ -181,7 +202,11 @@ class DigiController extends GetxController {
       progressDialog.dismiss();
 
       showToast(
-          msg: "Success", backColor: Colors.white, textColor: kPrimaryColor);
+        msg: "Success",
+        backColor: Colors.white,
+        textColor: kPrimaryColor,
+        iconData: Icons.done_rounded,
+      );
 
       return true;
     } on FirebaseException {

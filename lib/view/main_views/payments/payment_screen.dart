@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pay_qr/config/app_constants.dart';
+import 'package:pay_qr/view/main_views/payments/load_money_screen.dart';
+import 'package:pay_qr/view/main_views/payments/scan_screen.dart';
 import 'package:pay_qr/widgets/shared/custom_card.dart';
 
 import '../../../config/controllers.dart';
 
-class PaymentScreen extends StatefulWidget {
-  const PaymentScreen({Key? key}) : super(key: key);
+class PaymentHomeScreen extends StatefulWidget {
+  const PaymentHomeScreen({Key? key}) : super(key: key);
 
   @override
-  State<PaymentScreen> createState() => _PaymentScreenState();
+  State<PaymentHomeScreen> createState() => _PaymentHomeScreenState();
 }
 
-class _PaymentScreenState extends State<PaymentScreen> {
+class _PaymentHomeScreenState extends State<PaymentHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,19 +47,19 @@ class _PaymentScreenState extends State<PaymentScreen> {
                     style: Get.textTheme.headline6?.copyWith(color: kTealColor),
                   ),
                 ),
-                trailing: ElevatedButton(
-                  onPressed: () {
-                    // logger.d('Imp')
-                    //TODO: implement Qr show Dialog here
-                  },
-                  style: ElevatedButton.styleFrom(
-                      primary: kTealColor.withOpacity(0.6)),
-                  child: Text(
-                    'Show My Qr',
-                    style: Get.textTheme.bodyLarge
-                        ?.copyWith(color: kScanBackColor),
-                  ),
-                ),
+                // trailing: ElevatedButton(
+                //   onPressed: () {
+                //     // logger.d('Imp')
+                //     //TODO: implement Qr show Dialog here
+                //   },
+                //   style: ElevatedButton.styleFrom(
+                //       primary: kTealColor.withOpacity(0.6)),
+                //   child: Text(
+                //     'Show My Qr',
+                //     style: Get.textTheme.bodyLarge
+                //         ?.copyWith(color: kScanBackColor),
+                //   ),
+                // ),
               ),
             ),
             const SizedBox(
@@ -69,7 +71,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 CustomCard(
                   color: kPrimaryColor,
                   onTap: () {
-                    // Get.to(() => const DigiNavHome());
+                    Get.to(() => const ScanScreen(
+                          isFromShopScreen: false,
+                        ));
                   },
                   width: kWidth * 0.4,
                   height: kHeight * 0.2,
@@ -79,7 +83,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 CustomCard(
                   color: kTealColor,
                   onTap: () {
-                    // Get.to(() => const DigiNavHome());
+                    Get.to(() => const LoadMoneyScreen());
                   },
                   width: kWidth * 0.4,
                   height: kHeight * 0.2,

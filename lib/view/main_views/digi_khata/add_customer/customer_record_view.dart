@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pay_qr/config/app_constants.dart';
 import 'package:pay_qr/model/digi_khata/cash_model.dart';
-import 'package:pay_qr/utils/utility_helper.dart';
+import 'package:pay_qr/utils/utility.dart';
 import 'package:pay_qr/widgets/digi_khata/amount_card.dart';
 import 'package:pay_qr/widgets/digi_khata/pluto_header.dart';
 import 'package:pay_qr/widgets/digi_khata/reuseable_button.dart';

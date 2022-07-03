@@ -4,7 +4,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 
-class PaymentsModel {
+class CartPaymentsModel {
   static const ID = "id";
   static const PAYMENT_ID = "paymentId";
   static const CART = "cart";
@@ -18,7 +18,7 @@ class PaymentsModel {
   String status;
   int createdAt;
   List cart;
-  PaymentsModel({
+  CartPaymentsModel({
     required this.id,
     required this.paymentId,
     required this.amount,
@@ -38,7 +38,7 @@ class PaymentsModel {
   //   cart = data[CART];
   // }
 
-  PaymentsModel copyWith({
+  CartPaymentsModel copyWith({
     String? id,
     String? paymentId,
     String? amount,
@@ -46,7 +46,7 @@ class PaymentsModel {
     int? createdAt,
     List? cart,
   }) {
-    return PaymentsModel(
+    return CartPaymentsModel(
       id: id ?? this.id,
       paymentId: paymentId ?? this.paymentId,
       amount: amount ?? this.amount,
@@ -67,8 +67,8 @@ class PaymentsModel {
     };
   }
 
-  factory PaymentsModel.fromMap(Map<String, dynamic> map) {
-    return PaymentsModel(
+  factory CartPaymentsModel.fromMap(Map<String, dynamic> map) {
+    return CartPaymentsModel(
       id: map['id'] ?? '',
       paymentId: map['paymentId'] ?? '',
       amount: map['amount'] ?? '',
@@ -80,8 +80,8 @@ class PaymentsModel {
 
   String toJson() => json.encode(toMap());
 
-  factory PaymentsModel.fromJson(String source) =>
-      PaymentsModel.fromMap(json.decode(source));
+  factory CartPaymentsModel.fromJson(String source) =>
+      CartPaymentsModel.fromMap(json.decode(source));
 
   @override
   String toString() {
@@ -92,7 +92,7 @@ class PaymentsModel {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is PaymentsModel &&
+    return other is CartPaymentsModel &&
         other.id == id &&
         other.paymentId == paymentId &&
         other.amount == amount &&

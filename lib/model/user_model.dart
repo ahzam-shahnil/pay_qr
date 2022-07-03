@@ -17,7 +17,7 @@ class UserModel {
   final String? shopName;
   final bool? isMerchant;
   final String? imageUrl;
-  final double balance;
+  final dynamic balance;
   final List<CartItemModel>? cart;
   UserModel({
     this.uid,

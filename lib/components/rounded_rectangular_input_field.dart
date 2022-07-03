@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 // Flutter imports:
 import 'package:flutter/material.dart';
 
@@ -16,8 +17,10 @@ class RoundedRectangleInputField extends StatelessWidget {
   final TextCapitalization textCapitalization;
   final TextInputType? textInputType;
   final Iterable<String>? autofillHints;
-
+  final bool? isAutoFocus;
   final bool? isEnabled;
+  final TextInputAction? textInputAction;
+  void Function(String)? onSubmitted;
   final double? height;
   final ScrollController scrollController = ScrollController();
   RoundedRectangleInputField({
@@ -27,11 +30,14 @@ class RoundedRectangleInputField extends StatelessWidget {
     this.onChanged,
     this.textController,
     this.maxLines,
+    this.textCapitalization = TextCapitalization.none,
     this.textInputType,
     this.autofillHints,
+    this.isAutoFocus,
     this.isEnabled,
-    this.textCapitalization = TextCapitalization.none,
+    this.onSubmitted,
     this.height,
+    this.textInputAction,
   }) : super(key: key);
 
   @override
@@ -41,11 +47,13 @@ class RoundedRectangleInputField extends StatelessWidget {
       child: TextField(
         textCapitalization: textCapitalization,
         enabled: isEnabled,
+        onSubmitted: onSubmitted,
         enableIMEPersonalizedLearning: true,
         enableInteractiveSelection: true,
-        textInputAction: TextInputAction.next,
+        textInputAction: textInputAction ?? TextInputAction.next,
         enableSuggestions: true,
         autocorrect: false,
+        autofocus: isAutoFocus ?? false,
         scrollController: scrollController,
         maxLines: maxLines,
         onChanged: onChanged,

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:jiffy/jiffy.dart';
 import 'package:pay_qr/config/app_constants.dart';
 import 'package:pay_qr/model/digi_khata/cash_model.dart';
 
@@ -7,10 +7,22 @@ import '../model/customer.dart';
 
 class Utility {
   static getFormatedDate(DateTime date) {
-    var inputFormat = DateFormat('yyyy-MM-dd HH:mm');
-    var inputDate = inputFormat.parse(date.toString());
-    var outputFormat = DateFormat('dd/MM/yyyy HH:mm');
-    return outputFormat.format(inputDate);
+    // var inputFormat = DateFormat('yyyy-MM-dd HH:mm');
+    // var inputDate = inputFormat.parse(date.toString());
+    // var outputFormat = DateFormat('dd MM yyyy HH:mm');
+    // return outputFormat.format(inputDate);
+    return Jiffy(date).yMMMMEEEEdjm;
+  }
+
+  static getFormattedTime(DateTime date) {
+    // var inputFormat = DateFormat('yyyy-MM-dd HH:mm');
+    // var inputDate = inputFormat.parse(date.toString());
+    // var outputFormat = DateFormat('HH:mm');
+    return Jiffy(date).jm;
+  }
+
+  static getDateFormatted(DateTime date) {
+    return Jiffy(date).MMMEd;
   }
 
   static DateTime combine(DateTime date, TimeOfDay? time) => DateTime(

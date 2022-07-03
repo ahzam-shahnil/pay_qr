@@ -25,7 +25,7 @@ Future<void> captureAndSavePng(
     // final file = await File('${tempDir.path}/image.png').create();
     // await file.writeAsBytes(pngBytes);
     await ImageGallerySaver.saveImage(Uint8List.fromList(pngBytes),
-        quality: 100, name: name);
+        quality: 90, name: name);
     // log.i(qrImgUrl);
   } catch (e) {
     logger.e(e.toString());

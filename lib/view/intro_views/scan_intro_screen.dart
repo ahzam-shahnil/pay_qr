@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 // Project imports:
 import 'package:pay_qr/config/app_constants.dart';
 import 'package:pay_qr/gen/assets.gen.dart';
-import '../main_views/shopping/scan_screen.dart';
+import '../main_views/payments/scan_screen.dart';
 
 class ScanIntroScreen extends StatelessWidget {
   const ScanIntroScreen({Key? key}) : super(key: key);
@@ -72,7 +72,9 @@ class ScanIntroScreen extends StatelessWidget {
                       vertical: 8,
                     ),
                     child: ElevatedButton(
-                      onPressed: () => Get.to(() => const ScanScreen()),
+                      onPressed: () => Get.to(() => const ScanScreen(
+                            isFromShopScreen: true,
+                          )),
                       child: Text(
                         'Go Shopping!',
                         style: Get.textTheme.headline6?.copyWith(

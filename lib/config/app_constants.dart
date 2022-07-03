@@ -49,6 +49,7 @@ var kHeight = Get.size.height;
 // const kProductDb = 'productData';
 const kUserDb = 'userData';
 const kProfileCollection = 'profile';
+const kPaymentCollection = 'payments';
 const kProductCollection = 'products';
 const kUserIdDoc = 'uid';
 

@@ -22,7 +22,6 @@ import 'package:pay_qr/utils/upload_image.dart';
 
 import '../../../controller/base_controller.dart';
 import '../../../widgets/profile/profile_widget.dart';
-import '../auth/login_screen.dart';
 import 'chatbot_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -256,8 +255,7 @@ class _ProfileScreenState extends State<ProfileScreen> with BaseController {
                         primary: kPrimaryColor,
                       ),
                       onPressed: () async {
-                        await AuthHelperFirebase.signOutAndCacheClear();
-                        Get.offAll(() => const LoginScreen());
+                        profileController.logOut(context);
                       },
                       icon: const Icon(
                         Icons.logout_rounded,

@@ -1,16 +1,16 @@
 // Flutter imports:
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:get/get.dart';
+import 'package:octo_image/octo_image.dart';
 
 // Project imports:
 import 'package:pay_qr/config/app_constants.dart';
 import 'package:pay_qr/view/main_views/shopping/product_detail_screen.dart';
 import '../../../config/controllers.dart';
 import '../../../model/product_model.dart';
-import '../../../widgets/shared/blur_image.dart';
 
 class ProductTile extends StatelessWidget {
   final ProductModel product;
@@ -40,20 +40,29 @@ class ProductTile extends StatelessWidget {
                     Hero(
                       tag: product.id,
                       child: Container(
-                        height: 180,
-                        width: double.infinity,
-                        clipBehavior: Clip.antiAlias,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        child: FancyShimmerImage(
+                          height: 180,
                           width: double.infinity,
-                          height: Get.size.height * 0.2,
-                          boxFit: BoxFit.scaleDown,
-                          imageUrl: product.imageUrl!,
-                          errorWidget: const BlurImage(),
-                        ),
-                      ),
+                          clipBehavior: Clip.antiAlias,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                          child: OctoImage(
+                            height: Get.size.height * 0.2,
+                            image: CachedNetworkImageProvider(
+                              product.imageUrl!,
+                            ),
+                            progressIndicatorBuilder: OctoProgressIndicator
+                                .circularProgressIndicator(),
+                            errorBuilder: OctoError.icon(color: Colors.red),
+                            fit: BoxFit.cover,
+                          )
+                          // OctoImage(
+
+                          //   boxFit: BoxFit.scaleDown,
+                          //   imageUrl: product.imageUrl!,
+                          //   errorWidget: const BlurImage(),
+                          // ),
+                          ),
                     ),
                     // Positioned(
                     //   right: 0,
@@ -75,7 +84,7 @@ class ProductTile extends StatelessWidget {
                 Text(
                   product.title,
                   maxLines: 2,
-                  style: Get.textTheme.headline5?.copyWith(
+                  style: Get.textTheme.headline6?.copyWith(
                       color: Colors.black, fontWeight: FontWeight.w600),
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -104,13 +113,14 @@ class ProductTile extends StatelessWidget {
                 //   ),
 
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(left: 8.0),
                       child: Text(
                         "Rs. ${product.price}",
-                        style: Get.textTheme.headline6?.copyWith(
+                        
+                        style: Get.textTheme.bodyLarge?.copyWith(
                             color: Colors.black, fontWeight: FontWeight.w400),
                       ),
                     ),

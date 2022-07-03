@@ -70,7 +70,10 @@ class ProductAddController extends GetxController with BaseController {
 
         data.value = qr.toJson();
 
-        showToast(msg: 'Success', backColor: Colors.green);
+        showToast(
+            msg: 'Success',
+            backColor: Colors.green,
+            iconData: Icons.done_rounded);
       } else {
         showToast(msg: 'Something went wrong');
       }

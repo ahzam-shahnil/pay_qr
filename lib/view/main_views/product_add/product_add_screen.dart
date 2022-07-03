@@ -213,7 +213,8 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                             imgUrl = await uploadImage(
                                 imageFile: imageFile!,
                                 metaData: {
-                                  'name': productsAddController.nameController.text,
+                                  'name':
+                                      productsAddController.nameController.text,
                                   'description':
                                       productsAddController.descController.text
                                 },
@@ -235,9 +236,18 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                             progressDialog.dismiss();
                             logger.i("Product Added");
                             showToast(
-                                msg: "Product Added",
-                                backColor: Colors.green,
-                                textColor: Colors.white);
+                              msg: "Product Added",
+                              backColor: Colors.green,
+                              textColor: Colors.white,
+                              iconData: Icons.done_rounded,
+                            );
+                            // Clear the text fields
+                            productsAddController.nameController.clear();
+                            productsAddController.priceController.clear();
+                            productsAddController.descController.clear();
+                            setState(() {
+                              imageFile = null;
+                            });
                           } else {
                             if (imageFile == null) {
                               showToast(
@@ -282,12 +292,14 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                             logger.i("Qr Saved");
                             progress.dismiss();
                             showToast(
-                                msg: "Qr Code Image Saved",
-                                backColor: Colors.green,
-                                textColor: Colors.white);
+                              msg: "Qr Code Image Saved",
+                              backColor: Colors.green,
+                              textColor: Colors.white,
+                              iconData: Icons.done_rounded,
+                            );
                             // Clear the text fields
-                            productsAddController.nameController.text = '';
-                            productsAddController.priceController.text = '';
+                            productsAddController.nameController.clear();
+                            productsAddController.priceController.clear();
                             productsAddController.descController.clear();
                             setState(() {
                               imageFile = null;
@@ -296,9 +308,10 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                             productsAddController.data.value = '';
                           } else {
                             showToast(
-                                msg: "Add Product First, then save",
-                                backColor: Colors.red,
-                                textColor: Colors.white);
+                              msg: "Add Product First, then save",
+                              backColor: Colors.red,
+                              textColor: Colors.white,
+                            );
                           }
                         },
                         child: Text("Save As Image",

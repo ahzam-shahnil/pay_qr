@@ -13,9 +13,7 @@ import 'package:pay_qr/utils/auth_helper_firebase.dart';
 import 'package:pay_qr/view/main_views/home/nav_home.dart';
 import '../config/app_constants.dart';
 import '../config/firebase.dart';
-import '../utils/enum/user_type.dart';
 import '../utils/toast_dialogs.dart';
-import '../view/main_views/auth/login_screen.dart';
 
 class LoginController extends GetxController {
   static LoginController instance = Get.find();
@@ -23,27 +21,9 @@ class LoginController extends GetxController {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  var isLoggedIn = false.obs;
-
-  @override
-  void onReady() {
-    super.onReady();
-    _setInitialScreen();
-  }
-
-  Future<void> _setInitialScreen() async {
-    await Future.delayed(const Duration(seconds: 5));
-    String? userCredential = await getLoggedInUser();
-    signUpController.userType.value =
-        await getLoggedInUserType() ?? UserType.merchant.toString();
-    if (userCredential != null && signUpController.userType.value.isNotEmpty) {
-      isLoggedIn.value = true;
+  Future<void> initiateUserStream() async {
+    if (userController.firebaseUser.value != null) {
       userController.bindUserStream();
-      Get.offAll(() => const NavHomeScreen(),
-          transition: Transition.rightToLeft);
-    } else {
-      isLoggedIn.value = false;
-      Get.offAll(() => const LoginScreen(), transition: Transition.rightToLeft);
     }
   }
 
@@ -51,7 +31,6 @@ class LoginController extends GetxController {
     var email = emailController.text.trim();
     var password = passwordController.text.trim();
     if (email.isEmpty || password.isEmpty) {
-      // show error toast
       showToast(
         msg: 'Please fill all fields',
       );
@@ -71,8 +50,6 @@ class LoginController extends GetxController {
     required String email,
     required String password,
   }) async {
-    // request to firebase auth
-
     var progressDialog = getProgressDialog(
         context: context, msg: 'Please Wait', title: 'Logging In');
     progressDialog.show();
@@ -94,38 +71,22 @@ class LoginController extends GetxController {
       // }
       logger.d(userCredential?.user);
       if (userCredential?.user != null) {
+        await initiateUserStream();
         //?saving User to secure storageR
-        storeTokenAndData(
-            userCredential!, signUpController.userType.value.toString());
-        // final FirebaseFirestore _firestore = FirebaseFirestore.instance;
         final DocumentReference mainCollection;
-
-        //* Checking User to store Data
-        // if (isMerchant()) {
-        //   mainCollection = firestore
-        //       .collection(kMerchantDb)
-        //       .doc(userCredential.user?.uid)
-        //       .collection(kProfileCollection);
-        // } else {
         mainCollection = firestore
             .collection(kUserDb)
-            .doc(userCredential.user?.uid)
+            .doc(userController.firebaseUser.value?.uid)
             .collection(kProfileCollection)
-            .doc(userCredential.user?.uid);
-        // }
-        // bool? isUser;
-        var collection = await mainCollection
-            // .where(
-            //   kUserIdDoc,
-            //   isEqualTo: userCredential.user?.uid,
-            // )
-            .get();
+            .doc(userController.firebaseUser.value?.uid);
+
+        var collection = await mainCollection.get();
 
         logger.i("In Login Collection ${UserModel.fromSnapshot(collection)}");
 
         if (collection.exists) {
           progressDialog.dismiss();
-
+          resetTextControllers();
           Get.offAll(() => const NavHomeScreen());
         } else {
           progressDialog.dismiss();
@@ -134,8 +95,6 @@ class LoginController extends GetxController {
             msg: 'User not found',
           );
         }
-
-        
       } else {
         AuthHelperFirebase.signOutAndCacheClear();
       }
@@ -180,5 +139,10 @@ class LoginController extends GetxController {
 
   Future<String?> getLoggedInUserType() async {
     return await storagePrefs.read(key: kUserTypeSharedPrefKey);
+  }
+
+  resetTextControllers() {
+    emailController.clear();
+    passwordController.clear();
   }
 }

@@ -38,13 +38,15 @@ class _ShopHomePageState extends State<ShopHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: kPrimaryDarkColor,
-      appBar: const PreferredSize(
-          preferredSize: Size(
+      backgroundColor: kTealColor,
+      appBar: PreferredSize(
+          preferredSize: const Size(
             double.infinity,
             56.0,
           ),
-          child: ShopHomeAppBar()),
+          child: ShopHomeAppBar(
+            qrModel: widget.qrModel,
+          )),
       body: Column(
         children: [
           Padding(
@@ -82,7 +84,7 @@ class _ShopHomePageState extends State<ShopHomePage> {
               padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 2),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(15),
-                color: kPrimaryColor.withOpacity(0.6),
+                color: kPrimaryColor.withOpacity(0.3),
               ),
               child: Obx(() {
                 if (productsController.isLoading.value) {

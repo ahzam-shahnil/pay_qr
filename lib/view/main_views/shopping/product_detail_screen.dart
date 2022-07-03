@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 
 // Project imports:
 import 'package:pay_qr/config/app_constants.dart';
+import 'package:pay_qr/config/controllers.dart';
 import 'package:pay_qr/config/firebase.dart';
 import 'package:pay_qr/model/product_model.dart';
 import 'package:pay_qr/view/main_views/shopping/widgets/shop_app_bar.dart';
@@ -51,13 +52,15 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: kPrimaryColor,
-      appBar: const PreferredSize(
-        preferredSize: Size(
+      backgroundColor: kTealColor,
+      appBar: PreferredSize(
+        preferredSize: const Size(
           double.infinity,
           56.0,
         ),
-        child: ShopHomeAppBar(),
+        child: ShopHomeAppBar(
+          qrModel: widget.product.qr!,
+        ),
       ),
       body: SafeArea(
         child: ListView.builder(
@@ -147,9 +150,10 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 alignment: Alignment.center,
                 child: ElevatedButton(
                   onPressed: () {
-                    debugPrint("Read More Pressed");
+                    cartController.addProductToCart(widget.product);
                   },
-                  child: const Text('Read More'),
+                  child: const Text('Add to Cart',
+                      style: TextStyle(color: kScanBackColor)),
                 ),
               )
             ],

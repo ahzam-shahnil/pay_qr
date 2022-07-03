@@ -1,4 +1,5 @@
 // Dart imports:
+import 'dart:convert';
 import 'dart:io';
 import 'dart:ui';
 
@@ -10,16 +11,21 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:pay_qr/config/controllers.dart';
+import 'package:pay_qr/model/payment_qr_model.dart';
+import 'package:pay_qr/model/qr_model.dart';
+import 'package:pay_qr/view/main_views/payments/send_money_screen.dart';
+import 'package:pay_qr/view/main_views/shopping/shop_homepage.dart';
 import 'package:scan/scan.dart';
 
 // Project imports:
 import 'package:pay_qr/config/app_constants.dart';
 import 'package:pay_qr/utils/toast_dialogs.dart';
-import 'package:pay_qr/view/main_views/shopping/shop_homepage.dart';
-import '../../../model/qr_model.dart';
 
 class ScanScreen extends StatefulWidget {
-  const ScanScreen({Key? key}) : super(key: key);
+  const ScanScreen({Key? key, required this.isFromShopScreen})
+      : super(key: key);
+  final bool isFromShopScreen;
 
   @override
   State<ScanScreen> createState() => _ScanScreenState();
@@ -36,7 +42,7 @@ class _ScanScreenState extends State<ScanScreen> {
 
   final picker = ImagePicker();
 
-  Future pickImage() async {
+  Future pickQrImageAndConvert() async {
     File? imageFile;
 
     logger.i('add Image');
@@ -54,14 +60,34 @@ class _ScanScreenState extends State<ScanScreen> {
       String? result = await Scan.parse(imageFile.path);
       if (result != null) {
         try {
-          var qrModel = QrModel.fromJson(result);
-          // Get.to(() => ProductShop(qrModel: qrModel));
-          //? to turn off the torch if on
-          if (cameraController.torchState.value == TorchState.on) {
-            cameraController.toggleTorch();
-          }
+          logger.d(result);
+          if (widget.isFromShopScreen) {
+            var qrModel = QrModel.fromMap(jsonDecode(result));
+            //? to turn off the torch if on
+            if (cameraController.torchState.value == TorchState.on) {
+              cameraController.toggleTorch();
+            }
+            if (qrModel.uid == userController.userModel.value.uid) {
+              showToast(msg: 'You cannot do shopping🤨 your own shop');
+              return;
+            }
 
-          Get.to(() => ShopHomePage(qrModel: qrModel));
+            Get.to(() => ShopHomePage(
+                  qrModel: qrModel,
+                ));
+          } else {
+            var qrModel = PaymentQrModel.fromMap(jsonDecode(result));
+            //? to turn off the torch if on
+            if (cameraController.torchState.value == TorchState.on) {
+              cameraController.toggleTorch();
+            }
+            if (qrModel.uid == userController.userModel.value.uid) {
+              showToast(msg: 'You cannot scan your own Qr🤨');
+              return;
+            }
+
+            Get.to(() => SendMoneyScreen(paymentQrModel: qrModel));
+          }
         } catch (e) {
           logger.e(e);
           showToast(msg: "Invalid Qr");
@@ -87,7 +113,7 @@ class _ScanScreenState extends State<ScanScreen> {
           child: BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
             child: AppBar(
-              backgroundColor: kPrimaryColor.withOpacity(0.3),
+              backgroundColor: kPrimaryColor.withOpacity(0.6),
               title: const Text(
                 'Scan To Shop',
               ),
@@ -134,7 +160,7 @@ class _ScanScreenState extends State<ScanScreen> {
       floatingActionButtonLocation: FloatingActionButtonLocation.miniStartFloat,
       floatingActionButton: FloatingActionButton(
         backgroundColor: kPrimaryColor.withOpacity(0.6),
-        onPressed: () => pickImage(),
+        onPressed: () => pickQrImageAndConvert(),
         child: const Icon(Icons.add_a_photo_rounded),
       ),
       body: MobileScanner(
@@ -144,15 +170,36 @@ class _ScanScreenState extends State<ScanScreen> {
 
             if (code != null) {
               try {
-                logger.i('Qr Code found! $code');
-                var qrModel = QrModel.fromJson(code);
-                // Get.to(() => ProductShop(qrModel: qrModel));
-                //? to turn off the torch if on
-                if (cameraController.torchState.value == TorchState.on) {
-                  cameraController.toggleTorch();
-                }
+                if (widget.isFromShopScreen) {
+                  var qrModel = QrModel.fromMap(jsonDecode(code));
+                  //? to turn off the torch if on
+                  if (cameraController.torchState.value == TorchState.on) {
+                    cameraController.toggleTorch();
+                  }
+                  if (qrModel.uid == userController.userModel.value.uid) {
+                    showToast(msg: 'You cannot do shopping🤨 your own shop');
+                    return;
+                  }
+                  Get.to(() => ShopHomePage(
+                        qrModel: qrModel,
+                      ));
+                } else {
+                  logger.i('Qr Code found! $code');
+                  var qrModel = PaymentQrModel.fromJson(code);
+                  // Get.to(() => ProductShop(qrModel: qrModel));
+                  //? to turn off the torch if on
+                  if (cameraController.torchState.value == TorchState.on) {
+                    cameraController.toggleTorch();
+                  }
 
-                Get.to(() => ShopHomePage(qrModel: qrModel));
+                  //TODO: check this to coni=firm that it exits on this condition
+                  if (qrModel.uid == userController.userModel.value.uid) {
+                    showToast(msg: 'You cannot scan your own Qr🤨');
+                    return;
+                  }
+
+                  Get.to(() => SendMoneyScreen(paymentQrModel: qrModel));
+                }
               } catch (e) {
                 logger.e(e);
                 showToast(msg: "Incorrect Qr");

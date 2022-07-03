@@ -6,12 +6,14 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 // Project imports:
 import 'package:pay_qr/config/app_constants.dart';
+import 'package:pay_qr/model/qr_model.dart';
 import 'package:pay_qr/view/main_views/shopping/shopping_cart.dart';
 
 class ShopHomeAppBar extends StatelessWidget {
   const ShopHomeAppBar({
-    Key? key,
+    Key? key, required this.qrModel,
   }) : super(key: key);
+  final QrModel qrModel;
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +41,7 @@ class ShopHomeAppBar extends StatelessWidget {
                   context: context,
                   builder: (context) => Container(
                     color: Colors.white,
-                    child: const ShoppingCartWidget(),
+                    child:  ShoppingCartWidget(qrModel: qrModel,),
                   ),
                 );
               },

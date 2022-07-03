@@ -126,6 +126,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     .trim());
                             showToast(
                                 msg: "Password reset Email Sent",
+                                iconData: Icons.done_rounded,
                                 backColor: Colors.green);
                           } on FirebaseAuthException {
                             showToast(msg: 'Something Went Wrong.');

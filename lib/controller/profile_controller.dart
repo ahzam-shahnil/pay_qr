@@ -10,66 +10,15 @@ import 'package:pay_qr/config/controllers.dart';
 
 // Project imports:
 import 'package:pay_qr/config/firebase.dart';
+import 'package:pay_qr/model/payment_model.dart';
 import 'package:pay_qr/model/user_model.dart';
 import 'package:pay_qr/utils/auth_helper_firebase.dart';
 import 'package:pay_qr/utils/toast_dialogs.dart';
+import 'package:pay_qr/view/main_views/auth/login_screen.dart';
 import '../config/app_constants.dart';
 
 class ProfileController extends GetxController {
   static ProfileController instance = Get.find();
-
-  Rx<TextEditingController> nameController = TextEditingController().obs;
-  Rx<TextEditingController> passController = TextEditingController().obs;
-  Rx<TextEditingController> shopNameController = TextEditingController().obs;
-  // Rx<TextEditingController> priceController = TextEditingController().obs;
-  // Rx<TextEditingController> descController = TextEditingController().obs;
-
-  // @override
-  // void onInit() {
-  //   super.onInit();
-  //   initiaLTextFieldData();
-  // }
-
-  var isEdit = false.obs;
-  // var currentUser = UserModel(
-  //   uid: '',
-  //   fullName: '',
-  //   email: '',
-  //   password: '',
-  //   isMerchant: false,
-  //   cart: [],
-  //   balance: 0,
-  // ).obs;
-  // final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
-  // final loginController = Get.find<LoginController>();
-  // final isLoading = true.obs;
-  // // Create storage
-  // // final storage = const FlutterSecureStorage();
-  // // Logger log = Logger();
-  // // @override
-  // initiaLTextFieldData() {
-  //   // profileController.getProfile().then((value) {
-  //   //   if (mounted) {
-  //   logger.d("intinal Data");
-
-  //   passController.value.text = userController.userModel.value.password!;
-
-  //   nameController.value.text = userController.userModel.value.fullName!;
-  //   if (userController.userModel.value.isMerchant!) {
-  //     shopNameController.value.text = userController.userModel.value.shopName!;
-  //   }
-
-  //   //   }
-  //   // });
-  // }
-
-  // showLoading() {
-  //   isLoading.value = true;
-  // }
-
-  // hideLoading() {
-  //   isLoading.value = false;
-  // }
 
   Future<void> updateProfile(UserModel userUpdate) async {
     logger.d('updating Profile');
@@ -82,7 +31,7 @@ class ProfileController extends GetxController {
       // } else {
       mainCollection = firestore.collection(kUserDb);
 
-      User? user = AuthHelperFirebase.getCurrentUserDetails();
+      User? user = AuthHelperFirebase.getCurrentFireBaseUser();
 //? setting account password
       if (user != null) {
         logger.d(userUpdate.imageUrl);
@@ -100,7 +49,11 @@ class ProfileController extends GetxController {
 
         await documentReferencer.update(userUpdate.toMap()).whenComplete(() {
           // userController.userModel.value = userUpdate;
-          showToast(msg: "Profile Updated", backColor: Colors.green);
+          showToast(
+            msg: "Profile Updated",
+            backColor: Colors.green,
+            iconData: Icons.done_rounded,
+          );
         }).catchError((e) => throw (e));
       } else {
         logger.d('Current user is Null');
@@ -116,6 +69,48 @@ class ProfileController extends GetxController {
       logger.i('catch sign up : $e');
       showToast(msg: 'Something went wrong');
       rethrow;
+    }
+  }
+
+  Future<void> logOut(BuildContext context) async {
+    var progressDialog = getProgressDialog(
+        context: context, msg: 'Please Wait', title: 'Signing Out');
+    progressDialog.show();
+    await AuthHelperFirebase.signOutAndCacheClear();
+    // await loginController.initiateUserStream();
+    progressDialog.dismiss();
+    Get.offAll(() => const LoginScreen());
+  }
+
+  Future<bool> updateProfileBalance(PaymentModel paymentModel) async {
+    try {
+      // CollectionReference mainCollection;
+
+      // mainCollection = firestore.collection(kUserDb);
+
+      User? user = AuthHelperFirebase.getCurrentFireBaseUser();
+//? setting account password
+      if (user != null) {
+        try {
+          return await AuthHelperFirebase.performPaymentTransaction(
+              paymentModel);
+        } catch (e) {
+          logger.e(e);
+          return false;
+        }
+      } else {
+        logger.d('Current user is Null');
+        return false;
+        // throw Exception;
+      }
+    } on FirebaseAuthException catch (e) {
+      logger.e(e);
+      return false;
+    } catch (e) {
+      logger.e(e);
+      showToast(msg: 'Something went wrong');
+      return false;
+      // rethrow;
     }
   }
 
@@ -172,7 +167,7 @@ class ProfileController extends GetxController {
 
   DocumentReference? getProfileCollection() {
     try {
-      User? user = AuthHelperFirebase.getCurrentUserDetails();
+      User? user = AuthHelperFirebase.getCurrentFireBaseUser();
       final DocumentReference mainCollection;
       if (user != null) {
         //* Checking User to store Data

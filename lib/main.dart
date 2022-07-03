@@ -10,6 +10,7 @@ import 'package:pay_qr/config/app_constants.dart';
 import 'package:pay_qr/config/firebase.dart';
 import 'package:pay_qr/controller/cart_controller.dart';
 import 'package:pay_qr/controller/digi_khata/digi_controller.dart';
+import 'package:pay_qr/controller/payment/payments_controller.dart';
 import 'package:pay_qr/controller/product_controller.dart';
 import 'package:pay_qr/controller/profile_controller.dart';
 import 'package:pay_qr/controller/sign_up_controller.dart';
@@ -32,7 +33,7 @@ void main() async {
     Get.put(SignUpController());
     Get.put(ProfileController());
     Get.put(ProductAddController());
-    // Get.put(PaymentsController());
+    Get.put(PaymentsController());
     Get.put(DigiController());
     // Get.put(CashbookController());
   });
