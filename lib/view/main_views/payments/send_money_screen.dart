@@ -22,12 +22,12 @@ class _SendMoneyScreenState extends State<SendMoneyScreen> {
   Future<bool> sendMoney() async {
     if (amountController.text.trim().isEmpty ||
         double.parse(amountController.text.trim()) <= 0) {
-      showToast(msg: 'Enter valid Amount');
+      showSnackBar(msg: 'Enter valid Amount');
       return false;
     }
     if (double.parse(amountController.text.trim()) >
         userController.userModel.value.balance) {
-      showToast(msg: 'Insufficient Balance in Account');
+      showSnackBar(msg: 'Insufficient Balance in Account');
       return false;
     }
     var paymentModel = PaymentModel(
@@ -70,12 +70,12 @@ class _SendMoneyScreenState extends State<SendMoneyScreen> {
                 bool result = await sendMoney();
                 progressDialog.dismiss();
                 if (result) {
-                  showToast(
+                  showSnackBar(
                     msg: "Success",
                     iconData: Icons.done_rounded,
                   );
                 } else {
-                  showToast(msg: "Failure");
+                  showSnackBar(msg: "Failure");
                 }
               },
               textInputAction: TextInputAction.send,
@@ -93,12 +93,12 @@ class _SendMoneyScreenState extends State<SendMoneyScreen> {
                 bool result = await sendMoney();
                 progressDialog.dismiss();
                 if (result) {
-                  showToast(
+                  showSnackBar(
                     msg: "Success",
                     iconData: Icons.done_rounded,
                   );
                 } else {
-                  showToast(msg: "Failure");
+                  showSnackBar(msg: "Failure");
                 }
               },
               style: ElevatedButton.styleFrom(

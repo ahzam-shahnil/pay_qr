@@ -39,7 +39,7 @@ class DigiController extends GetxController {
           // .startAfter(lastDoc)
           .snapshots();
     } on FirebaseException catch (e) {
-      showToast(
+      showSnackBar(
         msg: 'Error',
       );
       logger.e(e);
@@ -59,19 +59,19 @@ class DigiController extends GetxController {
       await doc.set(
         record.toMap(),
       );
-      showToast(
+      showSnackBar(
         msg: 'Success',
         backColor: Colors.green,
         iconData: Icons.done_rounded,
       );
       return true;
     } on FirebaseException {
-      showToast(
+      showSnackBar(
         msg: 'Error',
       );
       return false;
     } catch (e) {
-      showToast(
+      showSnackBar(
         msg: 'Error',
       );
       return false;
@@ -88,19 +88,19 @@ class DigiController extends GetxController {
           .doc(record.id);
       // .update(record.toMap());
       await docRef.set(record.toMap());
-      showToast(
+      showSnackBar(
         msg: 'Success',
         backColor: Colors.green,
         iconData: Icons.done_rounded,
       );
       return true;
     } on FirebaseException {
-      showToast(
+      showSnackBar(
         msg: 'Error',
       );
       return false;
     } catch (e) {
-      showToast(
+      showSnackBar(
         msg: 'Error',
       );
       return false;
@@ -117,19 +117,19 @@ class DigiController extends GetxController {
           .doc(id)
           .delete();
       // .update(record.toMap());
-      showToast(
+      showSnackBar(
         msg: 'Success',
         backColor: Colors.green,
         iconData: Icons.done_rounded,
       );
       return true;
     } on FirebaseException {
-      showToast(
+      showSnackBar(
         msg: 'Error',
       );
       return false;
     } catch (e) {
-      showToast(
+      showSnackBar(
         msg: 'Error',
       );
       return false;
@@ -142,14 +142,14 @@ class DigiController extends GetxController {
     try {
       // logger.d(record);
       _mainCollection.doc(customer.id).set(customer.toMap());
-      showToast(
+      showSnackBar(
         msg: "Success",
         backColor: Colors.green,
         iconData: Icons.done_rounded,
       );
       return true;
     } on FirebaseException {
-      showToast(
+      showSnackBar(
         msg: "Error",
       );
       return false;
@@ -169,19 +169,19 @@ class DigiController extends GetxController {
       _mainCollection.doc(id).update({
         kCashRecordsField: FieldValue.arrayUnion([record.toMap()])
       });
-      showToast(
+      showSnackBar(
         msg: "Success",
         backColor: Colors.green,
         iconData: Icons.done_rounded,
       );
       return true;
     } on FirebaseException {
-      showToast(
+      showSnackBar(
         msg: "Error",
       );
       return false;
     } catch (e) {
-      showToast(
+      showSnackBar(
         msg: "Error",
       );
       return false;
@@ -201,7 +201,7 @@ class DigiController extends GetxController {
       await _mainCollection.doc(customer.id).set(customer.toMap());
       progressDialog.dismiss();
 
-      showToast(
+      showSnackBar(
         msg: "Success",
         backColor: Colors.white,
         textColor: kPrimaryColor,
@@ -212,14 +212,14 @@ class DigiController extends GetxController {
     } on FirebaseException {
       progressDialog.dismiss();
 
-      showToast(
+      showSnackBar(
         msg: 'Something Went Wrong',
       );
       return false;
     } catch (e) {
       progressDialog.dismiss();
 
-      showToast(
+      showSnackBar(
         msg: 'Something Went Wrong',
       );
       return false;

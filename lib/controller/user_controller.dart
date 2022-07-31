@@ -2,7 +2,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
-
 // Project imports:
 import 'package:pay_qr/config/app_constants.dart';
 import 'package:pay_qr/config/firebase.dart';
@@ -55,65 +54,7 @@ class UserController extends GetxController {
     userModel.bindStream(listenToUser());
   }
 
-  // void signIn() async {
-  //   try {
-  //     showLoading();
-  //     await auth
-  //         .signInWithEmailAndPassword(
-  //             email: email.text.trim(), password: password.text.trim())
-  //         .then((result) {
-  //       _clearControllers();
-  //     });
-  //   } catch (e) {
-  //     debugPrint(e.toString());
-  //     Get.snackbar("Sign In Failed", "Try again");
-  //   }
-  // }
-
-  // void signUp() async {
-  //   showLoading();
-  //   try {
-  //     await auth
-  //         .createUserWithEmailAndPassword(
-  //             email: email.text.trim(), password: password.text.trim())
-  //         .then((result) {
-  //       String _userId = result.user!.uid;
-  //       _addUserToFirestore(_userId);
-  //       _clearControllers();
-  //     });
-  //   } catch (e) {
-  //     debugPrint(e.toString());
-  //     Get.snackbar("Sign In Failed", "Try again");
-  //   }
-  // }
-
-  // void signOut() async {
-  //   auth.signOut();
-  // }
-
-  // _addUserToFirestore(String userId) {
-  //   firebaseFirestore.collection(usersCollection).doc(userId).set({
-  //     "name": name.text.trim(),
-  //     "id": userId,
-  //     "email": email.text.trim(),
-  //     "cart": []
-  //   });
-  // }
-
-  // _clearControllers() {
-  //   name.clear();
-  //   email.clear();
-  //   password.clear();
-  // }
-
   updateUserData(Map<String, dynamic> data) async {
-    //* Checking User to store Data
-    // if (loginController.isMerchant()) {
-    //   _mainCollection = firestore.collection(kMerchantDb);
-    // } else {
-    //   _mainCollection = firestore.collection(kUserDb);
-    // }
-
     _mainCollection = firestore.collection(kUserDb);
     logger.i("UPDATED");
     await _mainCollection

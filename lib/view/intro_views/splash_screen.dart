@@ -102,7 +102,6 @@ class _SplashScreenState extends State<SplashScreen>
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                     fontSize: animation1.value,
-                    
                   ),
                 ),
               ),
@@ -135,14 +134,3 @@ class _SplashScreenState extends State<SplashScreen>
     );
   }
 }
-// class SpalshScreen extends StatefulWidget {
-//   const SpalshScreen({Key? key}) : super(key: key);
-
-//   @override
-//   _SpalshScreenState createState() => _SpalshScreenState();
-// }
-
-// class _SpalshScreenState extends State<SpalshScreen>
-//     with TickerProviderStateMixin {
- 
-// }

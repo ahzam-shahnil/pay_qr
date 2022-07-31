@@ -4,7 +4,6 @@ import 'package:pay_qr/config/app_constants.dart';
 import 'package:pay_qr/config/controllers.dart';
 import 'package:pay_qr/model/payment_qr_model.dart';
 import 'package:pay_qr/utils/image_saver.dart';
-import 'package:pay_qr/utils/toast_dialogs.dart';
 import 'package:syncfusion_flutter_barcodes/barcodes.dart';
 
 class LoadMoneyScreen extends StatefulWidget {
@@ -74,25 +73,25 @@ class _LoadMoneyScreenState extends State<LoadMoneyScreen> {
                       borderRadius: BorderRadius.circular(20))),
               onPressed: () async {
                 // if (productsAddController.data.value.trim().isNotEmpty) {
-                var progress = getProgressDialog(
-                  title: 'QR Code Image',
-                  msg: 'Saving....',
-                  context: context,
-                  textColor: kTealColor,
-                );
-                progress.show();
-                await captureAndSavePng(
+                // var progress = getProgressDialog(
+                //   title: 'QR Code Image',
+                //   msg: 'Saving....',
+                //   context: context,
+                //   textColor: kTealColor,
+                // );
+                // progress.show();
+                await captureAndShare(
                   globalKey: _globalKey,
                   name: userController.userModel.value.fullName!,
                 );
-                logger.i("Qr Saved");
-                progress.dismiss();
-                showToast(
-                  msg: "Qr Code Image Saved",
-                  backColor: Colors.green,
-                  textColor: Colors.white,
-                  iconData: Icons.done_rounded,
-                );
+                // logger.i("Qr Saved");
+                // progress.dismiss();
+                // showSnackBar(
+                //   msg: "Qr Code Image Saved",
+                //   backColor: Colors.green,
+                //   textColor: Colors.white,
+                //   iconData: Icons.done_rounded,
+                // );
               },
               child: Text("Save As Image", style: Get.textTheme.headline6),
             ),

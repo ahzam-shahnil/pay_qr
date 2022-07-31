@@ -1,27 +1,17 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
-
+import 'package:fluttertoast/fluttertoast.dart';
 // Package imports:
 import 'package:get/get.dart';
 import 'package:ndialog/ndialog.dart';
-
 // Project imports:
 import 'package:pay_qr/config/app_constants.dart';
 
-void showToast(
+void showSnackBar(
     {required String msg,
     Color? backColor,
     Color? textColor,
     IconData? iconData}) {
-  // Fluttertoast.showToast(
-  //   msg: msg,
-
-  //   toastLength: Toast.LENGTH_SHORT,
-  //   gravity: ToastGravity.TOP,
-  //   timeInSecForIosWeb: 1,
-  //   backgroundColor: backColor ?? kTealColor,
-  //   textColor: textColor ?? kScanBackColor,
-  // );
   Get.snackbar(
     "",
     '',
@@ -36,6 +26,17 @@ void showToast(
     isDismissible: true,
     dismissDirection: DismissDirection.horizontal,
     forwardAnimationCurve: Curves.easeOutBack,
+  );
+}
+
+void showToast({required String msg, Color? backColor, Color? textColor}) {
+  Fluttertoast.showToast(
+    msg: msg,
+    toastLength: Toast.LENGTH_SHORT,
+    gravity: ToastGravity.TOP,
+    timeInSecForIosWeb: 1,
+    backgroundColor: backColor ?? kTealColor,
+    textColor: textColor ?? kScanBackColor,
   );
 }
 

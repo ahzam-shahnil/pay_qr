@@ -1,9 +1,7 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
-
 // Package imports:
 import 'package:get/get.dart';
-
 // Project imports:
 import 'package:pay_qr/config/app_constants.dart';
 
@@ -31,7 +29,8 @@ class DialogHelper {
                 onPressed: () {
                   if (Get.isDialogOpen!) Get.back();
                 },
-                child: const Text('Okay'),
+                child:
+                    const Text('Okay', style: TextStyle(color: Colors.white)),
               ),
             ],
           ),
@@ -40,9 +39,6 @@ class DialogHelper {
     );
   }
 
-  //show toast
-  //show snack bar
-  //show loading
   static void showLoading([String? message]) {
     Get.dialog(
       Dialog(

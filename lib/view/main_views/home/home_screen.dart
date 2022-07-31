@@ -1,7 +1,6 @@
 // Flutter imports:
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
 // Package imports:
 import 'package:get/get.dart';
 import 'package:pay_qr/config/app_constants.dart';
@@ -63,7 +62,7 @@ class HomeScreen extends StatelessWidget {
                           () =>
                               userController.userModel.value.isMerchant == true
                                   ? CustomCard(
-                                      color: Colors.blue,
+                                      color: kPrimaryColor,
                                       onTap: () {
                                         Get.to(() => const DigiNavHome());
                                       },
@@ -71,12 +70,12 @@ class HomeScreen extends StatelessWidget {
                                       height: kHeight * 0.17,
                                       text: 'DIGI Khata',
                                       colors: const [
-                                        Color(0xFF00d2ff),
-                                        Color(0xff3a7bd5)
+                                        Color(0xFFFF5F6D),
+                                        Color(0xffFFC371)
                                       ],
                                     )
                                   : CustomCard(
-                                      color: Colors.blue,
+                                      color: kPrimaryColor,
                                       onTap: () {
                                         Get.to(() => const DigiNavHome());
                                       },
@@ -84,8 +83,8 @@ class HomeScreen extends StatelessWidget {
                                       height: kHeight * 0.35,
                                       text: 'DIGI Khata',
                                       colors: const [
-                                        Color(0xFF00d2ff),
-                                        Color(0xff3a7bd5)
+                                        Color(0xFFFF5F6D),
+                                        Color(0xffFFC371)
                                       ],
                                     ),
                         ),
@@ -93,7 +92,7 @@ class HomeScreen extends StatelessWidget {
                           () =>
                               userController.userModel.value.isMerchant == true
                                   ? CustomCard(
-                                      color: kPrimaryColor,
+                                      color: Colors.blue,
                                       onTap: () {
                                         Get.to(() => const ProductAddScreen());
                                       },
@@ -101,8 +100,8 @@ class HomeScreen extends StatelessWidget {
                                       height: kHeight * 0.17,
                                       text: 'Add Product',
                                       colors: const [
-                                        Color(0xFFFF5F6D),
-                                        Color(0xffFFC371)
+                                        Color(0xFF00d2ff),
+                                        Color(0xff3a7bd5)
                                       ],
                                     )
                                   : const SizedBox(),
@@ -124,7 +123,7 @@ class HomeScreen extends StatelessWidget {
                     var data = snapshot.data!.docs
                         .map((e) => PaymentModel.fromSnapshot(e))
                         .toList();
-                    logger.d(data);
+                    // logger.d(data);
                     // data.isEmpty ? amountController.resetData() : null;
                     return data.isNotEmpty
                         ? Card(

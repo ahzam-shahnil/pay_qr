@@ -2,9 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pay_qr/config/app_constants.dart';
-
-// Package imports:
-
 // Project imports:
 import 'package:pay_qr/config/controllers.dart';
 import 'package:pay_qr/model/payment_model.dart';
@@ -19,12 +16,12 @@ class ShoppingCartWidget extends StatelessWidget {
   final QrModel qrModel;
   Future<bool> sendMoney() async {
     if (cartController.totalCartPrice.value <= 0) {
-      showToast(msg: 'Invalid Amount');
+      showSnackBar(msg: 'Invalid Amount');
       return false;
     }
     if (cartController.totalCartPrice.value >
         userController.userModel.value.balance) {
-      showToast(msg: 'Insufficient Balance in Account');
+      showSnackBar(msg: 'Insufficient Balance in Account');
       return false;
     }
     var paymentModel = PaymentModel(
@@ -70,36 +67,39 @@ class ShoppingCartWidget extends StatelessWidget {
                 )),
           ],
         ),
-        Positioned(
-          bottom: 30,
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            padding: const EdgeInsets.all(8),
-            child: CustomButton(
-              text: "Pay Rs ${cartController.totalCartPrice.value.toString()}",
-              onTap: () async {
-                if (cartController.totalCartPrice.value > 0) {
-                  var progressDialog = getProgressDialog(
-                      context: context,
-                      msg: 'Please Wait',
-                      title: 'Sending Money');
-                  progressDialog.show();
-                  bool result = await sendMoney();
-                  progressDialog.dismiss();
-                  if (result) {
-                    showToast(
-                      msg: "Success",
-                      iconData: Icons.done_rounded,
-                    );
-                    // cartController.
+        Obx(
+          () => Positioned(
+            bottom: 30,
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              padding: const EdgeInsets.all(8),
+              child: CustomButton(
+                text:
+                    "Pay Rs ${cartController.totalCartPrice.value.toString()}",
+                onTap: () async {
+                  if (cartController.totalCartPrice.value > 0) {
+                    var progressDialog = getProgressDialog(
+                        context: context,
+                        msg: 'Please Wait',
+                        title: 'Sending Money');
+                    progressDialog.show();
+                    bool result = await sendMoney();
+                    progressDialog.dismiss();
+                    if (result) {
+                      showSnackBar(
+                        msg: "Success",
+                        iconData: Icons.done_rounded,
+                      );
+                      // cartController.
+                    } else {
+                      showSnackBar(msg: "Failure");
+                    }
                   } else {
-                    showToast(msg: "Failure");
+                    showSnackBar(msg: 'Cart is Empty');
+                    return;
                   }
-                } else {
-                  showToast(msg: 'Cart is Empty');
-                  return;
-                }
-              },
+                },
+              ),
             ),
           ),
         )

@@ -1,14 +1,13 @@
 // Flutter imports:
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-
 // Package imports:
 import 'package:get/get.dart';
 import 'package:octo_image/octo_image.dart';
-
 // Project imports:
 import 'package:pay_qr/config/app_constants.dart';
 import 'package:pay_qr/view/main_views/shopping/product_detail_screen.dart';
+
 import '../../../config/controllers.dart';
 import '../../../model/product_model.dart';
 
@@ -112,15 +111,15 @@ class ProductTile extends StatelessWidget {
                 //     ),
                 //   ),
 
-                Row(
+                Wrap(
                   // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(left: 8.0),
                       child: Text(
                         "Rs. ${product.price}",
-                        
-                        style: Get.textTheme.bodyLarge?.copyWith(
+                         overflow: TextOverflow.ellipsis,
+                        style: Get.textTheme.bodyMedium?.copyWith(
                             color: Colors.black, fontWeight: FontWeight.w400),
                       ),
                     ),

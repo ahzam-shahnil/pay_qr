@@ -1,4 +1,8 @@
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:pay_qr/config/app_constants.dart';
 import 'package:pay_qr/model/digi_khata/cash_model.dart';
@@ -6,6 +10,8 @@ import 'package:pay_qr/model/digi_khata/cash_model.dart';
 import '../model/customer.dart';
 
 class Utility {
+
+
   static getFormatedDate(DateTime date) {
     // var inputFormat = DateFormat('yyyy-MM-dd HH:mm');
     // var inputDate = inputFormat.parse(date.toString());

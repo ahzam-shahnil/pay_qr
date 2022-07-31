@@ -149,7 +149,7 @@ class _AddCustomerRecordState extends State<AddCustomerRecord> {
                         );
 
                         if (time == null) {
-                          showToast(msg: 'Please Select Time');
+                          showSnackBar(msg: 'Please Select Time');
                           return;
                         } else {
                           setState(() {
@@ -175,7 +175,7 @@ class _AddCustomerRecordState extends State<AddCustomerRecord> {
                   FocusScope.of(context).unfocus();
                   if (paisayController.text.trim().isEmpty ||
                       detailsController.text.trim().isEmpty) {
-                    showToast(msg: 'Please fill all  fields');
+                    showSnackBar(msg: 'Please fill all  fields');
                     return;
                   }
                   var details = detailsController.text;

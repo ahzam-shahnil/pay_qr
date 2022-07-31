@@ -5,18 +5,15 @@ import 'dart:io';
 // Flutter imports:
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-
 // Package imports:
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pay_qr/components/rectangular_password_field.dart';
 import 'package:pay_qr/components/rounded_rectangular_input_field.dart';
-
 // Project imports:
 
 import 'package:pay_qr/config/app_constants.dart';
 import 'package:pay_qr/config/controllers.dart';
-import 'package:pay_qr/utils/auth_helper_firebase.dart';
 import 'package:pay_qr/utils/toast_dialogs.dart';
 import 'package:pay_qr/utils/upload_image.dart';
 
@@ -96,20 +93,20 @@ class _ProfileScreenState extends State<ProfileScreen> with BaseController {
     if (fullName.isEmpty || password.isEmpty) {
       // show error toast
 
-      showToast(
+      showSnackBar(
         msg: 'Please fill all fields',
       );
       return;
     }
     if (userController.userModel.value.isMerchant! && shopName.isEmpty) {
-      showToast(
+      showSnackBar(
         msg: 'Please Shop Name',
       );
       return;
     }
 
     if (password.length < 6) {
-      showToast(msg: 'Weak Password, at least 6 characters are required');
+      showSnackBar(msg: 'Weak Password, at least 6 characters are required');
 
       return;
     }
@@ -136,7 +133,7 @@ class _ProfileScreenState extends State<ProfileScreen> with BaseController {
 
     if (profile == userController.userModel.value) {
       progressDialog.dismiss();
-      showToast(msg: 'Nothing to Save', backColor: Colors.grey);
+      showSnackBar(msg: 'Nothing to Save', backColor: Colors.grey);
       saveWork();
       return;
     }

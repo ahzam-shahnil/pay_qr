@@ -1,17 +1,16 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
-
 // Package imports:
 import 'package:get/get.dart';
-
 // Project imports:
 import 'package:pay_qr/config/app_constants.dart';
 import 'package:pay_qr/gen/assets.gen.dart';
+
 import '../main_views/payments/scan_screen.dart';
 
 class ScanIntroScreen extends StatelessWidget {
   const ScanIntroScreen({Key? key}) : super(key: key);
-  // final controller = Get.lazyPut(() => ProductController(), fenix: true);
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -32,9 +31,6 @@ class ScanIntroScreen extends StatelessWidget {
                 child: SizedBox(
                   width: kWidth * 0.6,
                   height: kHeight * 0.35,
-                  // decoration: BoxDecoration(
-                  //   borderRadius: BorderRadius.circular(60),
-                  // ),
                   child: Image.asset(
                     Assets.images.scanIntro.path,
                     fit: BoxFit.contain,
@@ -81,10 +77,6 @@ class ScanIntroScreen extends StatelessWidget {
                           fontWeight: FontWeight.w500,
                         ),
                       ),
-                      // icon: const Icon(
-                      //   LineIcons.arrowRight,
-                      //   color: kScanBackColor,
-                      // ),
                     ),
                   )
                 ],

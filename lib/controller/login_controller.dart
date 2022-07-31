@@ -1,16 +1,15 @@
 // Flutter imports:
-import 'package:flutter/material.dart';
-
 // Package imports:
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 // Project imports:
 import 'package:pay_qr/config/controllers.dart';
 import 'package:pay_qr/model/user_model.dart';
 import 'package:pay_qr/utils/auth_helper_firebase.dart';
 import 'package:pay_qr/view/main_views/home/nav_home.dart';
+
 import '../config/app_constants.dart';
 import '../config/firebase.dart';
 import '../utils/toast_dialogs.dart';
@@ -31,7 +30,7 @@ class LoginController extends GetxController {
     var email = emailController.text.trim();
     var password = passwordController.text.trim();
     if (email.isEmpty || password.isEmpty) {
-      showToast(
+      showSnackBar(
         msg: 'Please fill all fields',
       );
       return;
@@ -91,7 +90,7 @@ class LoginController extends GetxController {
         } else {
           progressDialog.dismiss();
           AuthHelperFirebase.signOutAndCacheClear();
-          showToast(
+          showSnackBar(
             msg: 'User not found',
           );
         }
@@ -102,21 +101,21 @@ class LoginController extends GetxController {
       progressDialog.dismiss();
       logger.d(e.code);
       if (e.code == 'user-not-found') {
-        showToast(
+        showSnackBar(
           msg: 'User not found',
         );
       } else if (e.code == 'wrong-password') {
-        showToast(
+        showSnackBar(
           msg: 'Wrong password',
         );
       } else if (e.code == 'verify_email') {
-        showToast(msg: "Verify your Email to Login");
+        showSnackBar(msg: "Verify your Email to Login");
       } else if (e.code == 'too-many-requests') {
-        showToast(msg: "Too many requests from you. Slow down");
+        showSnackBar(msg: "Too many requests from you. Slow down");
       }
     } catch (e) {
       progressDialog.dismiss();
-      showToast(
+      showSnackBar(
         msg: 'Something went wrong',
       );
       logger.e(e);
@@ -127,19 +126,19 @@ class LoginController extends GetxController {
       UserCredential userCredential, String selected) async {
     logger.d(userCredential.credential?.token.toString());
     logger.i(userCredential);
-    await storagePrefs.write(key: kUserTypeSharedPrefKey, value: selected);
-    await storagePrefs.write(
-        key: kUserCredSharedPrefKey, value: userCredential.toString());
+    // await storagePrefs.write(key: kUserTypeSharedPrefKey, value: selected);
+    // await storagePrefs.write(
+    //     key: kUserCredSharedPrefKey, value: userCredential.toString());
   }
 
-  Future<String?> getLoggedInUser() async {
-    return await storagePrefs.read(key: kUserCredSharedPrefKey);
-    // AuthHelperFirebase.getCurrentUserUid();
-  }
+  // Future<String?> getLoggedInUser() async {
+  //   return await storagePrefs.read(key: kUserCredSharedPrefKey);
+  //   // AuthHelperFirebase.getCurrentUserUid();
+  // }
 
-  Future<String?> getLoggedInUserType() async {
-    return await storagePrefs.read(key: kUserTypeSharedPrefKey);
-  }
+  // Future<String?> getLoggedInUserType() async {
+  //   return await storagePrefs.read(key: kUserTypeSharedPrefKey);
+  // }
 
   resetTextControllers() {
     emailController.clear();

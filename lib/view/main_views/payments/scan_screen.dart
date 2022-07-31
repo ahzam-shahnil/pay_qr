@@ -6,21 +6,19 @@ import 'dart:ui';
 // Flutter imports:
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-
 // Package imports:
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+// Project imports:
+import 'package:pay_qr/config/app_constants.dart';
 import 'package:pay_qr/config/controllers.dart';
 import 'package:pay_qr/model/payment_qr_model.dart';
 import 'package:pay_qr/model/qr_model.dart';
+import 'package:pay_qr/utils/toast_dialogs.dart';
 import 'package:pay_qr/view/main_views/payments/send_money_screen.dart';
 import 'package:pay_qr/view/main_views/shopping/shop_homepage.dart';
 import 'package:scan/scan.dart';
-
-// Project imports:
-import 'package:pay_qr/config/app_constants.dart';
-import 'package:pay_qr/utils/toast_dialogs.dart';
 
 class ScanScreen extends StatefulWidget {
   const ScanScreen({Key? key, required this.isFromShopScreen})
@@ -68,7 +66,7 @@ class _ScanScreenState extends State<ScanScreen> {
               cameraController.toggleTorch();
             }
             if (qrModel.uid == userController.userModel.value.uid) {
-              showToast(msg: 'You cannot do shopping🤨 your own shop');
+              showSnackBar(msg: 'You cannot do shopping🤨 your own shop');
               return;
             }
 
@@ -82,7 +80,7 @@ class _ScanScreenState extends State<ScanScreen> {
               cameraController.toggleTorch();
             }
             if (qrModel.uid == userController.userModel.value.uid) {
-              showToast(msg: 'You cannot scan your own Qr🤨');
+              showSnackBar(msg: 'You cannot scan your own Qr🤨');
               return;
             }
 
@@ -90,10 +88,10 @@ class _ScanScreenState extends State<ScanScreen> {
           }
         } catch (e) {
           logger.e(e);
-          showToast(msg: "Invalid Qr");
+          showSnackBar(msg: "Invalid Qr");
         }
       } else {
-        showToast(msg: "Invalid Qr");
+        showSnackBar(msg: "Invalid Qr");
       }
     } catch (err) {
       if (kDebugMode) {
@@ -177,7 +175,7 @@ class _ScanScreenState extends State<ScanScreen> {
                     cameraController.toggleTorch();
                   }
                   if (qrModel.uid == userController.userModel.value.uid) {
-                    showToast(msg: 'You cannot do shopping🤨 your own shop');
+                    showSnackBar(msg: 'You cannot do shopping🤨 your own shop');
                     return;
                   }
                   Get.to(() => ShopHomePage(
@@ -194,7 +192,7 @@ class _ScanScreenState extends State<ScanScreen> {
 
                   //TODO: check this to coni=firm that it exits on this condition
                   if (qrModel.uid == userController.userModel.value.uid) {
-                    showToast(msg: 'You cannot scan your own Qr🤨');
+                    showSnackBar(msg: 'You cannot scan your own Qr🤨');
                     return;
                   }
 
@@ -202,7 +200,7 @@ class _ScanScreenState extends State<ScanScreen> {
                 }
               } catch (e) {
                 logger.e(e);
-                showToast(msg: "Incorrect Qr");
+                showSnackBar(msg: "Incorrect Qr");
               }
             }
           }),

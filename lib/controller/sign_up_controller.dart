@@ -1,16 +1,15 @@
 // Flutter imports:
-import 'package:flutter/material.dart';
-
 // Package imports:
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 // Project imports:
 import 'package:pay_qr/config/firebase.dart';
 import 'package:pay_qr/utils/auth_helper_firebase.dart';
 import 'package:pay_qr/utils/enum/user_type.dart';
 import 'package:pay_qr/utils/toast_dialogs.dart';
+
 import '../config/app_constants.dart';
 import '../model/user_model.dart';
 
@@ -35,14 +34,14 @@ class SignUpController extends GetxController {
     if (fullName.isEmpty || email.isEmpty || password.isEmpty) {
       // show error toast
 
-      showToast(
+      showSnackBar(
         msg: 'Please fill all fields',
       );
       return;
     }
 
     if (password.length < 6) {
-      showToast(msg: 'Weak Password, at least 6 characters are required');
+      showSnackBar(msg: 'Weak Password, at least 6 characters are required');
 
       return;
     }
@@ -76,7 +75,7 @@ class SignUpController extends GetxController {
       if (userCredential?.user != null) {
         final CollectionReference mainCollection;
         UserModel? user;
-        // Merchant? _merchant;
+
         String? uid = userCredential?.user!.uid;
 
         mainCollection = firestore.collection(kUserDb);
@@ -92,7 +91,6 @@ class SignUpController extends GetxController {
           imageUrl: '',
           balance: 0,
         );
-        // }
 
         //* Here we get the ref to collection of profile
         DocumentReference documentReferencer =
@@ -100,11 +98,10 @@ class SignUpController extends GetxController {
 
         //? Converting data to map for Shop keeper and user sign up
         Map<String, dynamic>? data = user.toMap();
-        // loginController.isMerchant() ? _merchant?.toMap() : _user.toMap();
 
         await documentReferencer
             .set(data)
-            .whenComplete(() => showToast(
+            .whenComplete(() => showSnackBar(
                 msg: "Success",
                 backColor: Colors.green,
                 iconData: Icons.done_rounded))
@@ -113,31 +110,28 @@ class SignUpController extends GetxController {
         // resetTextControllers();
         //* sending verify email
         await userCredential?.user?.sendEmailVerification();
-        // User? userFirebase = userCredential?.user;
-        // if (userFirebase != null && !userFirebase.emailVerified) {
-        //   await userFirebase.sendEmailVerification();
-        // }
+
         Future.delayed(const Duration(milliseconds: 200));
         progressDialog.dismiss();
 
         AuthHelperFirebase.signOutAndCacheClear();
         Get.back();
       } else {
-        showToast(msg: 'Failed');
+        showSnackBar(msg: 'Failed');
       }
 
       progressDialog.dismiss();
     } on FirebaseAuthException catch (e) {
       progressDialog.dismiss();
       if (e.code == 'email-already-in-use') {
-        showToast(msg: 'Email is already in Use');
+        showSnackBar(msg: 'Email is already in Use');
       } else if (e.code == 'weak-password') {
-        showToast(msg: 'Password is weak');
+        showSnackBar(msg: 'Password is weak');
       }
     } catch (e) {
       progressDialog.dismiss();
       logger.i('catch sign up : $e');
-      showToast(msg: 'Something went wrong');
+      showSnackBar(msg: 'Something went wrong');
     }
   }
 

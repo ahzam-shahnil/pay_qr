@@ -2,8 +2,6 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
 
-// Package imports:
-
 // Project imports:
 import '../config/app_constants.dart';
 import 'text_field_container.dart';
@@ -22,6 +20,7 @@ class RoundedRectangleInputField extends StatelessWidget {
   final TextInputAction? textInputAction;
   void Function(String)? onSubmitted;
   final double? height;
+  final Color? color;
   final ScrollController scrollController = ScrollController();
   RoundedRectangleInputField({
     Key? key,
@@ -38,12 +37,14 @@ class RoundedRectangleInputField extends StatelessWidget {
     this.onSubmitted,
     this.height,
     this.textInputAction,
+    this.color,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFieldContainer(
       height: height,
+      backColor: color,
       child: TextField(
         textCapitalization: textCapitalization,
         enabled: isEnabled,

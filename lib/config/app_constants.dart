@@ -37,16 +37,14 @@ const kTealColor = Color(0xFF01D2AF);
 const kPrimaryDarkColor = Color(0xFFFF7B66);
 const kBtnColor = Color(0xFFFF7B66);
 const kScanBackColor = Color(0xFFEEEEEE);
+const kAddProductColor = Colors.blue;
 const kAppBarPrefSize = Size(double.infinity, 56.0);
 
 var kWidth = Get.size.width;
 var kHeight = Get.size.height;
-// enum kUsers { merchant, user }
 
 //? User Data Names
-// const kAdminData = 'adminData';
-// const kMerchantDb = 'retailerData';
-// const kProductDb = 'productData';
+
 const kUserDb = 'userData';
 const kProfileCollection = 'profile';
 const kPaymentCollection = 'payments';
@@ -56,25 +54,29 @@ const kUserIdDoc = 'uid';
 const kUserCredSharedPrefKey = 'userCredential';
 const kUserTypeSharedPrefKey = 'userType';
 
-const kOnbardOneTxt = """
+const kOnbardOneTxt =
+    """
 Wir sind gegen Rassimus, Seximus, Ableismus,
 Antisemitismus, Queer- und Transfeindlichkeit.
 Mit der Kuseng-App möchten wir, vorallem in der
 Clubszene, das Zusammenleben verbessern und
 jegliche rassistischen Vorfälle vermeiden.""";
 
-const kOnbardTwoTxt = """
+const kOnbardTwoTxt =
+    """
 In der Clubszene kommt es oft zu unfairen
 Vorfällen. Wir möchten diese Vorfälle in der
 Zukunft, mit deiner Hilfe, vermeiden.
 Mit der Kuseng-App kannst du den jeweiligen
 Club auswählen und deinen Vorfall melden.""";
 
-const kRegisterText = """
+const kRegisterText =
+    """
 Fotografiere nun deinen Personalausweis. Verdecke
 anschließend alle Informationen, die nicht benötigt
 werden.""";
-const kMigrationText = """
+const kMigrationText =
+    """
 Migrationsgeschichte innerhalb der letzten2 Generationn in deiner Familie?""";
 
 const kOnBoardBtnText = 'WEITER';
@@ -104,20 +106,24 @@ const kHomeText =
     """Wähle den jeweiligen Club aus, um einen Vorfall zu melden""";
 const kSelfieInfoText =
     """Achte auf eine gute Belichtung, damit wir das Selfie auswerten können.""";
-const kSurveyEndText = """
+const kSurveyEndText =
+    """
 Wir danken Dir dass du an unserer Umfrage teilgenommen hast und dazu für einander zu gestalten. """;
 const kSurveyEndTwoText =
     """Wir danken Dir dass du an unserer Umfrage teilgenommen hast und dazu für einander zugestalten. Wir wünschen dir weiterhin viel Glück! """;
 const kRegDesTxt = """
 Allgemeine Fragen zur Einordnung deines Avatrs,
 """;
-const kProfileTxt = """
+const kProfileTxt =
+    """
 Hier kannst du Einstellungen zu deinem Account festlegen.
 """;
-const kRegScreen2Txt = """
+const kRegScreen2Txt =
+    """
 Fotografiere nun deinen Personalausweis. Verdecke anschließend alle Informationen, die nicht benötigt werden.
 """;
-const kRegMiniDescText = """
+const kRegMiniDescText =
+    """
 Diese Daten werden nicht veröffentlicht. Wir nutzen Sie nur für unsere anonymisierte Statistik""";
 
 const kProfileBtnTextList = [

@@ -6,27 +6,16 @@ import 'package:get/get.dart';
 import 'package:pay_qr/components/rectangular_password_field.dart';
 import 'package:pay_qr/components/rounded_rectangular_input_field.dart';
 import 'package:pay_qr/config/app_constants.dart';
-
 import 'package:pay_qr/config/controllers.dart';
 import 'package:pay_qr/config/firebase.dart';
 import 'package:pay_qr/gen/assets.gen.dart';
 import 'package:pay_qr/utils/toast_dialogs.dart';
+
 import '../../../components/already_have_an_account_check.dart';
 import 'signup_screen.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends StatelessWidget {
   const LoginScreen({Key? key}) : super(key: key);
-
-  @override
-  State<LoginScreen> createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
-  // with SingleTickerProviderStateMixin {
-  // late final AnimationController _controller =
-  //     AnimationController(vsync: this, duration: const Duration(seconds: 2));
-  // ..repeat()
-  // ..reverse();
 
   @override
   Widget build(BuildContext context) {
@@ -61,16 +50,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
               ),
-              // SizedBox(
-              //   height: Get.size.height * 0.25,
-              //   width: Get.size.width * 0.45,
-              //   child: Image.asset(
-              //     Assets.images.logo.path,
-              //     fit: BoxFit.contain,
-              //     // color: Colors.white,
-              //     alignment: Alignment.center,
-              //   ),
-              // ),
               Align(
                 alignment: Alignment.center,
                 child: Text(
@@ -95,14 +74,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     textController: loginController.passwordController,
                   ),
 
-                  // Text(
-                  //   'Select Account Type:',
-                  //   style: Get.textTheme.headline6,
-                  // ),
-                  // const SizedBox(
-                  //   height: 15,
-                  // ),
-                  // const AccountTypeRow(),
                   Padding(
                     padding: EdgeInsets.only(right: kWidth * 0.1),
                     child: Align(
@@ -112,7 +83,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           if (loginController.emailController.text
                               .trim()
                               .isEmpty) {
-                            showToast(msg: 'Enter email for password reset.');
+                            showSnackBar(
+                                msg: 'Enter email for password reset.');
                             return;
                           }
                           var dialog = getProgressDialog(
@@ -124,14 +96,14 @@ class _LoginScreenState extends State<LoginScreen> {
                             await auth.sendPasswordResetEmail(
                                 email: loginController.emailController.text
                                     .trim());
-                            showToast(
+                            showSnackBar(
                                 msg: "Password reset Email Sent",
                                 iconData: Icons.done_rounded,
                                 backColor: Colors.green);
                           } on FirebaseAuthException {
-                            showToast(msg: 'Something Went Wrong.');
+                            showSnackBar(msg: 'Something Went Wrong.');
                           } catch (e) {
-                            showToast(msg: 'Something Went Wrong.');
+                            showSnackBar(msg: 'Something Went Wrong.');
                           } finally {
                             dialog.dismiss();
                           }

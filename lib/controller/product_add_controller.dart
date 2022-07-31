@@ -1,28 +1,27 @@
 // Dart imports:
 import 'dart:async';
 
-// Flutter imports:
-import 'package:flutter/material.dart';
-
 // Package imports:
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+// Flutter imports:
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pay_qr/config/controllers.dart';
-import 'package:uuid/uuid.dart';
-
 // Project imports:
 import 'package:pay_qr/config/app_constants.dart';
+import 'package:pay_qr/config/controllers.dart';
 import 'package:pay_qr/config/firebase.dart';
 import 'package:pay_qr/controller/base_controller.dart';
 import 'package:pay_qr/model/product_model.dart';
 import 'package:pay_qr/model/qr_model.dart';
 import 'package:pay_qr/utils/auth_helper_firebase.dart';
 import 'package:pay_qr/utils/toast_dialogs.dart';
+import 'package:uuid/uuid.dart';
 
 class ProductAddController extends GetxController with BaseController {
   static ProductAddController instance = Get.find();
   var data = ''.obs;
+  var isVisible = false.obs;
   // final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
   // Logger log = Logger();
   TextEditingController nameController = TextEditingController();
@@ -69,41 +68,18 @@ class ProductAddController extends GetxController with BaseController {
             .catchError((e) => logger.e(e));
 
         data.value = qr.toJson();
-
-        showToast(
-            msg: 'Success',
-            backColor: Colors.green,
-            iconData: Icons.done_rounded);
       } else {
-        showToast(msg: 'Something went wrong');
+        showSnackBar(msg: 'Something went wrong');
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {
-        showToast(msg: 'Email is already in Use');
+        showSnackBar(msg: 'Email is already in Use');
       } else if (e.code == 'weak-password') {
-        showToast(msg: 'Password is weak');
+        showSnackBar(msg: 'Password is weak');
       }
     } catch (e) {
       logger.i('catch sign up : $e');
-      showToast(msg: 'Something went wrong');
+      showSnackBar(msg: 'Something went wrong');
     }
   }
-
-  // Future<void> _saveQrData(QrModel qrModel) async {
-  //   String collectionRef = 'qr';
-
-  //   try {
-  //     await _firestore
-  //         .collection(collectionRef)
-  //         .doc(qrModel.uid)
-  //         .set({"docId": itemDocId, "collectionRef": shopDbRef}).timeout(
-  //             const Duration(seconds: 10));
-
-  //     data.value = "{'docId': itemDocId, 'collectionRef': shopDbRef}";
-  //   } on SocketException {
-  //     throw FetchDataException('No Internet connection');
-  //   } on TimeoutException {
-  //     throw ApiNotRespondingException('API not responded in time');
-  //   }
-  // }
 }

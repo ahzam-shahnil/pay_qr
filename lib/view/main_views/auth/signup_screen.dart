@@ -1,18 +1,14 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
-
 // Package imports:
 import 'package:get/get.dart';
 import 'package:pay_qr/components/rectangular_password_field.dart';
 import 'package:pay_qr/components/rounded_rectangular_input_field.dart';
 import 'package:pay_qr/config/app_constants.dart';
-
-// Project imports:
 import 'package:pay_qr/config/controllers.dart';
+
 import '../../../components/already_have_an_account_check.dart';
 import '../../../widgets/auth/account_type_row.dart';
-
-// Package imports:
 
 class SignupScreen extends StatelessWidget {
   const SignupScreen({Key? key}) : super(key: key);
@@ -101,7 +97,6 @@ class SignupScreen extends StatelessWidget {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      // TextInput.finishAutofillContext();
                       signUpController.signUp(context);
                     },
                     style: ElevatedButton.styleFrom(primary: kScanBackColor),

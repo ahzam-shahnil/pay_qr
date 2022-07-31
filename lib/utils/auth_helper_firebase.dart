@@ -1,17 +1,15 @@
-// Flutter imports:
-import 'package:flutter/material.dart';
-
 // Package imports:
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-
 // Project imports:
 import 'package:pay_qr/config/app_constants.dart';
 import 'package:pay_qr/config/firebase.dart';
 import 'package:pay_qr/model/payment_model.dart';
 import 'package:pay_qr/utils/toast_dialogs.dart';
+
 import '../model/product_model.dart';
 
 class AuthHelperFirebase {
@@ -123,35 +121,29 @@ class AuthHelperFirebase {
 
   static void _clearCache() async {
     await DefaultCacheManager().emptyCache();
-    // showToast(
-    //     msg: 'Cache Cleared', backColor: Colors.green, textColor: Colors.white);
   }
 
   static Future<void> signOutAndCacheClear() async {
-    // FirebaseAuth auth = FirebaseAuth.instance;
     logger.d(auth.currentUser);
     try {
       if (auth.currentUser != null) {
         await auth.signOut();
-
-        // _clearCache();
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {
-        showToast(msg: 'Email is already in Use');
+        showSnackBar(msg: 'Email is already in Use');
       } else if (e.code == 'weak-password') {
-        showToast(msg: 'Password is weak');
+        showSnackBar(msg: 'Password is weak');
       }
     } catch (e) {
       logger.i('catch sign up : $e');
-      showToast(msg: 'Something went wrong');
+      showSnackBar(msg: 'Something went wrong');
     }
   }
 
   static User? getCurrentFireBaseUser() {
     try {
       if (auth.currentUser != null) {
-        // logger.i(auth.currentUser);
         return auth.currentUser;
       }
       return null;

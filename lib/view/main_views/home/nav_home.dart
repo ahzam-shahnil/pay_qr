@@ -161,19 +161,7 @@ class _NavHomeScreenState extends State<NavHomeScreen> {
                   icon: LineIcons.home,
                   text: 'Home',
                 ),
-
-                //TODO: fix issue here for the payment screen
-                // GButton(
-                //   gap: gap,
-                //   iconActiveColor: Colors.pink,
-                //   iconColor: Colors.black,
-                //   textColor: Colors.pink,
-                //   backgroundColor: Colors.pink.withOpacity(.2),
-                //   iconSize: 24,
-                //   padding: padding,
-                //   icon: LineIcons.cashRegister,
-                //   text: 'Payments',
-                // ),
+               
                 GButton(
                   gap: gap,
                   iconActiveColor: kPrimaryColor,

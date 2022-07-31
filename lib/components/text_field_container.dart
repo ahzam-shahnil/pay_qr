@@ -7,10 +7,12 @@ import 'package:pay_qr/config/app_constants.dart';
 class TextFieldContainer extends StatelessWidget {
   final Widget? child;
   final double? height;
+  final Color? backColor;
   const TextFieldContainer({
     Key? key,
     this.child,
     this.height,
+    this.backColor,
   }) : super(key: key);
 
   @override
@@ -22,7 +24,7 @@ class TextFieldContainer extends StatelessWidget {
       width: size.width * 0.8,
       height: height,
       decoration: BoxDecoration(
-        color: kTextFieldColor,
+        color: backColor?.withOpacity(0.8) ?? kTextFieldColor.withOpacity(0.8),
         borderRadius: BorderRadius.circular(10),
       ),
       child: child,
