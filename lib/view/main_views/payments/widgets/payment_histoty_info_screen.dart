@@ -48,7 +48,7 @@ class PaymentHistoryInfoScreen extends StatelessWidget {
                           onPressed: () => Get.back(),
                           icon: const Icon(Icons.arrow_back_ios_new_rounded)),
                       SizedBox(
-                        width: kWidth * 0.2,
+                        width: kWidth * 0.19,
                       ),
                       Text(
                         paymentsModel.senderId ==
@@ -61,7 +61,7 @@ class PaymentHistoryInfoScreen extends StatelessWidget {
                     ],
                   ),
                   SizedBox(
-                    height: kWidth * 0.1,
+                    height: kWidth * 0.08,
                   ),
                   CircleAvatar(
                     radius: kHeight * 0.07,
@@ -99,9 +99,10 @@ class PaymentHistoryInfoScreen extends StatelessWidget {
                   ),
                   Text(
                     Utility.getFormatedDate(DateTime.parse(paymentsModel.date)),
-                    style: Get.textTheme.headline6
+                    style: Get.textTheme.bodyMedium
                         ?.copyWith(color: Colors.white70),
-                  )
+                  ),
+                  const SizedBox(height: 10),
                 ],
               ),
             ),
@@ -118,15 +119,15 @@ class PaymentHistoryInfoScreen extends StatelessWidget {
                   children: [
                     Text(
                       'From',
-                      style: Get.textTheme.headline6
+                      style: Get.textTheme.bodyLarge
                           ?.copyWith(color: Colors.black54),
                     ),
                     const SizedBox(
                       height: 8,
                     ),
                     Text(
-                      "PayQr\n${paymentsModel.senderId}",
-                      style: Get.textTheme.headline6
+                      paymentsModel.sender,
+                      style: Get.textTheme.bodyMedium
                           ?.copyWith(color: Colors.black),
                     ),
                     const SizedBox(
@@ -134,23 +135,25 @@ class PaymentHistoryInfoScreen extends StatelessWidget {
                     ),
                     Text(
                       'To',
-                      style: Get.textTheme.headline6
+                      style: Get.textTheme.bodyLarge
                           ?.copyWith(color: Colors.black54),
                     ),
                     const SizedBox(
                       height: 8,
                     ),
                     Text(
-                      "PayQr\n${paymentsModel.receiverId}",
-                      style: Get.textTheme.headline6
-                          ?.copyWith(color: Colors.black),
+                      paymentsModel.receiver,
+                      style: Get.textTheme.bodyMedium?.copyWith(
+                        color: Colors.black,
+                      ),
                     ),
                     const Divider(
                       height: 6,
+                      thickness: 1,
                     ),
                     Text(
                       "Reference Number\n${paymentsModel.paymentId}",
-                      style: Get.textTheme.bodyLarge,
+                      style: Get.textTheme.bodyMedium,
                     ),
                   ],
                 ),

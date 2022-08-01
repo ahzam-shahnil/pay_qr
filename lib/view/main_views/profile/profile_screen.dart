@@ -249,7 +249,7 @@ class _ProfileScreenState extends State<ProfileScreen> with BaseController {
                   children: [
                     ElevatedButton.icon(
                       style: ElevatedButton.styleFrom(
-                        primary: kPrimaryColor,
+                        primary: Colors.blue.shade600,
                       ),
                       onPressed: () async {
                         profileController.logOut(context);
@@ -265,7 +265,7 @@ class _ProfileScreenState extends State<ProfileScreen> with BaseController {
                     ),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.blue.shade600,
+                        primary: kPrimaryColor,
                       ),
                       onPressed: () => Get.to(() => const ChatBotScreen()),
                       child: const Text(

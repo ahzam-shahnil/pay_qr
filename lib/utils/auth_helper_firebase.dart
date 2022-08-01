@@ -2,7 +2,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 // Project imports:
 import 'package:pay_qr/config/app_constants.dart';
@@ -119,9 +118,9 @@ class AuthHelperFirebase {
     return result;
   }
 
-  static void _clearCache() async {
-    await DefaultCacheManager().emptyCache();
-  }
+  // static void _clearCache() async {
+  //   await DefaultCacheManager().emptyCache();
+  // }
 
   static Future<void> signOutAndCacheClear() async {
     logger.d(auth.currentUser);

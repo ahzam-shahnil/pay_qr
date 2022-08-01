@@ -47,19 +47,6 @@ class _PaymentHomeScreenState extends State<PaymentHomeScreen> {
                     style: Get.textTheme.headline6?.copyWith(color: kTealColor),
                   ),
                 ),
-                // trailing: ElevatedButton(
-                //   onPressed: () {
-                //     // logger.d('Imp')
-                //     //TODO: implement Qr show Dialog here
-                //   },
-                //   style: ElevatedButton.styleFrom(
-                //       primary: kTealColor.withOpacity(0.6)),
-                //   child: Text(
-                //     'Show My Qr',
-                //     style: Get.textTheme.bodyLarge
-                //         ?.copyWith(color: kScanBackColor),
-                //   ),
-                // ),
               ),
             ),
             const SizedBox(

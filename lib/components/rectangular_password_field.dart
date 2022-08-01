@@ -1,10 +1,10 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
-
 // Package imports:
 import 'package:get/get.dart';
 
 // Project imports:
+import '../config/app_constants.dart';
 import 'text_field_container.dart';
 
 class RectangularPasswordField extends StatefulWidget {
@@ -48,9 +48,10 @@ class _RectangularPasswordFieldState extends State<RectangularPasswordField> {
         controller: widget.textController,
         autofillHints: widget.autofillHints,
         // maxLines: 1,
-        style: Theme.of(context).textTheme.headline6?.copyWith(
-              fontWeight: FontWeight.normal,
-            ),
+        style: Theme.of(context)
+            .textTheme
+            .bodyLarge
+            ?.copyWith(fontWeight: FontWeight.normal, color: kScanBackColor),
 
         // onEditingComplete: () => TextInput.finishAutofillContext(),
         decoration: InputDecoration(
@@ -59,8 +60,8 @@ class _RectangularPasswordFieldState extends State<RectangularPasswordField> {
           // labelText: widget.text,
           hintStyle: Theme.of(context)
               .textTheme
-              .headline6
-              ?.copyWith(fontWeight: FontWeight.normal),
+              .bodyLarge
+              ?.copyWith(fontWeight: FontWeight.normal, color: kScanBackColor),
           hintMaxLines: 1,
           icon: widget.icon != null
               ? Icon(

@@ -26,7 +26,7 @@ class AlreadyHaveAnAccountCheck extends StatelessWidget {
           onTap: press,
           child: Text(
             login ? "Don’t have an Account ? " : "Already have an Account ? ",
-            style: Get.textTheme.headline6?.copyWith(color: Colors.white),
+            style: Get.textTheme.bodyMedium?.copyWith(color: Colors.white),
           ),
         )
       ],

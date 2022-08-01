@@ -64,7 +64,7 @@ class ScanIntroScreen extends StatelessWidget {
                   const SizedBox(height: 30),
                   Padding(
                     padding: EdgeInsets.symmetric(
-                      horizontal: kWidth * 0.24,
+                      horizontal: kWidth * 0.18,
                       vertical: 8,
                     ),
                     child: ElevatedButton(
@@ -73,8 +73,9 @@ class ScanIntroScreen extends StatelessWidget {
                           )),
                       child: Text(
                         'Go Shopping!',
-                        style: Get.textTheme.headline6?.copyWith(
+                        style: Get.textTheme.bodyMedium?.copyWith(
                           fontWeight: FontWeight.w500,
+                          color: kScanBackColor
                         ),
                       ),
                     ),

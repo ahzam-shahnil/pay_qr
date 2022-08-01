@@ -190,7 +190,7 @@ class _ScanScreenState extends State<ScanScreen> {
                     cameraController.toggleTorch();
                   }
 
-                  //TODO: check this to coni=firm that it exits on this condition
+                  //To not let a user to access his own shop or send Money screen
                   if (qrModel.uid == userController.userModel.value.uid) {
                     showSnackBar(msg: 'You cannot scan your own Qr🤨');
                     return;

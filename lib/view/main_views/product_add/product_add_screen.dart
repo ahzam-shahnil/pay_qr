@@ -76,7 +76,8 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
       appBar: AppBar(
         title: Text(
           "Add Product",
-          style: Get.textTheme.headline6,
+          style: Get.textTheme.bodyLarge
+              ?.copyWith(fontWeight: FontWeight.normal, color: kScanBackColor),
         ),
         backgroundColor: kAddProductColor,
         actions: [
@@ -90,7 +91,9 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                     const Icon(Icons.add_a_photo_rounded, color: Colors.white),
                 label: Text(
                   imageFile == null ? 'Add Image' : 'Change Image',
-                  style: Get.textTheme.headline6,
+                  style: Get.textTheme.bodyMedium?.copyWith(
+                      fontWeight: FontWeight.normal, color: kScanBackColor),
+                  overflow: TextOverflow.fade,
                 ),
               ),
             )
@@ -235,7 +238,7 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                         //? saving the product to database and savinf Db ref to Qr
                         var progressDialog = getProgressDialog(
                             title: 'Product ',
-                            msg: 'Compressing Image...',
+                            msg: 'Compressing & Uploading Image...',
                             context: context);
                         progressDialog.show();
                         //showLoading('Adding ...');
@@ -267,7 +270,6 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                               .setMessage(const Text('Saving Product...'));
                           await productsAddController.saveProduct(product);
                           // hideLoading();
-                          progressDialog.dismiss();
                           showToast(
                             msg: "Product Added",
                             backColor: Colors.green,
@@ -275,7 +277,12 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                           );
                           //* to show the qr code , we set visible to true
                           productsAddController.isVisible(true);
-
+                          await Future.delayed(
+                            const Duration(milliseconds: 500),
+                          );
+                          progressDialog
+                              .setMessage(const Text('Generating Qr Code...'));
+                          progressDialog.dismiss();
                           try {
                             await captureAndShare(
                                 globalKey: _globalKey,

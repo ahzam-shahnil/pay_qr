@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:pay_qr/config/app_constants.dart';
-import 'package:pay_qr/config/controllers.dart';
 import 'package:pay_qr/config/firebase.dart';
 
 class PaymentsController extends GetxController {

@@ -51,7 +51,8 @@ class CustomCard extends StatelessWidget {
               child: Center(
                 child: Text(
                   text,
-                  style: Get.textTheme.headline6,
+                  style: Get.textTheme.bodyLarge?.copyWith(
+                      fontWeight: FontWeight.normal, color: kScanBackColor),
                 ),
               ),
             ),

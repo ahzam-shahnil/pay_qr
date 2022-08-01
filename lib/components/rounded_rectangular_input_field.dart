@@ -18,7 +18,7 @@ class RoundedRectangleInputField extends StatelessWidget {
   final bool? isAutoFocus;
   final bool? isEnabled;
   final TextInputAction? textInputAction;
-  void Function(String)? onSubmitted;
+  final void Function(String)? onSubmitted;
   final double? height;
   final Color? color;
   final ScrollController scrollController = ScrollController();
@@ -62,9 +62,10 @@ class RoundedRectangleInputField extends StatelessWidget {
         cursorColor: kPrimaryColor,
         keyboardType: textInputType,
         autofillHints: autofillHints,
-        style: Theme.of(context).textTheme.headline6?.copyWith(
-              fontWeight: FontWeight.normal,
-            ),
+        style: Theme.of(context)
+            .textTheme
+            .bodyLarge
+            ?.copyWith(fontWeight: FontWeight.normal, color: kScanBackColor),
         decoration: InputDecoration(
           icon: icon != null
               ? Icon(
@@ -77,8 +78,8 @@ class RoundedRectangleInputField extends StatelessWidget {
           //     fontSize: Get.size.shortestSide * 0.035),
           hintStyle: Theme.of(context)
               .textTheme
-              .headline6
-              ?.copyWith(fontWeight: FontWeight.normal),
+              .bodyLarge
+              ?.copyWith(fontWeight: FontWeight.normal, color: kScanBackColor),
           hintText: hintText,
           border: InputBorder.none,
         ),

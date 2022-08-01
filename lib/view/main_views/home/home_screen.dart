@@ -145,7 +145,7 @@ class HomeScreen extends StatelessWidget {
                                               DateTime.parse(data[index].date)),
                                           textAlign: TextAlign.start,
                                           style: index == 0
-                                              ? Get.textTheme.headline6
+                                              ? Get.textTheme.bodyLarge
                                                   ?.copyWith(
                                                       color: Colors.black,
                                                       fontWeight:

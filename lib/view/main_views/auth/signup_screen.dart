@@ -86,7 +86,8 @@ class SignupScreen extends StatelessWidget {
                   ),
                   Text(
                     'Select Account Type:',
-                    style: Get.textTheme.headline6,
+                    style: Get.textTheme.bodyLarge
+                        ?.copyWith(color: kScanBackColor),
                   ),
                   const SizedBox(
                     height: 12,
@@ -102,7 +103,7 @@ class SignupScreen extends StatelessWidget {
                     style: ElevatedButton.styleFrom(primary: kScanBackColor),
                     child: Text(
                       'Sign Up',
-                      style: Get.textTheme.headline6?.copyWith(
+                      style: Get.textTheme.bodyLarge?.copyWith(
                         color: kPrimaryColor,
                       ),
                     ),
