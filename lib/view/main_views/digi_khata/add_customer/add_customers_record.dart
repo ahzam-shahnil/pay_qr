@@ -4,6 +4,7 @@ import 'package:pay_qr/config/app_constants.dart';
 import 'package:pay_qr/config/controllers.dart';
 import 'package:pay_qr/model/customer.dart';
 import 'package:pay_qr/model/digi_khata/cash_model.dart';
+import 'package:pay_qr/utils/show_loading.dart';
 import 'package:pay_qr/utils/toast_dialogs.dart';
 import 'package:pay_qr/utils/utility.dart';
 import 'package:pay_qr/view/main_views/digi_khata/add_customer/customer_record_view.dart';
@@ -62,38 +63,68 @@ class _AddCustomerRecordState extends State<AddCustomerRecord> {
               ? IconButton(
                   onPressed: () async {
                     FocusScope.of(context).unfocus();
+
                     if (widget.isFromCashBook == false) {
+                      showLoading();
                       var records = widget.cashRecords;
 
                       // logger.d(widget.record?.id);
                       records?.retainWhere(
                           (element) => widget.record!.id != element.id);
 
-                      logger.d(records);
+                      // logger.d(records);
                       var customer =
                           widget.customer?.copyWith(cashRecords: records);
-                      logger.d(customer);
+                      // logger.d(customer);
 
-                      bool result = await digiController.removeCustomerRecord(
+                      await digiController.removeCustomerRecord(
                           customer: customer!);
+                      // if (!mounted) return;
+
+                      // if (result) {
+                      //* To return to selected screen and refresh the data
+                      await dismissLoadingWidget();
+                      Get.back();
+                      Get.back();
+                      // setState(() {});
+                      Get.off(
+                        () => CustomerRecordsView(
+                          customer: widget.customer!,
+                        ),
+                      );
+                      // Navigator.pushReplacement(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (context) => CustomerRecordsView(
+                      //       customer: widget.customer!,
+                      //     ),
+                      //   ),
+                      // );
+                      // }
+                    } else {
+                      var details = detailsController.text;
+                      var paisay = paisayController.text;
+                      var record = CashModel(
+                          date: date.toString(),
+                          paisay: paisay,
+                          details: details,
+                          isMainDiye: widget.record == null
+                              ? widget.isMainDiye
+                              : widget.record!.isMainDiye,
+                          id: widget.record == null
+                              ? uid.v4()
+                              : widget.record?.id ?? '');
+                      await digiController.updateCashInOutKhata(record: record);
                       if (!mounted) return;
 
-                      if (result) {
-                        Get.back();
-                        // Get.off(
-                        //   () => CustomerRecordsView(
-                        //     customer: widget.customer!,
-                        //   ),
-                        // );
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => CustomerRecordsView(
-                              customer: widget.customer!,
-                            ),
-                          ),
-                        );
-                      }
+                      // if (result) {
+
+                      //* To return to selected screen and refresh the data
+                      Get.back();
+                      Get.back();
+                      Get.off(() => const DigiNavHome(
+                            selectedScreen: 1,
+                          ));
                     }
                   },
                   icon: const Icon(
@@ -208,24 +239,26 @@ class _AddCustomerRecordState extends State<AddCustomerRecord> {
                             id: widget.customer!.id, record: record)
                         : await digiController.removeCustomerRecord(
                             customer: customer!);
-                    if (!mounted) return;
+                    // if (!mounted) return;
 
-                    if (result) {
-                      Get.back();
-                      // Get.off(
-                      //   () => CustomerRecordsView(
-                      //     customer: widget.customer!,
-                      //   ),
-                      // );
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => CustomerRecordsView(
-                            customer: widget.customer!,
-                          ),
-                        ),
-                      );
-                    }
+                    // if (result) {
+                    //* To return to selected screen and refresh the data
+                    Get.back();
+                    Get.back();
+                    Get.off(
+                      () => CustomerRecordsView(
+                        customer: widget.customer!,
+                      ),
+                    );
+                    // Navigator.pushReplacement(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (context) => CustomerRecordsView(
+                    //       customer: widget.customer!,
+                    //     ),
+                    //   ),
+                    // );
+                    // }
                   } else {
                     bool result = widget.record == null
                         ? await digiController.saveCashInOutKhata(
@@ -234,19 +267,22 @@ class _AddCustomerRecordState extends State<AddCustomerRecord> {
                             record: record);
                     if (!mounted) return;
 
-                    if (result) {
-                      Get.back();
-                      // Get.off(() => const DigiNavHome(
-                      //       selectedScreen: 1,
-                      //     ));
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const DigiNavHome(
-                                  selectedScreen: 1,
-                                )),
-                      );
-                    }
+                    // if (result) {
+
+                    //* To return to selected screen and refresh the data
+                    Get.back();
+                    Get.back();
+                    Get.off(() => const DigiNavHome(
+                          selectedScreen: 1,
+                        ));
+                    // Navigator.pushReplacement(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //       builder: (context) => const DigiNavHome(
+                    //             selectedScreen: 1,
+                    //           )),
+                    // );
+                    // }
                   }
                 },
               ),

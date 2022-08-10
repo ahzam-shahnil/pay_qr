@@ -14,7 +14,8 @@ import '../../view/main_views/digi_khata/add_customer/contact_view.dart';
 class DigiController extends GetxController {
   static DigiController instance = Get.find();
   late CollectionReference _mainCollection;
-  var customer = <CustomerModel>[].obs;
+  var customer =
+      CustomerModel(id: '', name: '', phoneNo: '', cashRecords: []).obs;
   getPermissionAndGotoContactView() async {
     if (await Permission.contacts.request().isGranted) {
       Get.to(
@@ -141,20 +142,20 @@ class DigiController extends GetxController {
     _mainCollection = await _getCollectionRef();
     try {
       // logger.d(record);
-      _mainCollection.doc(customer.id).set(customer.toMap());
-      showSnackBar(
-        msg: "Success",
-        backColor: Colors.green,
-        iconData: Icons.done_rounded,
-      );
+      await _mainCollection.doc(customer.id).set(customer.toMap());
+      // showSnackBar(
+      //   msg: "Success",
+      //   backColor: Colors.green,
+      //   iconData: Icons.done_rounded,
+      // );
       return true;
     } on FirebaseException {
-      showSnackBar(
-        msg: "Error",
-      );
+      // showSnackBar(
+      //   msg: "Error",
+      // );
       return false;
     } catch (e) {
-      Get.snackbar("Error", "Cannot remove this");
+      // Get.snackbar("Error", "Cannot remove this");
       // debugPrint(e);
       logger.e(e);
       return false;
@@ -169,21 +170,21 @@ class DigiController extends GetxController {
       _mainCollection.doc(id).update({
         kCashRecordsField: FieldValue.arrayUnion([record.toMap()])
       });
-      showSnackBar(
-        msg: "Success",
-        backColor: Colors.green,
-        iconData: Icons.done_rounded,
-      );
+      // showSnackBar(
+      //   msg: "Success",
+      //   backColor: Colors.green,
+      //   iconData: Icons.done_rounded,
+      // );
       return true;
     } on FirebaseException {
-      showSnackBar(
-        msg: "Error",
-      );
+      // showSnackBar(
+      //   msg: "Error",
+      // );
       return false;
     } catch (e) {
-      showSnackBar(
-        msg: "Error",
-      );
+      // showSnackBar(
+      //   msg: "Error",
+      // );
       return false;
     }
   }
@@ -201,27 +202,27 @@ class DigiController extends GetxController {
       await _mainCollection.doc(customer.id).set(customer.toMap());
       progressDialog.dismiss();
 
-      showSnackBar(
-        msg: "Success",
-        backColor: Colors.white,
-        textColor: kPrimaryColor,
-        iconData: Icons.done_rounded,
-      );
+      // showSnackBar(
+      //   msg: "Success",
+      //   backColor: Colors.white,
+      //   textColor: kPrimaryColor,
+      //   iconData: Icons.done_rounded,
+      // );
 
       return true;
     } on FirebaseException {
       progressDialog.dismiss();
 
-      showSnackBar(
-        msg: 'Something Went Wrong',
-      );
+      // showSnackBar(
+      //   msg: 'Something Went Wrong',
+      // );
       return false;
     } catch (e) {
       progressDialog.dismiss();
 
-      showSnackBar(
-        msg: 'Something Went Wrong',
-      );
+      // showSnackBar(
+      //   msg: 'Something Went Wrong',
+      // );
       return false;
     }
   }
@@ -230,6 +231,13 @@ class DigiController extends GetxController {
     _mainCollection = _getCollectionRef();
     // logger.d(_mainCollection.doc(id).snapshots());
     var data = await _mainCollection.doc(id).get();
+    // Stream<DocumentSnapshot> stream = _mainCollection.doc(id).snapshots();
+    // stream.listen((snapshot) {
+    //   var data = snapshot;
+
+    //   customer.value = CustomerModel.fromSnapshot(data);
+    // });
+
     try {
       return CustomerModel.fromSnapshot(data);
     } catch (e) {

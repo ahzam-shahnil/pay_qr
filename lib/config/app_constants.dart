@@ -1,7 +1,6 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 // Package imports:
 import 'package:logger/logger.dart';
 import 'package:uuid/uuid.dart';

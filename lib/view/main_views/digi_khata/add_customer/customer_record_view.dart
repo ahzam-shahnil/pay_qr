@@ -133,13 +133,11 @@ class _CustomerRecordsViewState extends State<CustomerRecordsView> {
     ]);
   }
 
-  // @override
-  // void dispose() {
-  //   Future.delayed(Duration.zero, () {
-  //     amountController.resetData();
-  //   });
-  //   super.dispose();
-  // }
+  @override
+  void dispose() {
+    rows.clear();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -150,7 +148,6 @@ class _CustomerRecordsViewState extends State<CustomerRecordsView> {
           widget.customer.name,
           style: Get.textTheme.headline6,
         ),
-        actions: const [],
       ),
       body: FutureBuilder(
         future: digiController.getCustomerSpecificRecord(widget.customer.id),
